@@ -21,7 +21,8 @@ $ createdb python_getting_started # skip this step for now
 $ python manage.py migrate
 $ python manage.py collectstatic
 
-$ heroku local web -f Procfile.windows
+$ heroku local web -f Procfile.windows # for windows users
+$ heroku local web # for mac users
 ```
 
 Your app should now be running on [localhost:5000](http://localhost:5000/).
