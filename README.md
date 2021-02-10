@@ -13,10 +13,10 @@ Make sure you have Python 3.7 [installed locally](http://install.python-guide.or
 $ git clone https://github.com/Novel-Public-Health/Novel-Public-Health.git
 $ cd Novel-Public-Health
 
-$ python3 -m venv gettingstarted
+$ python3 -m venv gettingstarted # this might not work, shouldn't matter
 $ pip install -r requirements.txt
 
-$ createdb python_getting_started
+$ createdb python_getting_started # skip this step for now
 
 $ python manage.py migrate
 $ python manage.py collectstatic
@@ -32,7 +32,8 @@ $ git add .
 $ git commit -m "my commit"
 $ git push origin main
 ```
-***NOTE: the following is for deploying a heroku app manually from the CLI. We don't need to do this. Instead, we can test our changes on the local server, and the above git commands***
+or
+***NOTE from Austin: the following is for deploying a heroku app manually from the CLI. We don't need to do this. Instead, we can test our changes on the local server, and the above git commands.***
 ```sh
 $ heroku create
 $ git push heroku main
