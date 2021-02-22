@@ -13,10 +13,10 @@ Make sure you have Python 3.7 [installed locally](http://install.python-guide.or
 $ git clone https://github.com/Novel-Public-Health/Novel-Public-Health.git
 $ cd Novel-Public-Health
 
-$ python3 -m venv gettingstarted # this might not work, shouldn't matter
+$ python3 -m venv gettingstarted
 $ pip install -r requirements.txt
 
-$ createdb python_getting_started # skip this step for now
+$ createdb python_getting_started # skip this step for now, idk the password
 
 $ python manage.py migrate
 $ python manage.py collectstatic
