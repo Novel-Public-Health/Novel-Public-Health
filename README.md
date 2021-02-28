@@ -42,19 +42,6 @@ $ git add .
 $ git commit -m "my commit"
 $ git push origin main
 ```
-or
-
-***NOTE from Austin: the following is for deploying a heroku app manually from the CLI. We don't need to do this. Instead, we can test our changes on the local server, and the above git commands.***
-```sh
-$ heroku create
-$ git push heroku main
-
-$ heroku run python3 manage.py migrate # NOTE: fixes catalog not found error
-$ heroku open
-```
-or
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## Documentation
 
