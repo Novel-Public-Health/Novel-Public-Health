@@ -29,7 +29,8 @@ To get this project up and running locally on your computer:
    python3 manage.py migrate
    python3 manage.py collectstatic
    python3 manage.py test # Run the standard tests. These should all pass.
-   python3 manage.py createsuperuser # Create a superuser
+   # Create a superuser, add 'heroku run' to the beginning of this statement to be a superuser for production too
+   python3 manage.py createsuperuser
    python3 manage.py runserver
    ```
 1. Open a browser to `http://127.0.0.1:8000/admin/` to open the admin site
@@ -42,19 +43,6 @@ $ git add .
 $ git commit -m "my commit"
 $ git push origin main
 ```
-or
-
-***NOTE from Austin: the following is for deploying a heroku app manually from the CLI. We don't need to do this. Instead, we can test our changes on the local server, and the above git commands.***
-```sh
-$ heroku create
-$ git push heroku main
-
-$ heroku run python manage.py migrate
-$ heroku open
-```
-or
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## Documentation
 
