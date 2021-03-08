@@ -2,17 +2,17 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from .models import Book, Author, BookInstance, Genre
+from .models import Movie, Director, MovieInstance, Genre
 
 
 def index(request):
     """View function for home page of site."""
     # Generate counts of some of the main objects
-    num_books = Book.objects.all().count()
-    num_instances = BookInstance.objects.all().count()
-    # Available copies of books
-    num_instances_available = BookInstance.objects.filter(status__exact='a').count()
-    num_authors = Author.objects.count()  # The 'all()' is implied by default.
+    num_movies = Movie.objects.all().count()
+    num_instances = MovieInstance.objects.all().count()
+    # Available copies of movies
+    num_instances_available = MovieInstance.objects.filter(status__exact='a').count()
+    num_directors = Director.objects.count()  # The 'all()' is implied by default.
 
     # Number of visits to this view, as counted in the session variable.
     num_visits = request.session.get('num_visits', 1)
@@ -22,66 +22,65 @@ def index(request):
     return render(
         request,
         'index.html',
-        context={'num_books': num_books, 'num_instances': num_instances,
-                 'num_instances_available': num_instances_available, 'num_authors': num_authors,
+        context={'num_movies': num_movies, 'num_instances': num_instances,
+                 'num_instances_available': num_instances_available, 'num_directors': num_directors,
                  'num_visits': num_visits},
     )
 
 def register(request):
     return render(request, 'Register.html')
 
-
 from django.views import generic
 
 
-class BookListView(generic.ListView):
-    """Generic class-based view for a list of books."""
-    model = Book
+class MovieListView(generic.ListView):
+    """Generic class-based view for a list of movies."""
+    model = Movie
     paginate_by = 10
 
 
-class BookDetailView(generic.DetailView):
-    """Generic class-based detail view for a book."""
-    model = Book
+class MovieDetailView(generic.DetailView):
+    """Generic class-based detail view for a movie."""
+    model = Movie
 
 
-class AuthorListView(generic.ListView):
-    """Generic class-based list view for a list of authors."""
-    model = Author
+class DirectorListView(generic.ListView):
+    """Generic class-based list view for a list of directors."""
+    model = Director
     paginate_by = 10
 
 
-class AuthorDetailView(generic.DetailView):
-    """Generic class-based detail view for an author."""
-    model = Author
+class DirectorDetailView(generic.DetailView):
+    """Generic class-based detail view for an director."""
+    model = Director
 
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
-    """Generic class-based view listing books on loan to current user."""
-    model = BookInstance
-    template_name = 'catalog/bookinstance_list_borrowed_user.html'
+class LoanedMoviesByUserListView(LoginRequiredMixin, generic.ListView):
+    """Generic class-based view listing movies on loan to current user."""
+    model = MovieInstance
+    template_name = 'catalog/movieinstance_list_borrowed_user.html'
     paginate_by = 10
 
     def get_queryset(self):
-        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+        return MovieInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
 
 
 # Added as part of challenge!
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
-class LoanedBooksAllListView(PermissionRequiredMixin, generic.ListView):
-    """Generic class-based view listing all books on loan. Only visible to users with can_mark_returned permission."""
-    model = BookInstance
+class LoanedMoviesAllListView(PermissionRequiredMixin, generic.ListView):
+    """Generic class-based view listing all movies on loan. Only visible to users with can_mark_returned permission."""
+    model = MovieInstance
     permission_required = 'catalog.can_mark_returned'
-    template_name = 'catalog/bookinstance_list_borrowed_all.html'
+    template_name = 'catalog/movieinstance_list_borrowed_all.html'
     paginate_by = 10
 
     def get_queryset(self):
-        return BookInstance.objects.filter(status__exact='o').order_by('due_back')
+        return MovieInstance.objects.filter(status__exact='o').order_by('due_back')
 
 
 from django.shortcuts import get_object_or_404
@@ -90,27 +89,27 @@ from django.urls import reverse
 import datetime
 from django.contrib.auth.decorators import login_required, permission_required
 
-# from .forms import RenewBookForm
-from catalog.forms import RenewBookForm
+# from .forms import RenewMovieForm
+from catalog.forms import RenewMovieForm
 
 
 @login_required
 @permission_required('catalog.can_mark_returned', raise_exception=True)
-def renew_book_librarian(request, pk):
-    """View function for renewing a specific BookInstance by librarian."""
-    book_instance = get_object_or_404(BookInstance, pk=pk)
+def renew_movie_librarian(request, pk):
+    """View function for renewing a specific MovieInstance by librarian."""
+    movie_instance = get_object_or_404(MovieInstance, pk=pk)
 
     # If this is a POST request then process the Form data
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request (binding):
-        form = RenewBookForm(request.POST)
+        form = RenewMovieForm(request.POST)
 
         # Check if the form is valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            book_instance.due_back = form.cleaned_data['renewal_date']
-            book_instance.save()
+            movie_instance.due_back = form.cleaned_data['renewal_date']
+            movie_instance.save()
 
             # redirect to a new URL:
             return HttpResponseRedirect(reverse('all-borrowed'))
@@ -118,54 +117,54 @@ def renew_book_librarian(request, pk):
     # If this is a GET (or any other method) create the default form
     else:
         proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewBookForm(initial={'renewal_date': proposed_renewal_date})
+        form = RenewMovieForm(initial={'renewal_date': proposed_renewal_date})
 
     context = {
         'form': form,
-        'book_instance': book_instance,
+        'movie_instance': movie_instance,
     }
 
-    return render(request, 'catalog/book_renew_librarian.html', context)
+    return render(request, 'catalog/movie_renew_librarian.html', context)
 
 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .models import Author
+from .models import Director
 
 
-class AuthorCreate(PermissionRequiredMixin, CreateView):
-    model = Author
+class DirectorCreate(PermissionRequiredMixin, CreateView):
+    model = Director
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
     initial = {'date_of_death': '11/06/2020'}
     permission_required = 'catalog.can_mark_returned'
 
 
-class AuthorUpdate(PermissionRequiredMixin, UpdateView):
-    model = Author
+class DirectorUpdate(PermissionRequiredMixin, UpdateView):
+    model = Director
     fields = '__all__' # Not recommended (potential security issue if more fields added)
     permission_required = 'catalog.can_mark_returned'
 
 
-class AuthorDelete(PermissionRequiredMixin, DeleteView):
-    model = Author
-    success_url = reverse_lazy('authors')
+class DirectorDelete(PermissionRequiredMixin, DeleteView):
+    model = Director
+    success_url = reverse_lazy('directors')
     permission_required = 'catalog.can_mark_returned'
 
 
 # Classes created for the forms challenge
-class BookCreate(PermissionRequiredMixin, CreateView):
-    model = Book
-    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
+class MovieCreate(PermissionRequiredMixin, CreateView):
+    model = Movie
+    fields = ['title', 'director', 'summary', 'isbn', 'genre', 'language']
     permission_required = 'catalog.can_mark_returned'
 
 
-class BookUpdate(PermissionRequiredMixin, UpdateView):
-    model = Book
-    fields = ['title', 'author', 'summary', 'isbn', 'genre', 'language']
+class MovieUpdate(PermissionRequiredMixin, UpdateView):
+    model = Movie
+    fields = ['title', 'director', 'summary', 'isbn', 'genre', 'language']
     permission_required = 'catalog.can_mark_returned'
 
 
-class BookDelete(PermissionRequiredMixin, DeleteView):
-    model = Book
-    success_url = reverse_lazy('books')
+class MovieDelete(PermissionRequiredMixin, DeleteView):
+    model = Movie
+    success_url = reverse_lazy('movies')
     permission_required = 'catalog.can_mark_returned'

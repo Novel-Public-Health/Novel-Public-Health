@@ -4,3 +4,5 @@ gunicorn==20.0.4
 psycopg2-binary==2.8.6
 wheel==0.35.1
 whitenoise==5.2.0
+moviepy==1.0.3
+IMDbPY==2020.9.25

@@ -32,6 +32,10 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 #ALLOWED_HOSTS = ['.herokuapp.com','127.0.0.1']
 ALLOWED_HOSTS = ['*']
 
+# Media files, uploaded by user
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 # Application definition
 
 INSTALLED_APPS = [
