@@ -27,6 +27,9 @@ def index(request):
                  'num_visits': num_visits},
     )
 
+def register(request):
+    return render(request, 'Register.html')
+
 
 from django.views import generic
 
