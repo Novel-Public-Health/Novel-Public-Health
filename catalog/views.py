@@ -30,6 +30,12 @@ def index(request):
 def register(request):
     return render(request, 'Register.html')
 
+# About us view
+def aboutUs(request):
+    return render(request, 'aboutUs.html')
+
+
+
 from django.views import generic
 
 

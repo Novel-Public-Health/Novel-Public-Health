@@ -2,17 +2,26 @@ html {
     margin: 0;
     width: 100%;
     height: 100%;
+    overflow: visible;
 }
 body {
     background-color: #90C2E7;
     font-family: 'Abel', sans-serif;
     margin: 0px;
     padding: 0px;
-    width: 100%;;
-    height: 0;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: block;
+    overflow-y:visible;
 }
 
+#contentBody {
+    position: relative;
+    top: 10%;
+    width: 100%;
+    height: 100%;
+}
 /* Main Page */
 /* Nav bar css */
 a {
@@ -43,15 +52,26 @@ a:hover {
 .wrapper {
     box-sizing: inherit;
     padding-top: 10px;
-
+    position: absolute;
+    width: 100%;
 }
 
+/* .row {
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    background-color:green;
+} */
+
 .navbar {
+    margin-top: 0;
     background-color: #90C2E7;
     display: inline;
     text-align: center;
-    position: fixed;
+    /* position: fixed; */
     width: 100%;
+    height: 10%;
+    z-index: 1;
 }
 
 ul {
@@ -78,3 +98,158 @@ h2 {
 .main-display {
     background-color: black;
 }
+
+/* About us Page */
+
+#aboutUs {
+    position: relative;
+    top: 30%;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#novel {
+    margin-top: 0;
+    color: rgb(155, 155, 155);
+    font-weight: lighter;
+    font-size: 2rem;
+    align-self: center;
+    justify-self: center;
+}
+
+#novel-title {
+    margin-top: 0;
+    padding-top: 100px;
+    padding-bottom: 0;
+    margin-bottom: 5px;
+    font-size: 5rem;
+    /* color: #5490B1; */
+    color: black;
+    
+}
+
+.firstPage {
+    height: auto;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    /* background-color: white; */
+    background-color: white;
+    padding-bottom: 2%;
+}
+
+#secondPage {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: white;
+    border-bottom-style: solid;
+    border-width: 2px;
+    border-top-style: solid;
+    border-color:#5490b12a;
+    width: 100%;
+    /* background-color: #5490B1; */
+}
+
+#secondPage::after {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: white;
+    border-bottom-style: solid;
+    border-width: 2px;
+    border-top-style: solid;
+    border-color:#5490b12a;
+    width: 80%;
+    /* background-color: #5490B1; */
+}
+
+.aboutTab {
+    font-weight: lighter;
+    margin: 10px;
+    color: black;
+}
+
+.aboutTab:hover {
+    color: #5490B1;
+}
+.aboutLink {
+    font-weight: lighter;
+    font-size: 1rem;
+}
+
+.aboutText {
+    font-size: 1.5rem;
+    max-width: 100%;
+    margin-left: 30px;
+    margin-top: 5px;
+}
+
+#thirdPage {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    float: none;
+    background-color: #e4f2fc;
+    position: relative;
+    height: auto;
+    margin-bottom: 0;
+    padding: 0;
+}
+
+.aboutSubtitle {
+    color: #5490B1;
+    font-size: 2rem;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+.aboutDiv {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    margin: 1%;
+    width: 30%;
+}
+
+#fourthPage {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    position: relative;
+    height: auto;
+    width: 100%;
+}
+
+#motto {
+    color: #5490B1;
+    padding-top: 60px;
+    font-weight: lighter;
+}
+
+.aboutDiv2 {
+    display: block;
+    margin: 0%;
+    padding: 2%;
+    width: 50%;
+}
+
+.aboutDiv3 {
+    position: relative;
+    left: 40%;
+    display: block;
+    margin: 0%;
+    padding: 2%;
+    width: 50%;  
+}
+
+.aboutDiv4 {
+    position: relative;
+    display: block;
+    margin: 0%;
+    padding: 2%;
+    width: 50%;  
+}
+
