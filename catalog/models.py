@@ -5,6 +5,8 @@ from django.db import models
 from django.urls import reverse  # To generate URLS by reversing URL patterns
 from django.conf import settings
 
+from s3direct.fields import S3DirectField
+
 class Genre(models.Model):
     """Model representing a movie genre (e.g. Science Fiction, Non Fiction)."""
     name = models.CharField(
@@ -35,11 +37,12 @@ class Movie(models.Model):
     # Director as a string rather than object because it hasn't been declared yet in file.
     director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True)
     summary = models.TextField(max_length=1000, help_text="Enter a brief description of the movie")
+    """
     isbn = models.CharField('ISBN', max_length=13,
                             unique=True,
                             help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn'
                                       '">ISBN number</a>')
-
+    """
     # Genre class has already been defined so we can specify the object above.
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True)
@@ -47,8 +50,10 @@ class Movie(models.Model):
     imdb = models.CharField('IMDB id', max_length=10, help_text='grabbed from imdb links. for example, <a target="_blank" '
                                                                 'href="https://www.imdb.com/title/tt3322364/">Concussion</a> is 3322364')
 
-    file = models.FileField(upload_to='movie-uploads/')
-
+    #file = models.FileField(upload_to='movie-uploads/')
+    file = S3DirectField(dest='videos', blank=True)
+    #image = S3DirectField(dest='images', blank=True)
+    
     duration = models.CharField(max_length=200)
     fps = models.CharField(max_length=200)
     dimensions = models.CharField(max_length=200)
@@ -74,8 +79,8 @@ class Movie(models.Model):
     def get_video_and_imdb_stats(self):
         from moviepy.editor import VideoFileClip
         import datetime
-        filename = str(settings.BASE_DIR) + self.file.url
-        clip = VideoFileClip(filename)
+        #filename = str(settings.BASE_DIR) + self.file.url
+        clip = VideoFileClip(self.file)
         duration       = str(datetime.timedelta(seconds=round(clip.duration)))
         fps            = clip.fps
         width, height  = clip.size
@@ -90,6 +95,7 @@ class Movie(models.Model):
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
         """Use a custom save to end date any subCases"""
+
         specs = self.get_video_and_imdb_stats()
         orig = Movie.objects.get(id=self.id)
         orig.duration = specs[0]

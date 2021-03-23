@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import include
 
 from django.conf import settings
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 
 urlpatterns = [
@@ -53,5 +54,9 @@ urlpatterns += [
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
-if settings.DEBUG:
-     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#if settings.DEBUG:
+urlpatterns += static(settings.MEDIA_URL_LOCAL, document_root=settings.MEDIA_ROOT_LOCAL)
+
+urlpatterns += [
+    url(r'^s3direct/', include('s3direct.urls')),
+]
