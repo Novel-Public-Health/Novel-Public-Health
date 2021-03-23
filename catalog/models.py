@@ -47,7 +47,7 @@ class Movie(models.Model):
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True)
 
-    imdb = models.CharField('IMDB id', max_length=10, help_text='grabbed from imdb links. for example, <a target="_blank" '
+    imdb = models.CharField('IMDB id', max_length=10, blank=True, help_text='grabbed from imdb links. for example, <a target="_blank" '
                                                                 'href="https://www.imdb.com/title/tt3322364/">Concussion</a> is 3322364')
 
     #file = models.FileField(upload_to='movie-uploads/')
@@ -95,28 +95,32 @@ class Movie(models.Model):
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
         """Use a custom save to end date any subCases"""
+        try: #except NameError
+            imdb
 
-        specs = self.get_video_and_imdb_stats()
-        orig = Movie.objects.get(id=self.id)
-        orig.duration = specs[0]
-        orig.fps = specs[1]
-        orig.dimensions = specs[2]
-        orig.year = specs[3]
-        orig.director.name = specs[4] #todo
+            specs = self.get_video_and_imdb_stats()
+            orig = Movie.objects.get(id=self.id)
+            orig.duration = specs[0]
+            orig.fps = specs[1]
+            orig.dimensions = specs[2]
+            orig.year = specs[3]
+            orig.director.name = specs[4] #todo
 
-        # check if genre name already exists. if not, create and assign to the movie
-        genre = None
-        try:
-            genres = orig.genre.__class__.objects.all()
-            for g in genres:
-                if (g.name == specs[5]):
-                    genre = g
-            genre = genre if genre is not None else Genre.objects.create(name=specs[5])
+            # check if genre name already exists. if not, create and assign to the movie
+            genre = None
+            try:
+                genres = orig.genre.__class__.objects.all()
+                for g in genres:
+                    if (g.name == specs[5]):
+                        genre = g
+                genre = genre if genre is not None else Genre.objects.create(name=specs[5])
+            except:
+                genre = Genre.objects.create(name=specs[5])
+            orig.genre = genre
+
+            super(Movie, orig).save(update_fields=['duration', 'fps', 'dimensions', 'year', 'director', 'genre'])
         except:
-            genre = Genre.objects.create(name=specs[5])
-        orig.genre = genre
-
-        super(Movie, orig).save(update_fields=['duration', 'fps', 'dimensions', 'year', 'director', 'genre'])
+            pass
 
 import uuid  # Required for unique movie instances
 from datetime import date
