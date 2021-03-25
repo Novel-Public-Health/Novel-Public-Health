@@ -34,6 +34,11 @@ def register(request):
 def aboutUs(request):
     return render(request, 'aboutUs.html')
 
+def ourPartners(request):
+    return render(request, 'ourPartners.html')
+
+def leadership(request):
+    return render(request, 'leadership.html')
 
 
 from django.views import generic
