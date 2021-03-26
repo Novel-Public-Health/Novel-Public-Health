@@ -29,7 +29,7 @@ To get this project up and running locally on your computer:
    python manage.py migrate
    python manage.py collectstatic
    python manage.py test # Run the standard tests. These should all pass.
-   # Create a superuser, add 'heroku run' to the beginning of this statement to be a superuser for production too
+   # Create a superuser
    python manage.py createsuperuser
    python manage.py runserver 127.0.0.1:8000
    ```
@@ -39,9 +39,20 @@ To get this project up and running locally on your computer:
 
 ## Deploying to Heroku
 ```
-$ git add .
-$ git commit -m "my commit"
-$ git push origin main
+> git add .
+> git commit -m "my commit"
+> git push origin main
+```
+
+Additional production commands after making migrations.
+```
+> heroku run python manage.py makemigrations --app novel-public-health
+> heroku run python manage.py migrate --app novel-public-health
+> heroku run python manage.py collectstatic --no-input --app novel-public-health
+
+> heroku run python manage.py test --app novel-public-health
+# Create a superuser, add 'heroku run' to the beginning of this statement to be a superuser for production too
+> heroku run python manage.py createsuperuser --app novel-public-health
 ```
 
 ## Documentation
