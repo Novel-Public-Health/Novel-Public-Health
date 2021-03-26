@@ -102,12 +102,7 @@ class Movie(models.Model):
         else:
             raise Exception(f"No imdb match found for imdb link: {self.imdb_link}")
 
-    def get_research_articles(self, max_num, num_tries = 3):
-        if (num_tries <= 0):
-            print('failed to find relevant articles after multiple tries\n')
-            return ''
-
-        # temporary hardcoded in - may wanna test with more examples
+    def get_research_articles(self, max_num):
         try:
             search_query = scholarly.search_pubs(f'{self.title} {self.director.name} Public Health')
             output = ''
@@ -118,9 +113,7 @@ class Movie(models.Model):
                 output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
             return output
         except:
-            print('failed to find results in search query\ntrying again...\n')
-            num_tries -= 1
-            return get_research_articles(max_num, num_tries)
+            raise Exception(f"Failed to find results in search query.\nSearched for: \"${self.title} {self.director.name} Public Health\"")
 
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
