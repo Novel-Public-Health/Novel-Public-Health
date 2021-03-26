@@ -105,6 +105,8 @@ class Movie(models.Model):
 
     def get_research_articles(self, max_num):
         try:
+            signal.signal(signal.SIGALRM, alarm_handler)
+            signal.alarm(8)
             #scholarly.set_timeout(10)
             search_query = scholarly.search_pubs(f'{self.title} Movie {self.director.name} Public Health')
             output = ''
@@ -172,8 +174,6 @@ class Movie(models.Model):
             print(sys.stderr, e)
 
         if not self.found_articles:
-            signal.signal(signal.SIGALRM, alarm_handler)
-            signal.alarm(8)
             try:
                 orig.found_articles = orig.get_research_articles(5)
                 fields_to_update.append('found_articles')
