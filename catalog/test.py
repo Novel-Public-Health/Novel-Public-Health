@@ -20,7 +20,8 @@ def get_research_articles(max_num, num_tries = 3):
    #search_query = None
    try:
       pg = ProxyGenerator()
-      ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:24000'
+      #ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:24000'
+      ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@zproxy.lum-superproxy.io:22225'
       pg.SingleProxy(http = ip, https = ip)
       o = scholarly.use_proxy(pg)
       search_query = scholarly.search_pubs('Concussion Peter Landesman Public Health')
@@ -40,3 +41,15 @@ def get_research_articles(max_num, num_tries = 3):
 output = get_research_articles(10)
 
 print(output)
+"""
+import requests
+s = requests.Session()
+addr = "http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@zproxy.lum-superproxy.io:24000"
+s.proxies = {
+    "http": addr,
+    "https": addr,
+}
+r = s.get("http://lumtest.com/myip.json")
+r.raise_for_status()
+print(r.json())
+"""

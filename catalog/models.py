@@ -103,7 +103,7 @@ class Movie(models.Model):
             raise Exception(f"No imdb match found for imdb link: {self.imdb_link}")
 
     def get_research_articles(self, max_num):
-        search_str = f'{self.title} movie {self.director.name}'
+        search_str = f'{self.title} {self.director.name}'
         try:
             pg = ProxyGenerator()
             ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@zproxy.lum-superproxy.io:22225'
@@ -113,14 +113,18 @@ class Movie(models.Model):
             search_query = scholarly.search_pubs(search_str)
             output = ''
             for i in range(0, max_num):
-                curr = next(search_query)
-                scholarly.pprint(curr)
-                a = Articles(curr['bib']['title'], curr['pub_url'], curr['bib']['abstract'])
-                output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
+                try:
+                    curr = next(search_query)
+                    scholarly.pprint(curr)
+                    a = Articles(curr['bib']['title'], curr['pub_url'], curr['bib']['abstract'])
+                    output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
+                except Exception as e:
+                    print(sys.stderr, e)
+                    pass
             return output
         except Exception as e:
+            print(sys.stderr, e)
             return output
-            #raise Exception(f"{e}\nFailed to find results in search query.\nSearched for: \"{search_str}\"")
 
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
