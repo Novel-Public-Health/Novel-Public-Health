@@ -39,7 +39,7 @@ class Language(models.Model):
 
 class Movie(models.Model):
     """Model representing a movie (but not a specific copy of a movie)."""
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, help_text='This field will be overwritten if given a valid IMDB id.')
 
     imdb_link = models.CharField('IMDB Link', max_length=100, blank=True, help_text='For example, here is <a target="_blank" '
                                                                 'href="https://www.imdb.com/title/tt3322364/">Concussion\'s link</a>.')
