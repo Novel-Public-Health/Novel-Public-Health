@@ -106,7 +106,7 @@ class Movie(models.Model):
     def get_research_articles(self, max_num):
         try:
             signal.signal(signal.SIGALRM, alarm_handler)
-            signal.alarm(10)
+            signal.alarm(20)
             #scholarly.set_timeout(10)
             search_query = scholarly.search_pubs(f'{self.title} Movie {self.director.name} Public Health')
             output = ''
