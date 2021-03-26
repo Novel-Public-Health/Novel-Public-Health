@@ -104,8 +104,9 @@ class Movie(models.Model):
             raise Exception(f"No imdb match found for imdb link: {self.imdb_link}")
 
     def get_research_articles(self, max_num):
-        signal.signal(signal.SIGALRM, alarm_handler)
-        signal.alarm(20)
+        timeout_secs = 10
+        signal.signal(signal.SIGALRM, signal_handler)
+        signal.alarm(timeout_secs)
         try:
             #scholarly.set_timeout(10)
             search_query = scholarly.search_pubs(f'{self.title} Movie {self.director.name} Public Health')
@@ -116,8 +117,10 @@ class Movie(models.Model):
                 a = Articles(curr['bib']['title'], curr['pub_url'], curr['bib']['abstract'])
                 output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
             return output
-        except Exception as e:
-            raise Exception(f"{e}\nFailed to find results in search query.\nSearched for: \"{self.title} Movie {self.director.name} Public Health\"")
+        except TimeOutException as ex:
+            raise Exception(f"Timed out after {timeout_secs} seconds. - {ex}")
+        except:
+            raise Exception(f"Failed to find results in search query.\nSearched for: \"{self.title} Movie {self.director.name} Public Health\"")
 
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
