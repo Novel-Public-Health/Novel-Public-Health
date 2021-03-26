@@ -106,8 +106,8 @@ class Movie(models.Model):
         search_str = f'{self.title} movie {self.director.name}'
         try:
             pg = ProxyGenerator()
-            #ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:22999'
-            ip = 'http://lum-customer-hl_a1431ac1-zone-static-session-24000_0:r67n4k2l324c@zproxy.lum-superproxy.io:22999'
+            ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:24000'
+            #ip = 'http://lum-customer-hl_a1431ac1-zone-static-session-24000_0:r67n4k2l324c@zproxy.lum-superproxy.io:22999'
             #pg.Luminati(usr="lum-customer-hl_a1431ac1-zone-static", passwd ="r67n4k2l324c", proxy_port="24000")
             pg.SingleProxy(http = ip, https = ip)
             o = scholarly.use_proxy(pg)

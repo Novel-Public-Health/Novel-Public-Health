@@ -1,4 +1,4 @@
-from scholarly import scholarly
+from scholarly import scholarly, ProxyGenerator
 
 class Articles:
     def __init__(self, title, url, abstract): 
@@ -19,6 +19,10 @@ def get_research_articles(max_num, num_tries = 3):
    # for actual implementation: extract movie title and movie director and feed into scripts  
    #search_query = None
    try:
+      pg = ProxyGenerator()
+      ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:24000'
+      pg.SingleProxy(http = ip, https = ip)
+      o = scholarly.use_proxy(pg)
       search_query = scholarly.search_pubs('Concussion Peter Landesman Public Health')
       output = ''
       # prints top 10 results
@@ -30,9 +34,8 @@ def get_research_articles(max_num, num_tries = 3):
 
       return output
    except:
-      print('failed to find results in search query\ntrying again...\n')
-      num_tries -= 1
-      return get_research_articles(max_num, num_tries)
+      print('failed to find results in search query\n')
+      return 'Nope'
 
 output = get_research_articles(10)
 
