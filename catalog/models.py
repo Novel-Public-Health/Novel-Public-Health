@@ -106,8 +106,7 @@ class Movie(models.Model):
         search_str = f'{self.title} movie {self.director.name}'
         try:
             pg = ProxyGenerator()
-            ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:24000'
-            #ip = 'http://lum-customer-hl_a1431ac1-zone-static-session-24000_0:r67n4k2l324c@zproxy.lum-superproxy.io:22999'
+            ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@zproxy.lum-superproxy.io:22225'
             #pg.Luminati(usr="lum-customer-hl_a1431ac1-zone-static", passwd ="r67n4k2l324c", proxy_port="24000")
             pg.SingleProxy(http = ip, https = ip)
             o = scholarly.use_proxy(pg)
@@ -120,7 +119,8 @@ class Movie(models.Model):
                 output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
             return output
         except Exception as e:
-            raise Exception(f"{e}\nFailed to find results in search query.\nSearched for: \"{search_str}\"")
+            return output
+            #raise Exception(f"{e}\nFailed to find results in search query.\nSearched for: \"{search_str}\"")
 
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
@@ -175,11 +175,10 @@ class Movie(models.Model):
             print(sys.stderr, e)
 
         if not self.found_articles:
-            try:
-                orig.found_articles = orig.get_research_articles(5)
-                fields_to_update.append('found_articles')
-            except Exception as e:
-                print(sys.stderr, e)
+            orig.found_articles = orig.get_research_articles(5)
+            fields_to_update.append('found_articles')
+            #except Exception as e:
+                #print(sys.stderr, e)
 
         super(Movie, orig).save(update_fields=fields_to_update)
 
