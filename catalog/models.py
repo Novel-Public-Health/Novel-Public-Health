@@ -11,10 +11,9 @@ import imdb
 from moviepy.editor import VideoFileClip
 import datetime
 
-from scholarly import scholarly
+from scholarly import scholarly, ProxyGenerator
 
 import sys, re
-import signal, time
 
 class Genre(models.Model):
     """Model representing a movie genre (e.g. Science Fiction, Non Fiction)."""
@@ -104,23 +103,24 @@ class Movie(models.Model):
             raise Exception(f"No imdb match found for imdb link: {self.imdb_link}")
 
     def get_research_articles(self, max_num):
-        timeout_secs = 10
-        signal.signal(signal.SIGALRM, signal_handler)
-        signal.alarm(timeout_secs)
+        search_str = f'{self.title} movie {self.director.name}'
         try:
-            #scholarly.set_timeout(10)
-            search_query = scholarly.search_pubs(f'{self.title} Movie {self.director.name} Public Health')
+            pg = ProxyGenerator()
+            #ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:22999'
+            #ip = 'http://lum-customer-hl_a1431ac1-zone-static-session-24000_0:r67n4k2l324c@zproxy.lum-superproxy.io:22999'
+            #pg.Luminati(usr="lum-customer-hl_a1431ac1-zone-static", passwd ="r67n4k2l324c", proxy_port="24000")
+            pg.SingleProxy(http = ip, https = ip)
+            o = scholarly.use_proxy(pg)
+            search_query = scholarly.search_pubs(search_str)
             output = ''
             for i in range(0, max_num):
                 curr = next(search_query)
-                #scholarly.pprint(curr)
+                scholarly.pprint(curr)
                 a = Articles(curr['bib']['title'], curr['pub_url'], curr['bib']['abstract'])
                 output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
             return output
-        except TimeOutException as ex:
-            raise Exception(f"Timed out after {timeout_secs} seconds. - {ex}")
-        except:
-            raise Exception(f"Failed to find results in search query.\nSearched for: \"{self.title} Movie {self.director.name} Public Health\"")
+        except Exception as e:
+            raise Exception(f"{e}\nFailed to find results in search query.\nSearched for: \"{search_str}\"")
 
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
@@ -174,14 +174,14 @@ class Movie(models.Model):
         except Exception as e:
             print(sys.stderr, e)
 
+        """
         if not self.found_articles:
             try:
                 orig.found_articles = orig.get_research_articles(5)
                 fields_to_update.append('found_articles')
             except Exception as e:
                 print(sys.stderr, e)
-            signal.alarm(0)
-
+        """
         super(Movie, orig).save(update_fields=fields_to_update)
 
 import uuid  # Required for unique movie instances
@@ -215,11 +215,3 @@ class Articles:
     def __str__(self):
         return "Title: %s\nUrl: %s\nAbstract: %s\n" % \
      (self.title, self.url, self.abstract)
-
-class TimeOutException(Exception):
-    def __init__(self, message, errors):
-        super(TimeOutException, self).__init__(message)
-        self.errors = errors
-
-def signal_handler(signum, frame):
-    raise TimeOutException("Timeout!") 
