@@ -107,7 +107,7 @@ class Movie(models.Model):
         try:
             pg = ProxyGenerator()
             #ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:22999'
-            #ip = 'http://lum-customer-hl_a1431ac1-zone-static-session-24000_0:r67n4k2l324c@zproxy.lum-superproxy.io:22999'
+            ip = 'http://lum-customer-hl_a1431ac1-zone-static-session-24000_0:r67n4k2l324c@zproxy.lum-superproxy.io:22999'
             #pg.Luminati(usr="lum-customer-hl_a1431ac1-zone-static", passwd ="r67n4k2l324c", proxy_port="24000")
             pg.SingleProxy(http = ip, https = ip)
             o = scholarly.use_proxy(pg)
@@ -174,14 +174,13 @@ class Movie(models.Model):
         except Exception as e:
             print(sys.stderr, e)
 
-        """
         if not self.found_articles:
             try:
                 orig.found_articles = orig.get_research_articles(5)
                 fields_to_update.append('found_articles')
             except Exception as e:
                 print(sys.stderr, e)
-        """
+
         super(Movie, orig).save(update_fields=fields_to_update)
 
 import uuid  # Required for unique movie instances
