@@ -41,14 +41,15 @@ class Movie(models.Model):
     """Model representing a movie (but not a specific copy of a movie)."""
     title = models.CharField(max_length=200)
 
+    imdb_link = models.CharField('IMDB Link', max_length=100, blank=True, help_text='For example, here is <a target="_blank" '
+                                                                'href="https://www.imdb.com/title/tt3322364/">Concussion\'s link</a>.')
+
     # Foreign Key used because movie can only have one director, but directors can have multiple movies
     # Director as a string rather than object because it hasn't been declared yet in file.
-    director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True, blank=True)
+    director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id.')
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True, blank=True)
     summary = models.TextField(max_length=1000, null=True, blank=True, help_text="Enter a brief description of the movie. If left blank, \
                                                                                         the summary from a valid IMDB link will be used.")
-    imdb_link = models.CharField('IMDB Link', max_length=100, blank=True, help_text='For example, here is <a target="_blank" '
-                                                                'href="https://www.imdb.com/title/tt3322364/">Concussion\'s link</a>.')
 
     # Genre class has already been defined so we can specify the object above.
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id.')
