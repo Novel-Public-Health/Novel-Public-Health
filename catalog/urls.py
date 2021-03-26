@@ -18,11 +18,12 @@ urlpatterns = [
     path('register', views.register, name="register"),
 ] 
 
+"""
 urlpatterns += [
     path('mymovies/', views.LoanedMoviesByUserListView.as_view(), name='my-borrowed'),
     path(r'borrowed/', views.LoanedMoviesAllListView.as_view(), name='all-borrowed'),  # Added for challenge
 ]
-
+"""
 
 # Add URLConf for librarian to renew a movie.
 urlpatterns += [

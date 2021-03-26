@@ -2,16 +2,16 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from .models import Movie, Director, MovieInstance, Genre
+from .models import Movie, Director, Genre
 
 
 def index(request):
     """View function for home page of site."""
     # Generate counts of some of the main objects
     num_movies = Movie.objects.all().count()
-    num_instances = MovieInstance.objects.all().count()
+    #num_instances = MovieInstance.objects.all().count()
     # Available copies of movies
-    num_instances_available = MovieInstance.objects.filter(status__exact='a').count()
+    #num_instances_available = MovieInstance.objects.filter(status__exact='a').count()
     num_directors = Director.objects.count()  # The 'all()' is implied by default.
 
     # Number of visits to this view, as counted in the session variable.
@@ -22,8 +22,8 @@ def index(request):
     return render(
         request,
         'index.html',
-        context={'num_movies': num_movies, 'num_instances': num_instances,
-                 'num_instances_available': num_instances_available, 'num_directors': num_directors,
+        context={'num_movies': num_movies,
+                 'num_directors': num_directors,
                  'num_visits': num_visits},
     )
 
@@ -68,23 +68,23 @@ class DirectorDetailView(generic.DetailView):
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
+"""
 class LoanedMoviesByUserListView(LoginRequiredMixin, generic.ListView):
-    """Generic class-based view listing movies on loan to current user."""
+    Generic class-based view listing movies on loan to current user.
     model = MovieInstance
     template_name = 'catalog/movieinstance_list_borrowed_user.html'
     paginate_by = 10
 
     def get_queryset(self):
         return MovieInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
-
+"""
 
 # Added as part of challenge!
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
-
+"""
 class LoanedMoviesAllListView(PermissionRequiredMixin, generic.ListView):
-    """Generic class-based view listing all movies on loan. Only visible to users with can_mark_returned permission."""
+    #Generic class-based view listing all movies on loan. Only visible to users with can_mark_returned permission.
     model = MovieInstance
     permission_required = 'catalog.can_mark_returned'
     template_name = 'catalog/movieinstance_list_borrowed_all.html'
@@ -92,6 +92,7 @@ class LoanedMoviesAllListView(PermissionRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         return MovieInstance.objects.filter(status__exact='o').order_by('due_back')
+"""
 
 
 from django.shortcuts import get_object_or_404
