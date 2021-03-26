@@ -14,6 +14,7 @@ import datetime
 from scholarly import scholarly
 
 import sys, re
+import signal, time
 
 class Genre(models.Model):
     """Model representing a movie genre (e.g. Science Fiction, Non Fiction)."""
@@ -104,7 +105,7 @@ class Movie(models.Model):
 
     def get_research_articles(self, max_num):
         try:
-            scholarly.set_timeout(10)
+            #scholarly.set_timeout(10)
             search_query = scholarly.search_pubs(f'{self.title} Movie {self.director.name} Public Health')
             output = ''
             for i in range(0, max_num):
@@ -113,6 +114,8 @@ class Movie(models.Model):
                 a = Articles(curr['bib']['title'], curr['pub_url'], curr['bib']['abstract'])
                 output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
             return output
+        except TimeOutException as ex:
+            raise Exception("Timed out after 8 seconds.")
         except:
             raise Exception(f"Failed to find results in search query.\nSearched for: \"{self.title} Movie {self.director.name} Public Health\"")
 
@@ -169,11 +172,14 @@ class Movie(models.Model):
             print(sys.stderr, e)
 
         if not self.found_articles:
+            signal.signal(signal.SIGALRM, alarm_handler)
+            signal.alarm(8)
             try:
                 orig.found_articles = orig.get_research_articles(5)
                 fields_to_update.append('found_articles')
             except Exception as e:
                 print(sys.stderr, e)
+            signal.alarm(0)
 
         super(Movie, orig).save(update_fields=fields_to_update)
 
@@ -208,3 +214,10 @@ class Articles:
     def __str__(self):
         return "Title: %s\nUrl: %s\nAbstract: %s\n" % \
      (self.title, self.url, self.abstract)
+
+class TimeOutException(Exception):
+   pass
+
+def alarm_handler(signum, frame):
+    print("ALARM signal received")
+    raise TimeOutException()
