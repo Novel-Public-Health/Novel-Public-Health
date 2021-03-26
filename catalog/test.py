@@ -1,5 +1,5 @@
 from scholarly import scholarly, ProxyGenerator
-
+import os
 class Articles:
     def __init__(self, title, url, abstract): 
         self.title = title
@@ -20,8 +20,7 @@ def get_research_articles(max_num, num_tries = 3):
    #search_query = None
    try:
       pg = ProxyGenerator()
-      #ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@127.0.0.1:24000'
-      ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@zproxy.lum-superproxy.io:22225'
+      ip = os.environ.get('PROXY_IP', '')
       pg.SingleProxy(http = ip, https = ip)
       o = scholarly.use_proxy(pg)
       search_query = scholarly.search_pubs('Concussion Peter Landesman Public Health')
@@ -44,7 +43,7 @@ print(output)
 """
 import requests
 s = requests.Session()
-addr = "http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@zproxy.lum-superproxy.io:24000"
+addr = os.environ.get('PROXY_IP', '')
 s.proxies = {
     "http": addr,
     "https": addr,

@@ -13,7 +13,7 @@ import datetime
 
 from scholarly import scholarly, ProxyGenerator
 
-import sys, re
+import sys, re, os
 
 class Genre(models.Model):
     """Model representing a movie genre (e.g. Science Fiction, Non Fiction)."""
@@ -104,27 +104,23 @@ class Movie(models.Model):
 
     def get_research_articles(self, max_num):
         search_str = f'{self.title} {self.director.name}'
+        output = ''
         try:
             pg = ProxyGenerator()
-            ip = 'http://lum-customer-hl_a1431ac1-zone-static:r67n4k2l324c@zproxy.lum-superproxy.io:22225'
-            #pg.Luminati(usr="lum-customer-hl_a1431ac1-zone-static", passwd ="r67n4k2l324c", proxy_port="24000")
+            ip = os.environ['PROXY_IP']
+            #print(sys.stderr, ip) # to make sure your env variable is set
             pg.SingleProxy(http = ip, https = ip)
             o = scholarly.use_proxy(pg)
             search_query = scholarly.search_pubs(search_str)
-            output = ''
             for i in range(0, max_num):
-                try:
-                    curr = next(search_query)
-                    scholarly.pprint(curr)
-                    a = Articles(curr['bib']['title'], curr['pub_url'], curr['bib']['abstract'])
-                    output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
-                except Exception as e:
-                    print(sys.stderr, e)
-                    pass
-            return output
+                curr = next(search_query)
+                scholarly.pprint(curr)
+                a = Articles(curr['bib']['title'], curr['pub_url'], curr['bib']['abstract'])
+                output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
         except Exception as e:
             print(sys.stderr, e)
-            return output
+            pass
+        return output
 
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
