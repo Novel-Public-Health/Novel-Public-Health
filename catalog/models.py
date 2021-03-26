@@ -106,7 +106,7 @@ class Movie(models.Model):
     def get_research_articles(self, max_num):
         try:
             signal.signal(signal.SIGALRM, alarm_handler)
-            signal.alarm(8)
+            signal.alarm(10)
             #scholarly.set_timeout(10)
             search_query = scholarly.search_pubs(f'{self.title} Movie {self.director.name} Public Health')
             output = ''
@@ -117,7 +117,7 @@ class Movie(models.Model):
                 output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
             return output
         except TimeOutException as ex:
-            raise Exception("Timed out after 8 seconds.")
+            raise Exception(f"Timed out after 10 seconds. - {ex}")
         except:
             raise Exception(f"Failed to find results in search query.\nSearched for: \"{self.title} Movie {self.director.name} Public Health\"")
 
@@ -216,8 +216,9 @@ class Articles:
      (self.title, self.url, self.abstract)
 
 class TimeOutException(Exception):
-   pass
+    def __init__(self, message, errors):
+        super(TimeOutException, self).__init__(message)
+        self.errors = errors
 
-def alarm_handler(signum, frame):
-    print("ALARM signal received")
-    raise TimeOutException()
+def signal_handler(signum, frame):
+    raise TimeOutException("Timeout!") 
