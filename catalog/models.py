@@ -84,7 +84,7 @@ class Movie(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return self.title
+        return self.title if self.title else ''
     
     def get_movie_url(self):
         return (self.file).replace(" ", "+")
@@ -109,7 +109,7 @@ class Movie(models.Model):
 
     def get_research_articles(self, max_num):
         search_str = f'{self.title} {self.director.name}'
-        output = ''
+        output = f""
         try:
             pg = ProxyGenerator()
             ip = os.environ['PROXY_IP']
@@ -119,12 +119,20 @@ class Movie(models.Model):
             search_query = scholarly.search_pubs(search_str)
             for i in range(0, max_num):
                 curr = next(search_query)
-                scholarly.pprint(curr)
-                a = Articles(curr['bib']['title'], curr['pub_url'], curr['bib']['abstract'])
-                output += f"<li>\n\t<a target='_blank' href=\"{a.url}\">{a.title}</a>\n\t<br>\n\t<p>{a.abstract}</p>\n</li>\n"
+                #scholarly.pprint(curr)
+                title = curr['bib']['title']
+                # check for curr['pub_url'] 
+                if 'pub_url' in curr:
+                    output += f"<li>\n\t<a target='_blank' href=\"{curr['pub_url']}\">{title}</a>\n\t<br>\n"
+                else:
+                    output += f"<li>\n\t{a.title}\n\t<br>\n"
+                # check for curr['bib']['abstract']
+                if 'bib' in curr and 'abstract' in curr['bib']:
+                    output += f"\t<p>{curr['bib']['abstract']}</p>\n"
+
+                output += f"</li>\n"
         except Exception as e:
             print(sys.stderr, e)
-            pass
         return output
 
     def save(self, *args, **kwargs):
@@ -214,13 +222,3 @@ class Director(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.name
-
-class Articles:
-    def __init__(self, title, url, abstract): 
-        self.title = title
-        self.url = url
-        self.abstract = abstract
-
-    def __str__(self):
-        return "Title: %s\nUrl: %s\nAbstract: %s\n" % \
-     (self.title, self.url, self.abstract)
