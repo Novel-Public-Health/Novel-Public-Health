@@ -4,6 +4,7 @@ from django.db import models
 
 from django.urls import reverse  # To generate URLS by reversing URL patterns
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator 
 
 from s3direct.fields import S3DirectField
 
@@ -39,21 +40,23 @@ class Language(models.Model):
 
 class Movie(models.Model):
     """Model representing a movie (but not a specific copy of a movie)."""
-    title = models.CharField(max_length=200, help_text='This field will be overwritten if given a valid IMDB id.')
+    title = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
 
     imdb_link = models.CharField('IMDB Link', max_length=100, blank=True, help_text='For example, here is <a target="_blank" '
                                                                 'href="https://www.imdb.com/title/tt3322364/">Concussion\'s link</a>.')
 
     # Foreign Key used because movie can only have one director, but directors can have multiple movies
     # Director as a string rather than object because it hasn't been declared yet in file.
-    director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id.')
+    director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten \
+                                                                                                if given a valid IMDB id and left blank.')
     language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True, blank=True)
-    summary = models.TextField(max_length=1000, null=True, blank=True, help_text="Enter a brief description of the movie. If left blank, \
-                                                                                        the summary from a valid IMDB link will be used.")
+    summary = models.TextField(max_length=5000, null=True, blank=True, help_text="Enter a brief description of the movie. This field will \
+                                                                                    be overwritten if given a valid IMDB id and left blank.")
 
     # Genre class has already been defined so we can specify the object above.
-    genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id.')
-    year = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id.')
+    genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given \
+                                                                                                        a valid IMDB id and left blank.')
+    year = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
 
     file = S3DirectField(dest='videos', blank=True)
     #image = S3DirectField(dest='images', blank=True)
@@ -62,7 +65,9 @@ class Movie(models.Model):
     fps = models.CharField(max_length=200)
     dimensions = models.CharField(max_length=200)
 
-    found_articles = models.TextField('Found Research Articles', max_length=5000, null=True, blank=True, help_text="HTML list output of found research articles on Google Scholar. Clear the text to find new articles.")
+    max_num_find_articles = models.IntegerField('Max number of research articles', default=5, validators=[MinValueValidator(0), MaxValueValidator(100)], help_text="Default number is 5.")
+    found_articles = models.TextField('Found Research Articles', max_length=5000, null=True, blank=True, help_text="HTML list output of found research \
+                                                                                    articles on Google Scholar. Clear the text to find new articles.")
     
     class Meta:
         ordering = ['title', 'director']
@@ -94,7 +99,7 @@ class Movie(models.Model):
 
     def get_imdb_stats(self): 
         ia = imdb.IMDb() 
-        reg = re.compile(r'^.*(ch|co|ev|nm|tt)(\d{7})\/?$')
+        reg = re.compile(r'^.*(ch|co|ev|nm|tt)(\d{7}\d*)\/?$')
         id_found = reg.match(self.imdb_link)
         if id_found:
             movie = ia.get_movie(id_found.group(2))   
@@ -167,7 +172,15 @@ class Movie(models.Model):
             except:
                 genre = Genre.objects.create(name=imdb_stats[2])
             orig.genre = genre
-            fields_to_update.extend(['year', 'genre', 'title', 'director'])
+            # update values only if they are left blank
+            if not self.year:
+                fields_to_update.append('year')
+            if not self.genre:
+                fields_to_update.append('genre')
+            if not self.title:
+                fields_to_update.append('title')
+            if not self.director:
+                fields_to_update.append('director')
             if not self.summary:
                 orig.summary = imdb_stats[4]
                 fields_to_update.append('summary')
@@ -175,10 +188,8 @@ class Movie(models.Model):
             print(sys.stderr, e)
 
         if not self.found_articles:
-            orig.found_articles = orig.get_research_articles(5)
+            orig.found_articles = orig.get_research_articles(self.max_num_find_articles)
             fields_to_update.append('found_articles')
-            #except Exception as e:
-                #print(sys.stderr, e)
 
         super(Movie, orig).save(update_fields=fields_to_update)
 

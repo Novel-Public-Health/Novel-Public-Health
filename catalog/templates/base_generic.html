@@ -1,37 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    {% block title %}<title>Novel Public Health</title>{% endblock %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
-    <!-- Add additional CSS in static file -->
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="navbar">
-        <ul class="middleNavBar">
-          <li><a href="{% url 'index' %}">About Us</a></li>
-          <li><a href="{% url 'leadership' %}">Leadership</a></li>
-          <li><a href="{% url 'ourPartners' %}">Our Partners</a></li>
-          <li><a href="{% url 'directors' %}">Media</a></li>
-          {% if user.is_authenticated %}
-          <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>   
-          {% else %}
-          <li><a href="{% url 'register' %}">Sign in</a></li>   
-          {% endif %} 
-        </ul>
-      </div>
+<head>
+  {% block title %}<title>Novel Public Health</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-      <div id="contentBody">
-        <!-- This is where we render -->
-        {% block content %}{% endblock %}
-      </div>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+  <!-- Add additional CSS in static file -->
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+  <!-- mobile navmenu -->
+  <div id="mobileMenu">
+    <input id="mobileBtn" type="checkbox" />
+    <span></span>
+    <span></span>
+    <span></span>
+    <ul id="mobileMenuList">
+      <li><a href="{% url 'index' %}">About Us</a></li><br>
+      <li><a href="{% url 'leadership' %}">Leadership</a></li><br>
+      <li><a href="{% url 'ourPartners' %}">Our Partners</a></li><br>
+      <li><a href="{% url 'directors' %}">Media</a></li><br>
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li><br>
+      {% else %}
+      <li><a href="{% url 'register' %}">Sign in</a></li>
+      {% endif %}
+    </ul>
+  </div>
+  <div class="wrapper">
+    <div class="navbar">
+      <!-- desktop navmenu -->
+      <ul class="middleNavBar">
+        <li><a href="{% url 'index' %}">About Us</a></li>
+        <li><a href="{% url 'leadership' %}">Leadership</a></li>
+        <li><a href="{% url 'ourPartners' %}">Our Partners</a></li>
+        <li><a href="{% url 'directors' %}">Media</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+        {% else %}
+        <li><a href="{% url 'register' %}">Sign in</a></li>
+        {% endif %}
+      </ul>
     </div>
-  </body>
+
+    <div id="contentBody">
+      <!-- This is where we render -->
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</body>
+<script src="{% static 'js/index.js' %}"></script>
 </html>
