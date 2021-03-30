@@ -41,6 +41,7 @@ MEDIA_URL_LOCAL = '/media/'
 INSTALLED_APPS = [
     'crispy_forms',
     #'Users.apps.UsersConfig',
+    'django.forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,6 +82,8 @@ TEMPLATES = [
         },
     },
 ]
+
+FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'
 
 WSGI_APPLICATION = 'locallibrary.wsgi.application'
 
