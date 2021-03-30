@@ -1,61 +1,120 @@
 {% extends "base_generic.html" %}
-<link rel="stylesheet" type="text/css" href="/staticfiles/css/styles.css"/>
+<link rel="stylesheet" type="text/css" href="/staticfiles/css/styles.css" />
 {% block content %}
 
 <div id="aboutUs">
-    <div class="firstPage">
-        <div>
-            <h1 id="novel-title">Novel Public Health LLC</h1>
-            <h2 id="novel">Novel - New or unusual in an interesting way</h2>
+    <div class="firstPageCtr">
+        <div class="firstPage">
+            <div>
+                <h1 id="novel-title">Novel Public Health LLC</h1>
+                <h2 id="novel" style="text-align:center"> nov·el (n) - new or unusual in an interesting way</h2>
+            </div>
         </div>
     </div>
-    <div id="secondPage">
-        <a class ="aboutLink" href="#"><h1 class="aboutTab">Who we are</h1></a>
-        <a class ="aboutLink" href="#"><h1 class="aboutTab">Our Story</h1></a>
-        <a class ="aboutLink" href="#"><h1 class="aboutTab">Our Purpose</h1></a>
-        <a class ="aboutLink" href="#"><h1 class="aboutTab">Our Mission</h1></a>
-        <a class ="aboutLink" href="#"><h1 class="aboutTab">Our Vision</h1></a>
-    </div>
-    <div id="thirdPage">
-        <div class="aboutDiv">
-            <h2 class="aboutSubtitle">What is Novel?</h2>
-            <p class="aboutText">Novel is an innovative and multidimensional public health media company that explores public health through film. It functions as a video streaming, digital media, and online networking company dedicated to expanding the public health film industry. Here at Novel, we focus on highlighting urgent public health concerns in the local, national, and global community. To our knowledge, we are the first of its kind</p>
+    <div class="secondPageCtr">
+        <div id="secondPage">
+            <h1 class="aboutTab"><a class="aboutLink" href="#">Who we are</a></h1>
+            <h1 class="aboutTab"><a class="aboutLink" href="#">Our Story</a></h1>
+            <h1 class="aboutTab"><a class="aboutLink" href="#">Our Purpose</a></h1>
+            <h1 class="aboutTab"><a class="aboutLink" href="#">Our Mission</a></h1>
+            <h1 class="aboutTab"><a class="aboutLink" href="#">Our Vision</a></h1>
         </div>
-        <div class="aboutDiv">
-            <h2 class="aboutSubtitle">Why was this established?</h2>
-            <p class="aboutText">Novel was created in response to the novel coronavirus disease 2019 (COVID-19) pandemic. The pandemic has highlighted now more than ever, the importance of public health and stability of public health systems. Modern public health strategies are geared towards cross sector collaboration and interdisciplinary approaches. With this same intent, Novel is focused on the intersection of media, film, and public health. As a result, Novel is dedicated to increasing health literacy, public health awareness, and advocacy for complex public health issues</p>
-        </div>
-        <div class="aboutDiv">
-            <h2 class="aboutSubtitle">What is our intent?</h2>
-            <p class="aboutText">Novel features inventive, groundbreaking, and engaging motion pictures to the public. We are invested in films that stretch the imagination, understanding, and vision of public health. All films hosted on Novel are authentic pieces capable of catching the attention of audiences across the globe</p>
-        </div>
-        <div class="aboutDiv">
+        <!-- <div class="aboutDiv">
             <h2 class="aboutSubtitle">What is the objective?</h2>
             <p class="aboutText">Our Mission is to promote public health research, innovation, and entrepreneurship through film</p>
-        </div>
+        </div> -->
+    </div>
+    <div class="thirdPageCtr">
+        <div id="thirdPage">
+            <div class="aboutDiv">
+                <h2 class="aboutSubtitle">What is Novel?</h2>
+                <p class="aboutText">Novel is an innovative and multidimensional public health media company that
+                    explores
+                    public health through film. It functions as a video streaming, digital media, and online networking
+                    company dedicated to expanding the public health film industry. Here at Novel, we focus on
+                    highlighting
+                    urgent public health concerns in the local, national, and global community. To our knowledge, we are
+                    the
+                    first of its kind.</p>
+            </div>
+            <div class="aboutDiv">
+                <h2 class="aboutSubtitle">Why was this established?</h2>
+                <p class="aboutText">Novel was created in response to the novel coronavirus disease 2019 (COVID-19)
+                    pandemic. The pandemic has highlighted now more than ever, the importance of public health and
+                    stability
+                    of public health systems. Modern public health strategies are geared towards cross sector
+                    collaboration
+                    and interdisciplinary approaches. With this same intent, Novel is focused on the intersection of
+                    media,
+                    film, and public health. As a result, Novel is dedicated to increasing health literacy, public
+                    health
+                    awareness, and advocacy for complex public health issues.</p>
+            </div>
+            <div class="aboutDiv">
+                <h2 class="aboutSubtitle">What is our intent?</h2>
+                <p class="aboutText">Novel features inventive, groundbreaking, and engaging motion pictures to the
+                    public.
+                    We are invested in films that stretch the imagination, understanding, and vision of public health.
+                    All
+                    films hosted on Novel are authentic pieces capable of catching the attention of audiences across the
+                    globe.</p>
+            </div>
 
-        <h1 id="motto"><i>"Recent, Remarkable, Revolutionary" -- this is Novel</i></h1>
+            <div class="aboutDiv">
+                <h2 class="aboutSubtitle">What is the objective?</h2>
+                <p class="aboutText">Our Mission is to promote public health research, innovation, and entrepreneurship
+                    through film.</p>
+            </div>
 
-        <div class="aboutDiv">
-            <h2 class="aboutSubtitle">What do we envision?</h2>
-            <p class="aboutText">We envision Novel becoming the leading platform for public health films in the world</p>
+            <h1 id="motto"><i>"Recent, Remarkable, Revolutionary" -- this is Novel</i></h1>
+
+            <div class="aboutDiv">
+                <h2 class="aboutSubtitle">What do we envision?</h2>
+                <p class="aboutText">We envision Novel becoming the leading platform for public health films in the
+                    world.
+                </p>
+            </div>
         </div>
     </div>
-    <div id="fourthPage">
-        <div class="aboutDiv2">
-            <h1 class="aboutSubtitle">Our Work: What are we doing?</h1>
-            <p class="aboutText">Novel promotes public health to cultivate a health conscious, competent, and safe population. Our platform deepens the perception of public health, thereby emphasizing the need for urgent action to prevent looming crises and heal legacies of injustice. Furthermore, Novel illuminates solutions-- some may be fanstical scientific developments, some may require bureaucratic action, and others may demand organizing to implement swift policy changes-- but all are united in their bold innovation and optimism about the future. We believe that highlighting these audacious ideas and the valiant leaders behind them will drive the field of public health, and the health of our global community forward.</p>
-        </div>
-        <div class="aboutDiv3">
-            <h1 class="aboutSubtitle">Our Goals: What do we hope to accomplish?</h1>
-            <p class="aboutText">Novel does more than highlight the gutsy innovators driving public health forward, it fosters horizontal connection among them, and induces conversation about impending health crises. By galvanizing conversation, our organization stimulates inclusive growth of public health leaders eager to tackle the field’s most pressing issues. The organic dialogue on public health entrepreneurship and innovation will build a community invested in improving our public
-                health systems. We know that this community buy-in will incentivize film makers to produce more thought-provoking public health films.</p>
-        </div>
-        <div class="aboutDiv4">
-            <h1 class="aboutSubtitle">Our Hope: What do we wish?</h1>
-            <p class="aboutText">As we expand, we envision a whole new genre of emerging film. As innovators, we are motivated to curate realistic films with a Hollywood experience. Here at Novel, we call these films Realistic Hollywood and Futuristic Reality. We envision these films as catalysts, sparking change in our future leaders. We see a future of public health that is ever changing and adaptive. In this future, we are the founders of tomorrow.</p>
+    <div id="fourthPageCtr">
+        <div id="fourthPage">
+            <div class="aboutDiv2">
+                <h1 class="aboutSubtitle">Our Work: What are we doing?</h1>
+                <p class="aboutText">Novel promotes public health to cultivate a health conscious, competent, and safe
+                    population. Our platform deepens the perception of public health, thereby emphasizing the need for
+                    urgent action to prevent looming crises and heal legacies of injustice. Furthermore, Novel
+                    illuminates
+                    solutions-- some may be fanstical scientific developments, some may require bureaucratic action, and
+                    others may demand organizing to implement swift policy changes-- but all are united in their bold
+                    innovation and optimism about the future. We believe that highlighting these audacious ideas and the
+                    valiant leaders behind them will drive the field of public health, and the health of our global
+                    community forward.</p>
+            </div>
+            <div class="aboutDiv3">
+                <h1 class="aboutSubtitle">Our Goals: What do we hope to accomplish?</h1>
+                <p class="aboutText">Novel does more than highlight the gutsy innovators driving public health forward,
+                    it
+                    fosters horizontal connection among them, and induces conversation about impending health crises. By
+                    galvanizing conversation, our organization stimulates inclusive growth of public health leaders
+                    eager to
+                    tackle the field’s most pressing issues. The organic dialogue on public health entrepreneurship and
+                    innovation will build a community invested in improving our public
+                    health systems. We know that this community buy-in will incentivize film makers to produce more
+                    thought-provoking public health films.</p>
+            </div>
+            <div class="aboutDiv4">
+                <h1 class="aboutSubtitle">Our Hope: What do we wish?</h1>
+                <p class="aboutText">As we expand, we envision a whole new genre of emerging film. As innovators, we are
+                    motivated to curate realistic films with a Hollywood experience. Here at Novel, we call these films
+                    Realistic Hollywood and Futuristic Reality. We envision these films as catalysts, sparking change in
+                    our
+                    future leaders. We see a future of public health that is ever changing and adaptive. In this future,
+                    we
+                    are the founders of tomorrow.</p>
+            </div>
         </div>
     </div>
 </div>
 
 {% endblock %}
+

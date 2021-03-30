@@ -8,19 +8,21 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.index, name='index'),
     path('aboutUs', views.aboutUs, name='aboutUs'),
+    path('ourPartners', views.ourPartners, name='ourPartners'),
+    path('leadership', views.leadership, name='leadership'),
     path('movies/', views.MovieListView.as_view(), name='movies'),
     path('movie/<int:pk>', views.MovieDetailView.as_view(), name='movie-detail'),
     path('directors/', views.DirectorListView.as_view(), name='directors'),
     path('directors/<int:pk>',
          views.DirectorDetailView.as_view(), name='director-detail'),
-    path('register', views.register, name="register"),
 ] 
 
+"""
 urlpatterns += [
     path('mymovies/', views.LoanedMoviesByUserListView.as_view(), name='my-borrowed'),
     path(r'borrowed/', views.LoanedMoviesAllListView.as_view(), name='all-borrowed'),  # Added for challenge
 ]
-
+"""
 
 # Add URLConf for librarian to renew a movie.
 urlpatterns += [

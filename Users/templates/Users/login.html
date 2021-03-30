@@ -1,0 +1,31 @@
+{% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert" style="padding: 20px; background-color: #b4e6b7; color: black; font-weight: lighter;">
+        <strong>{{ message}}</strong>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+    </div>
+    {% endfor %}
+{% endif %}
+
+<div class="content-section" style="height: 60%; background-color: white; padding: 5%;">
+    <form method="POST" style="background-color: white;">
+        {% csrf_token %}
+        <fieldset class="form-group" style="background-color: #90c1e74f; width: 300px; margin-bottom: 20px; margin-left: 40%; margin-right: 40%; margin-top: 8%;">
+            <legend class="border-bottom mb-4" style="font-size: 3rem;">Log In</legend>
+            {{ form|crispy }}
+            <div class="form-group" style="margin-top: 20px;">
+                <button class="btn btn-outline-info" type="submit" style="margin-left: 5px; background-color: white; padding: 5px; border-width: 1px; border-radius: 2px;">Login</button>
+            </div>
+        </fieldset>
+    </form>
+    <div style="margin-left: 40%; padding-bottom: 15%;">
+        <small class="text-muted" style="font-size: 20px;">
+            Need An Account? <a class="ml-2" href="{% url 'register' %}" style="color: #5490b1; font-size: 20px;">Sign Up Now</a>
+        </small>
+    </div>
+</div>
+{% endblock content %}

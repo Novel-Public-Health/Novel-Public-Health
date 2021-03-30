@@ -1,37 +1,68 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    {% block title %}<title>Novel Public Health</title>{% endblock %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  {% block title %}<title>Novel Public Health</title>{% endblock %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
+  <!-- Add additional CSS in static file -->
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+  <!-- mobile navmenu -->
+  <div id="mobileMenu">
+    <input id="mobileBtn" type="checkbox" />
+    <span></span>
+    <span></span>
+    <span></span>
+    <ul id="mobileMenuList">
+      <li><a href="{% url 'index' %}">About Us</a></li><br>
+      <li><a href="{% url 'leadership' %}">Leadership</a></li><br>
+      <li><a href="{% url 'ourPartners' %}">Our Partners</a></li><br>
+      <li><a href="{% url 'directors' %}">Media</a></li><br>
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li><br>
+      <li><a href="{% url 'logout'%}?next={{request.path}}">Profile</p></a></li>
+      {% else %}
+      <li><a href="{% url 'login' %}">Log In</a></li>
+      <li><a href="{% url 'register' %}">Register</a></li>
+      {% endif %}
+    </ul>
+  </div>
+  <div class="wrapper">
+    <header class="nav">
+      <!-- desktop navmenu -->
+      <nav class="nav">
+        <ul>
+          <div class="nav-left">
+            <li><a href="{% url 'index' %}">About Us</a></li>
+            <li><a href="{% url 'leadership' %}">Leadership</a></li>
+            <li><a href="{% url 'ourPartners' %}">Our Partners</a></li>
+            <li><a href="{% url 'directors' %}">Media</a></li>
+          </div>
     
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Abel&display=swap" rel="stylesheet">
-    <!-- Add additional CSS in static file -->
-
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  </head>
-  <body>
-    <div class="wrapper">
-      <div class="navbar">
-        <ul class="middleNavBar">
-          <li><a href="{% url 'index' %}">About Us</a></li>
-          <li><a href="{% url 'directors' %}">Leadership</a></li>
-          <li><a href="{% url 'movies' %}">Our Partners</a></li>
-          <li><a href="{% url 'directors' %}">Media</a></li>
-          {% if user.is_authenticated %}
-          <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>   
-          {% else %}
-          <li><a href="{% url 'register' %}">Sign in</a></li>   
-          {% endif %} 
+          <div class="nav-right">
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">Hi, {{ request.user.first_name }}</a></li>
+            <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Log in</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+          </div>
         </ul>
-      </div>
-
-      <div id="contentBody">
-        <!-- This is where we render -->
-        {% block content %}{% endblock %}
-      </div>
+      </nav>
+    </header>
+    <div id="contentBody">
+      <!-- This is where we render -->
+      {% block content %}{% endblock %}
     </div>
-  </body>
+  </div>
+</body>
+<script src="{% static 'js/index.js' %}"></script>
 </html>

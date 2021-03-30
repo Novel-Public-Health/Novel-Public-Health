@@ -15,12 +15,15 @@ Including another URLconf
 """
 from django.urls import path
 from django.contrib import admin
+from Users import views as user_views
 
 # Use include() to add URLS from the catalog application and authentication system
 from django.urls import include
 
 from django.conf import settings
+from django.conf.urls import include, url
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +32,11 @@ urlpatterns = [
 
 urlpatterns += [
     path('catalog/', include('catalog.urls')),
+    path('register/', user_views.register, name='register'),
+    path('profile/', user_views.profile, name='profile'),
+    path('login/', auth_views.LoginView.as_view(template_name='Users/login.html'), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='Users/logout.html'), name='logout'),
+
 ]
 
 
@@ -49,9 +57,13 @@ urlpatterns += [
 
 
 #Add Django site authentication urls (for login, logout, password management)
-urlpatterns += [
-    path('accounts/', include('django.contrib.auth.urls')),
-]
+# urlpatterns += [
+#     path('accounts/', include('django.contrib.auth.urls')),
+# ]
 
-if settings.DEBUG:
-     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+#if settings.DEBUG:
+urlpatterns += static(settings.MEDIA_URL_LOCAL, document_root=settings.MEDIA_ROOT_LOCAL)
+
+urlpatterns += [
+    url(r'^s3direct/', include('s3direct.urls')),
+]

@@ -24,14 +24,14 @@ To get this project up and running locally on your computer:
    We recommend using a Python virtual environment.
 1. Assuming you have Python setup, run the following commands (if you're on Windows you may use `py` or `py -3` instead of `python` to start Python):
    ```
-   pip3 install -r requirements.txt
-   python3 manage.py makemigrations
-   python3 manage.py migrate
-   python3 manage.py collectstatic
-   python3 manage.py test # Run the standard tests. These should all pass.
-   # Create a superuser, add 'heroku run' to the beginning of this statement to be a superuser for production too
-   python3 manage.py createsuperuser
-   python3 manage.py runserver
+   python -m pip install -r requirements.txt
+   python manage.py makemigrations
+   python manage.py migrate
+   python manage.py collectstatic
+   python manage.py test # Run the standard tests. These should all pass.
+   # Create a superuser
+   python manage.py createsuperuser
+   python manage.py runserver 127.0.0.1:8000
    ```
 1. Open a browser to `http://127.0.0.1:8000/admin/` to open the admin site
 1. Create a few test objects of each type.
@@ -39,9 +39,20 @@ To get this project up and running locally on your computer:
 
 ## Deploying to Heroku
 ```
-$ git add .
-$ git commit -m "my commit"
-$ git push origin main
+> git add .
+> git commit -m "my commit"
+> git push origin main
+```
+
+Additional production commands after making migrations.
+```
+> heroku run python manage.py makemigrations --app novel-public-health
+> heroku run python manage.py migrate --app novel-public-health
+> heroku run python manage.py collectstatic --no-input --app novel-public-health
+
+> heroku run python manage.py test --app novel-public-health
+# Create a superuser, add 'heroku run' to the beginning of this statement to be a superuser for production too
+> heroku run python manage.py createsuperuser --app novel-public-health
 ```
 
 ## Documentation

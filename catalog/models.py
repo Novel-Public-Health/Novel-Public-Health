@@ -4,6 +4,17 @@ from django.db import models
 
 from django.urls import reverse  # To generate URLS by reversing URL patterns
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator 
+
+from s3direct.fields import S3DirectField
+
+import imdb
+from moviepy.editor import VideoFileClip
+import datetime
+
+from scholarly import scholarly, ProxyGenerator
+
+import sys, re, os
 
 class Genre(models.Model):
     """Model representing a movie genre (e.g. Science Fiction, Non Fiction)."""
@@ -29,30 +40,34 @@ class Language(models.Model):
 
 class Movie(models.Model):
     """Model representing a movie (but not a specific copy of a movie)."""
-    title = models.CharField(max_length=200)
-    #director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True)
+    title = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
+
+    imdb_link = models.CharField('IMDB Link', max_length=100, blank=True, help_text='For example, here is <a target="_blank" '
+                                                                'href="https://www.imdb.com/title/tt3322364/">Concussion\'s link</a>.')
+
     # Foreign Key used because movie can only have one director, but directors can have multiple movies
     # Director as a string rather than object because it hasn't been declared yet in file.
-    director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True)
-    summary = models.TextField(max_length=1000, help_text="Enter a brief description of the movie")
-    isbn = models.CharField('ISBN', max_length=13,
-                            unique=True,
-                            help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn'
-                                      '">ISBN number</a>')
+    director = models.ForeignKey('Director', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten \
+                                                                                                if given a valid IMDB id and left blank.')
+    language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True, blank=True)
+    summary = models.TextField(max_length=5000, null=True, blank=True, help_text="Enter a brief description of the movie. This field will \
+                                                                                    be overwritten if given a valid IMDB id and left blank.")
 
     # Genre class has already been defined so we can specify the object above.
-    language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True)
-    genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True)
+    genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given \
+                                                                                                        a valid IMDB id and left blank.')
+    year = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
 
-    imdb = models.CharField('IMDB id', max_length=10, help_text='grabbed from imdb links. for example, <a target="_blank" '
-                                                                'href="https://www.imdb.com/title/tt3322364/">Concussion</a> is 3322364')
-
-    file = models.FileField(upload_to='movie-uploads/')
-
+    file = S3DirectField(dest='videos', blank=True)
+    #image = S3DirectField(dest='images', blank=True)
+    
     duration = models.CharField(max_length=200)
     fps = models.CharField(max_length=200)
     dimensions = models.CharField(max_length=200)
-    year = models.CharField(max_length=200)
+
+    max_num_find_articles = models.IntegerField('Max number of research articles', default=5, validators=[MinValueValidator(0), MaxValueValidator(100)], help_text="Default number is 5.")
+    found_articles = models.TextField('Found Research Articles', max_length=5000, null=True, blank=True, help_text="HTML list output of found research \
+                                                                                    articles on Google Scholar. Clear the text to find new articles.")
     
     class Meta:
         ordering = ['title', 'director']
@@ -69,90 +84,127 @@ class Movie(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return self.title
+        return self.title if self.title else ''
+    
+    def get_movie_url(self):
+        return (self.file).replace(" ", "+")
 
-    def get_video_and_imdb_stats(self):
-        from moviepy.editor import VideoFileClip
-        import datetime
-        filename = str(settings.BASE_DIR) + self.file.url
-        clip = VideoFileClip(filename)
+    def get_video_stats(self):
+        #filename = str(settings.BASE_DIR) + self.file.url
+        clip = VideoFileClip(self.get_movie_url())
         duration       = str(datetime.timedelta(seconds=round(clip.duration)))
         fps            = clip.fps
         width, height  = clip.size
+        return [duration, fps, (width, height)]
 
-        # importing the module 
-        import imdb  
+    def get_imdb_stats(self): 
         ia = imdb.IMDb() 
-        movie = ia.get_movie(self.imdb)
-        
-        return [duration, fps, (width, height), movie['year'], movie['directors'][0], movie['genres'][0] ]
+        reg = re.compile(r'^.*(ch|co|ev|nm|tt)(\d{7}\d*)\/?$')
+        id_found = reg.match(self.imdb_link)
+        if id_found:
+            movie = ia.get_movie(id_found.group(2))   
+            return [movie['year'], movie['directors'][0], movie['genres'][0], movie['title'], movie.get('plot')[0]]
+        else:
+            raise Exception(f"No imdb match found for imdb link: {self.imdb_link}")
+
+    def get_research_articles(self, max_num):
+        search_str = f'{self.title} {self.director.name}'
+        output = f""
+        try:
+            pg = ProxyGenerator()
+            ip = os.environ['PROXY_IP']
+            #print(sys.stderr, ip) # to make sure your env variable is set
+            pg.SingleProxy(http = ip, https = ip)
+            o = scholarly.use_proxy(pg)
+            search_query = scholarly.search_pubs(search_str)
+            for i in range(0, max_num):
+                curr = next(search_query)
+                #scholarly.pprint(curr)
+                title = curr['bib']['title']
+                # check for curr['pub_url'] 
+                if 'pub_url' in curr:
+                    output += f"<li>\n\t<a target='_blank' href=\"{curr['pub_url']}\">{title}</a>\n\t<br>\n"
+                else:
+                    output += f"<li>\n\t{a.title}\n\t<br>\n"
+                # check for curr['bib']['abstract']
+                if 'bib' in curr and 'abstract' in curr['bib']:
+                    output += f"\t<p>{curr['bib']['abstract']}</p>\n"
+
+                output += f"</li>\n"
+        except Exception as e:
+            print(sys.stderr, e)
+        return output
 
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
         """Use a custom save to end date any subCases"""
-        specs = self.get_video_and_imdb_stats()
+        
         orig = Movie.objects.get(id=self.id)
-        orig.duration = specs[0]
-        orig.fps = specs[1]
-        orig.dimensions = specs[2]
-        orig.year = specs[3]
-        orig.director.name = specs[4] #todo
+        fields_to_update = []
 
-        # check if genre name already exists. if not, create and assign to the movie
-        genre = None
         try:
-            genres = orig.genre.__class__.objects.all()
-            for g in genres:
-                if (g.name == specs[5]):
-                    genre = g
-            genre = genre if genre is not None else Genre.objects.create(name=specs[5])
-        except:
-            genre = Genre.objects.create(name=specs[5])
-        orig.genre = genre
+            specs = self.get_video_stats()
+            orig.duration = specs[0]
+            orig.fps = specs[1]
+            orig.dimensions = specs[2]
+            fields_to_update.extend(['duration', 'fps', 'dimensions'])
+        except Exception as e:
+            print(sys.stderr, e)
 
-        super(Movie, orig).save(update_fields=['duration', 'fps', 'dimensions', 'year', 'director', 'genre'])
+        try:
+            imdb_stats = self.get_imdb_stats()
+            orig.title = imdb_stats[3]
+            orig.year = imdb_stats[0]
+
+            # check if director name already exists. if not, create and assign to the movie
+            director = None
+            try:
+                directors = orig.director.__class__.objects.all()
+                for d in directors:
+                    if (str(d.name) == str(imdb_stats[1])):
+                        director = d
+                        break
+                orig.director = director if director is not None else Director.objects.create(name=imdb_stats[1])
+            except:
+                orig.director = Director.objects.create(name=imdb_stats[1])
+
+            # check if genre name already exists. if not, create and assign to the movie
+            genre = None
+            try:
+                genres = orig.genre.__class__.objects.all()
+                for g in genres:
+                    if (str(g.name) == str(imdb_stats[2])):
+                        genre = g
+                        break
+                genre = genre if genre is not None else Genre.objects.create(name=imdb_stats[2])
+            except:
+                genre = Genre.objects.create(name=imdb_stats[2])
+            orig.genre = genre
+            # update values only if they are left blank
+            if not self.year:
+                fields_to_update.append('year')
+            if not self.genre:
+                fields_to_update.append('genre')
+            if not self.title:
+                fields_to_update.append('title')
+            if not self.director:
+                fields_to_update.append('director')
+            if not self.summary:
+                orig.summary = imdb_stats[4]
+                fields_to_update.append('summary')
+        except Exception as e:
+            print(sys.stderr, e)
+
+        if not self.found_articles:
+            orig.found_articles = orig.get_research_articles(self.max_num_find_articles)
+            fields_to_update.append('found_articles')
+
+        super(Movie, orig).save(update_fields=fields_to_update)
 
 import uuid  # Required for unique movie instances
 from datetime import date
 
 from django.contrib.auth.models import User  # Required to assign User as a borrower
-
-
-class MovieInstance(models.Model):
-    """Model representing a specific copy of a movie (i.e. that can be borrowed from the library)."""
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                          help_text="Unique ID for this particular movie across whole library")
-    movie = models.ForeignKey('Movie', on_delete=models.RESTRICT)
-    imprint = models.CharField(max_length=200)
-    due_back = models.DateField(null=True, blank=True)
-    borrower = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-
-    @property
-    def is_overdue(self):
-        return self.due_back and date.today() > self.due_back
-
-    LOAN_STATUS = (
-        ('d', 'Maintenance'),
-        ('o', 'On loan'),
-        ('a', 'Available'),
-        ('r', 'Reserved'),
-    )
-
-    status = models.CharField(
-        max_length=1,
-        choices=LOAN_STATUS,
-        blank=True,
-        default='d',
-        help_text='Movie availability')
-
-    class Meta:
-        ordering = ['due_back']
-        permissions = (("can_mark_returned", "Set movie as returned"),)
-
-    def __str__(self):
-        """String for representing the Model object."""
-        return '{0} ({1})'.format(self.id, self.movie.title)
-
 
 class Director(models.Model):
     """Model representing a director."""
