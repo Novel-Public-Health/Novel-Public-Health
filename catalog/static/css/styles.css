@@ -28,54 +28,53 @@ body {
 
 /* Nav bar css */
 
-a {
-    font-weight: 400;
-    font-style: normal;
-    font-size: 30px;
-    color: white;
-    text-decoration: none;
+nav {
+    background: #90C2E7;
+    padding: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+    list-style-type: none;
+}
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 
-a:hover {
+nav a {
+    display: inline;
+    text-decoration: none;
+    color: white;
+    margin: 10px;
+    font-size: 20px;
+}
+
+nav a:hover{
     color: #5490B1;
 }
 
-.navbar a {
-    padding: 0 4%;
+.nav-left {
+    float: left;
 }
 
-.sidebar-nav {
-    margin-top: 20px;
-    padding: 0;
-    list-style: none;
+.nav-right {
+    float: right;
 }
 
-.middleNavBar {
-    display: block;
-    text-align: center;
-    justify-content: center;
+.nav-left ul li {
+    float: left;
 }
 
-.wrapper {
-    box-sizing: inherit;
-    /* padding-top: 10px; */
-    position: absolute;
-    width: 100%;
+.nav-right ul li {
+    float: right;
 }
-
-/* .row {
-    position: absolute;
-    width: 100%;
-    height: 20%;
-    background-color:green;
-} */
 
 .navbar {
     margin-top: 0;
     background-color: #90C2E7;
     display: inline;
     text-align: center;
-    /* position: fixed; */
     width: 100%;
     height: 10%;
     z-index: 1;
@@ -131,7 +130,7 @@ h2 {
     padding-top: 100px;
     padding-bottom: 0;
     margin-bottom: 5px;
-    font-size: 5rem;
+    font-size: 4rem;
     text-align: center;
     /* color: #5490B1; */
     color: black;
@@ -190,8 +189,9 @@ h2 {
 
 .aboutTab {
     font-weight: lighter;
-    font-size: 1rem;
+    font-size: 2rem;
     margin: 0 auto;
+    text-decoration: none;
 }
 
 .aboutLink:hover {
@@ -202,13 +202,13 @@ h2 {
     font-weight: lighter;
     margin: 10px;
     color: black;
+    text-decoration: none;
+    font-size: 20px;
 }
 
 .aboutText {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     max-width: 100%;
-    /* margin-left: 30px; */
-    /* margin-top: 5px; */
 }
 
 .thirdPageCtr {
@@ -232,7 +232,7 @@ h2 {
 
 .aboutSubtitle {
     color: #5490B1;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: normal;
     margin-bottom: 20px;
 }
@@ -292,6 +292,10 @@ h2 {
     width: 50%;
 }
 
+/* Registration Styles */
+.content-section {
+    background-color: black;
+}
 /* Extra small devices (phones, 600px and down) */
 
 /* @media only screen and (max-width: 600px) {...} */

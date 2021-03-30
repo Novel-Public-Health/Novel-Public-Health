@@ -39,6 +39,8 @@ MEDIA_URL_LOCAL = '/media/'
 # Application definition
 
 INSTALLED_APPS = [
+    'crispy_forms',
+    'Users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -188,3 +190,7 @@ S3DIRECT_DESTINATIONS = {
         'allowed': ['video/mp4']
     },
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = 'index'

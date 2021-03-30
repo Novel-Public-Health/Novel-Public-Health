@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   {% block title %}<title>Novel Public Health</title>{% endblock %}
   <meta charset="utf-8">
@@ -28,27 +27,37 @@
       <li><a href="{% url 'directors' %}">Media</a></li><br>
       {% if user.is_authenticated %}
       <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li><br>
+      <li><a href="{% url 'logout'%}?next={{request.path}}">Profile</p></a></li>
       {% else %}
-      <li><a href="{% url 'register' %}">Sign in</a></li>
+      <li><a href="{% url 'login' %}">Log In</a></li>
+      <li><a href="{% url 'register' %}">Register</a></li>
       {% endif %}
     </ul>
   </div>
   <div class="wrapper">
-    <div class="navbar">
+    <header class="nav">
       <!-- desktop navmenu -->
-      <ul class="middleNavBar">
-        <li><a href="{% url 'index' %}">About Us</a></li>
-        <li><a href="{% url 'leadership' %}">Leadership</a></li>
-        <li><a href="{% url 'ourPartners' %}">Our Partners</a></li>
-        <li><a href="{% url 'directors' %}">Media</a></li>
-        {% if user.is_authenticated %}
-        <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-        {% else %}
-        <li><a href="{% url 'register' %}">Sign in</a></li>
-        {% endif %}
-      </ul>
-    </div>
-
+      <nav class="nav">
+        <ul>
+          <div class="nav-left">
+            <li><a href="{% url 'index' %}">About Us</a></li>
+            <li><a href="{% url 'leadership' %}">Leadership</a></li>
+            <li><a href="{% url 'ourPartners' %}">Our Partners</a></li>
+            <li><a href="{% url 'directors' %}">Media</a></li>
+          </div>
+    
+          <div class="nav-right">
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">Hi, {{ request.user.first_name }}</a></li>
+            <li><a href="{% url 'logout'%}?next={% url 'index' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Log in</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+          </div>
+        </ul>
+      </nav>
+    </header>
     <div id="contentBody">
       <!-- This is where we render -->
       {% block content %}{% endblock %}

@@ -15,7 +15,6 @@ urlpatterns = [
     path('directors/', views.DirectorListView.as_view(), name='directors'),
     path('directors/<int:pk>',
          views.DirectorDetailView.as_view(), name='director-detail'),
-    path('register', views.register, name="register"),
 ] 
 
 """
