@@ -82,19 +82,6 @@ TEMPLATES = [
     },
 ]
 
-# find templates on production
-def findMyWay(*relativeComponents):
-    return os.path.join(os.path.dirname(__file__), *relativeComponents).replace("\\","/")
-
-TEMPLATE_LOADERS = (
-    "django.template.loaders.filesystem.Loader",
-    "django.template.loaders.app_directories.Loader",
-)
-
-TEMPLATE_DIRS = (
-    findMyWay("templates"),
-)
-
 WSGI_APPLICATION = 'locallibrary.wsgi.application'
 
 # Database

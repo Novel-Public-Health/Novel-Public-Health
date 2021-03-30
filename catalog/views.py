@@ -27,8 +27,8 @@ def index(request):
                  'num_visits': num_visits},
     )
 
-def register(request):
-    return render(request, 'register.html')
+#def register(request):
+    #return render(request, 'register.html')
 
 # About us view
 def aboutUs(request):
