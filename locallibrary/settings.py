@@ -40,7 +40,7 @@ MEDIA_URL_LOCAL = '/media/'
 
 INSTALLED_APPS = [
     'crispy_forms',
-    'Users.apps.UsersConfig',
+    #'Users.apps.UsersConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
