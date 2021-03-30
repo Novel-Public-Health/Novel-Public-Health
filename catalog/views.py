@@ -30,7 +30,7 @@ def index(request):
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from .forms import UserRegisterForm
+from catalog.forms import UserRegisterForm
 
 def register(request):
     if request.method == 'POST':
