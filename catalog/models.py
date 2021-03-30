@@ -125,7 +125,7 @@ class Movie(models.Model):
                 if 'pub_url' in curr:
                     output += f"<li>\n\t<a target='_blank' href=\"{curr['pub_url']}\">{title}</a>\n\t<br>\n"
                 else:
-                    output += f"<li>\n\t{a.title}\n\t<br>\n"
+                    output += f"<li>\n\t{title}\n\t<br>\n"
                 # check for curr['bib']['abstract']
                 if 'bib' in curr and 'abstract' in curr['bib']:
                     output += f"\t<p>{curr['bib']['abstract']}</p>\n"
