@@ -33,8 +33,6 @@ from django.contrib import messages
 from catalog.forms import UserRegisterForm
 
 def register(request):
-    return render(request, 'register.html')
-    """
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -45,9 +43,8 @@ def register(request):
 
     else:
         form = UserRegisterForm()
-    #return render(request, 'users/register.html', {'form': form})
-    return render(request, 'register.html')
-    """
+    return render(request, 'users/register.html', {'form': form})
+
 def profile(request):
     return render(request, 'users/profile.html')
 
