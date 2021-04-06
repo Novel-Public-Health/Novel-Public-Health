@@ -58,6 +58,9 @@ def ourPartners(request):
 def leadership(request):
     return render(request, 'leadership.html')
 
+def contactUs(request):
+    return render(request, 'contactUs.html')
+
 
 from django.views import generic
 

@@ -1,4 +1,6 @@
 from scholarly import scholarly, ProxyGenerator
+from imdb import IMDb
+
 import os
 class Articles:
     def __init__(self, title, url, abstract): 
@@ -37,9 +39,9 @@ def get_research_articles(max_num, num_tries = 3):
       print('failed to find results in search query\n')
       return 'Nope'
 
+
 output = get_research_articles(10)
 
-print(output)
 """
 import requests
 s = requests.Session()

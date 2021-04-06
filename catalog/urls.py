@@ -10,6 +10,7 @@ urlpatterns = [
     path('aboutUs', views.aboutUs, name='aboutUs'),
     path('ourPartners', views.ourPartners, name='ourPartners'),
     path('leadership', views.leadership, name='leadership'),
+    path('contactUs', views.contactUs, name='contactUs'),
     path('movies/', views.MovieListView.as_view(), name='movies'),
     path('movie/<int:pk>', views.MovieDetailView.as_view(), name='movie-detail'),
     path('directors/', views.DirectorListView.as_view(), name='directors'),
