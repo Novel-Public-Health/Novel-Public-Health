@@ -7,6 +7,7 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
   <!-- Add additional CSS in static file -->
   <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
   {% load static %}
@@ -23,9 +24,8 @@
     <ul id="mobileMenuList">
       <li><a href="{% url 'index' %}">About Us</a></li><br>
       <li><a href="{% url 'leadership' %}">Leadership</a></li><br>
-      <li><a href="{% url 'ourPartners' %}">Our Partners</a></li><br>
-      <li><a href="{% url 'contactUs' %}">Contact Us</a></li><br>
       <li><a href="{% url 'directors' %}">Media</a></li><br>
+      <li><a href="{% url 'contactUs' %}">Contact</a></li><br>
       {% if user.is_authenticated %}
       <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li><br>
       <li><a href="{% url 'logout'%}?next={{request.path}}">Profile</p></a></li>
@@ -41,11 +41,10 @@
       <nav class="nav">
         <ul>
           <div class="nav-left">
-            <li><a href="{% url 'index' %}">About Us</a></li>
+            <li><a href="{% url 'index' %}">About</a></li>
             <li><a href="{% url 'leadership' %}">Leadership</a></li>
-            <li><a href="{% url 'ourPartners' %}">Our Partners</a></li>
-            <li><a href="{% url 'contactUs' %}">Contact Us</a></li><br>
             <li><a href="{% url 'directors' %}">Media</a></li>
+            <li><a href="{% url 'contactUs' %}">Contact Us</a></li><br>
           </div>
     
           <div class="nav-right">

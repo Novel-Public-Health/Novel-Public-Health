@@ -29,6 +29,7 @@ body {
 /* Nav bar css */
 
 nav {
+    /* 90C2E7 */ 
     background: #90C2E7;
     padding: 40px;
     padding-left: 10%;
@@ -56,10 +57,13 @@ nav a:hover{
 
 .nav-left {
     float: left;
+    font-family: 'Staatliches', cursive;
+    font-size: 20px;
 }
 
 .nav-right {
     float: right;
+    font-family: 'Staatliches', cursive;
 }
 
 .nav-left ul li {
@@ -123,6 +127,7 @@ h2 {
     font-size: 2rem;
     align-self: center;
     justify-self: center;
+    font-style: italic;
 }
 
 #novel-title {
@@ -134,6 +139,7 @@ h2 {
     text-align: center;
     /* color: #5490B1; */
     color: black;
+    font-family: 'Staatliches', cursive;
 }
 
 .firstPageCtr {
@@ -194,6 +200,8 @@ h2 {
     text-decoration: none;
 }
 
+
+
 .aboutLink:hover {
     color: #5490B1;
 }
@@ -203,12 +211,13 @@ h2 {
     margin: 10px;
     color: black;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 25px;
+    font-family: 'Staatliches', cursive;
 }
 
 .aboutText {
     font-size: 1.2rem;
-    max-width: 100%;
+    max-width: 100%
 }
 
 .thirdPageCtr {
@@ -232,19 +241,45 @@ h2 {
 
 .aboutSubtitle {
     color: #5490B1;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: normal;
     margin-bottom: 20px;
+    font-family: 'Staatliches', cursive;
 }
 
 .aboutDiv {
-    display: flex;
-    flex-direction: column;
+    display: block;
+    flex-direction: column; 
     justify-items: center;
-    align-items: center;
-    margin: 1%;
-    width: 30%;
+    align-items: center; 
+    margin: 5%;
+    padding: 5%
 }
+
+
+.aboutDivLeft {
+    display: block;
+    flex-direction: column; 
+    justify-items: center;
+    align-items: center; 
+    margin: 1%;
+    left: 0;
+    padding: 5%;
+    width: 50%;
+}
+
+.aboutDivRight {
+    display: block;
+    position: relative;
+    flex-direction: column; 
+    justify-items: center;
+    align-items: center; 
+    margin: 0%;
+    left: 45%;
+    width: 50%;
+   
+}
+
 
 .fourthPageCtr {
     flex-wrap: wrap;
@@ -268,29 +303,29 @@ h2 {
     font-weight: lighter;
 }
 
-.aboutDiv2 {
+/* .aboutDiv2 {
     display: block;
     margin: 0%;
-    padding: 2%;
+    padding: 10%;
     width: 50%;
 }
 
 .aboutDiv3 {
-    position: relative;
+    position: relative; 
     left: 45%;
     display: block;
     margin: 0%;
-    padding: 2%;
-    width: 50%;
+    padding: 5%;
+    width: 40%;
 }
 
 .aboutDiv4 {
     position: relative;
     display: block;
     margin: 0%;
-    padding: 2%;
+    padding: 10%;
     width: 50%;
-}
+} */
 
 /* Registration Styles */
 .content-section {
@@ -411,10 +446,11 @@ h2 {
         margin: -50px 0 0 -50px;
         padding: 50px;
         padding-top: 125px;
-        background-color: #000000;
+        background-color: #252525;
         -webkit-font-smoothing: antialiased;
         transform-origin: 0% 0%;
         transform: translate(-100%, 0);
+        color: white
         /* transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0); */
     }
     #mobileMenuList li {
