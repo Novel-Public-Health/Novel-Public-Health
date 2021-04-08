@@ -10,7 +10,7 @@ class DirectorModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         """Set up non-modified objects used by all test methods."""
-        Director.objects.create(first_name='Big', last_name='Bob')
+        Director.objects.create(name='Big Bob')
 
     def test_name_label(self):
         director = Director.objects.get(id=1)

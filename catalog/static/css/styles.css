@@ -2,7 +2,7 @@ html {
     margin: 0;
     width: 100%;
     height: 100%;
-    /* overflow-x: hidden; */
+    overflow-x: hidden;
 }
 
 body {
@@ -29,13 +29,14 @@ body {
 /* Nav bar css */
 
 nav {
-    /* 90C2E7 */ 
+    /* 90C2E7 */
     background: #90C2E7;
     padding: 40px;
     padding-left: 10%;
     padding-right: 10%;
     list-style-type: none;
 }
+
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -51,7 +52,7 @@ nav a {
     font-size: 20px;
 }
 
-nav a:hover{
+nav a:hover {
     color: #5490B1;
 }
 
@@ -90,24 +91,6 @@ ul {
 
 li {
     display: inline;
-}
-
-/* Register page styles */
-
-h1 {
-    color: white;
-}
-
-#register-title {
-    color: white;
-}
-
-h2 {
-    color: white;
-}
-
-.main-display {
-    background-color: black;
 }
 
 /* About us Page */
@@ -168,7 +151,7 @@ h2 {
     overflow: auto;
 }
 
-#secondPage {
+.secondPage {
     display: flex;
     justify-content: space-evenly;
     background-color: white;
@@ -181,7 +164,7 @@ h2 {
     /* background-color: #5490B1; */
 }
 
-#secondPage::after {
+.secondPage::after {
     display: flex;
     justify-content: space-evenly;
     background-color: white;
@@ -199,8 +182,6 @@ h2 {
     margin: 0 auto;
     text-decoration: none;
 }
-
-
 
 .aboutLink:hover {
     color: #5490B1;
@@ -227,7 +208,7 @@ h2 {
     overflow: auto;
 }
 
-#thirdPage {
+.thirdPage {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -249,19 +230,19 @@ h2 {
 
 .aboutDiv {
     display: block;
-    flex-direction: column; 
+    flex-direction: column;
     justify-items: center;
-    align-items: center; 
+    align-items: center;
     margin: 5%;
     padding: 5%
 }
 
-
 .aboutDivLeft {
     display: block;
-    flex-direction: column; 
+    position: relative;
+    flex-direction: column;
     justify-items: center;
-    align-items: center; 
+    align-items: center;
     margin: 1%;
     left: 0;
     padding: 5%;
@@ -271,15 +252,13 @@ h2 {
 .aboutDivRight {
     display: block;
     position: relative;
-    flex-direction: column; 
+    flex-direction: column;
     justify-items: center;
-    align-items: center; 
+    align-items: center;
     margin: 0%;
     left: 45%;
     width: 50%;
-   
 }
-
 
 .fourthPageCtr {
     flex-wrap: wrap;
@@ -288,13 +267,16 @@ h2 {
     overflow: auto;
 }
 
-#fourthPage {
-    margin: 0;
-    padding: 0;
+.fourthPage {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    float: none;
     background-color: white;
     position: relative;
     height: auto;
-    width: 100%;
+    margin-bottom: 0;
+    padding: 25px;
 }
 
 #motto {
@@ -303,34 +285,164 @@ h2 {
     font-weight: lighter;
 }
 
-/* .aboutDiv2 {
-    display: block;
-    margin: 0%;
-    padding: 10%;
-    width: 50%;
+/* Login Styles */
+
+.alert {
+    padding: 20px;
+    background-color: #b4e6b7;
+    color: black;
+    font-weight: lighter;
 }
 
-.aboutDiv3 {
-    position: relative; 
-    left: 45%;
-    display: block;
-    margin: 0%;
-    padding: 5%;
-    width: 40%;
-}
-
-.aboutDiv4 {
-    position: relative;
-    display: block;
-    margin: 0%;
-    padding: 10%;
-    width: 50%;
-} */
-
-/* Registration Styles */
 .content-section {
     background-color: black;
+    height: 60%;
+    background-color: white;
+    padding: 5%;
 }
+
+.login-fieldset {
+    background-color: #90c1e74f;
+    width: 30%;
+    margin: 0 auto;
+    margin-bottom: 1%;
+    float: left;
+}
+
+.login-legend {
+    font-size: 3rem;
+}
+
+.login-btn-ctr {
+    margin-top: 20px;
+}
+
+.login-btn {
+    margin-left: 5px;
+    background-color: white;
+    padding: 5px;
+    border-width: 1px;
+    border-radius: 2px;
+}
+
+.login-signup-ctr {
+    margin: 0 auto;
+    padding-bottom: 15%;
+    text-align: left;
+    clear: both;
+}
+
+.login-signup-ctr>p {
+    font-size: 20px;
+}
+
+.login-signup-ctr a {
+    color: #5490b1;
+    font-size: 20px;
+}
+
+.login-form {
+    background-color: white;
+}
+
+/* Register page styles */
+
+h1 {
+    color: white;
+}
+
+#register-title {
+    color: white;
+}
+
+h2 {
+    color: white;
+}
+
+.main-display {
+    background-color: black;
+}
+
+#register-wrapper {
+    background-color: white;
+}
+
+.register-first-section {
+    margin: auto;
+}
+
+#register-box {
+    width: auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.register-fieldset {
+    background-color: #90c1e74f;
+    width: 300px;
+    margin-left: 10%;
+}
+
+.register-legend {
+    font-size: 3rem;
+    font-family: 'Staatliches', cursive;
+}
+
+.register-legend strong {
+    color: #5490B1;
+}
+
+.register-signup-btn-ctr {
+    margin-top: 20px;
+}
+
+.register-signup-btn {
+    margin-left: 5px;
+    background-color: white;
+    padding: 5px;
+    border-width: 1px;
+    border-radius: 2px;
+}
+
+.register-title {
+    color: #5490B1;
+    font-size: 4rem;
+    margin-top: 0;
+    margin-left: 50px;
+    margin-bottom: 0;
+    font-family: 'Staatliches', cursive;
+}
+
+.register-subtitle {
+    color: #305061;
+    margin-left: 50px;
+    margin-top: 20;
+}
+
+.register-login-ctr {
+    margin-top: 10px;
+    margin-left: 5%;
+}
+
+.register-login-ctr>p {
+    font-size: 20px;
+}
+
+.register-login-ctr a {
+    color: #5490b1;
+    font-size: 20px;
+}
+
+.register-additional-info-ctr {
+    height: 40%;
+    width: auto;
+    padding: 6%;
+}
+
+.register-additional-info-ctr h2 {
+    color: rgb(0, 0, 0);
+}
+
 /* Extra small devices (phones, 600px and down) */
 
 /* @media only screen and (max-width: 600px) {...} */
@@ -356,11 +468,25 @@ h2 {
 }
 
 @media only screen and (max-width: 991px) {
-    #secondPage {
+    .login-fieldset {
+        width: 75%;
+        float: none;
+    }
+    .content-section {
+        padding: 0;
+    }
+    .login-fieldset, .login-signup-ctr {
+        text-align: center;
+    }
+    .login-form {
+        padding-top: 20%;
+    }
+
+    .secondPage {
         flex-direction: column;
         /* width: 100%; */
     }
-    #thirdPage {
+    .thirdPage {
         flex-direction: column;
         width: 100%;
     }
@@ -368,7 +494,7 @@ h2 {
         width: 75%;
         margin: 0 auto;
     }
-    #fourthPage {
+    .fourthPage {
         flex-direction: column;
         width: 100%;
     }
@@ -380,9 +506,14 @@ h2 {
     .firstPage {
         padding: 25px;
     }
-
-    .navbar {
+    .nav {
         display: none;
+    }
+    .aboutDivLeft, .aboutDivRight {
+        padding: 0;
+        width: 100%;
+        left: 0;
+        margin: 0 auto;
     }
     #mobileMenu {
         display: flex;
@@ -429,18 +560,20 @@ h2 {
         background: #36383F;
     }
     #mobileMenu input:checked~span {
-        transform: rotate(45deg) /*translate(0px, -5.5px)*/;
+        transform: rotate(45deg)/*translate(0px, -5.5px)*/
+        ;
         background: #36383F;
     }
     #mobileMenu input:checked~span:nth-last-child(3) {
         transform: rotate(0deg) scale(0.01, 0.01);
     }
     #mobileMenu input:checked~span:nth-last-child(2) {
-        transform: rotate(-45deg) /*translate(0px, 5.5px)*/;
+        transform: rotate(-45deg)/*translate(0px, 5.5px)*/
+        ;
     }
     #mobileMenuList {
         position: fixed;
-        /* width: 40%; */
+        width: 40%;
         min-height: 100%;
         box-shadow: 0 0 10px #85888C;
         margin: -50px 0 0 -50px;
@@ -456,6 +589,14 @@ h2 {
     #mobileMenuList li {
         transition-delay: 1s;
         margin-left: 15px;
+    }
+    #mobileMenuList li>a {
+        font-weight: lighter;
+        margin: 10px;
+        color: #90C2E7;
+        text-decoration: none;
+        font-size: 25px;
+        font-family: 'Staatliches', cursive;
     }
     #mobileMenu input:checked~ul {
         transform: none;

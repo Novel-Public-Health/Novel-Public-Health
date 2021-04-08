@@ -2,38 +2,42 @@
 {% load crispy_forms_tags %}
 {% block content %}
 <!-- <link rel="stylesheet" type="text/css" href="/catalog/static/css/styles.css" /> -->
-<div id="register-wrapper" style="background-color: white;">
-    <div class="register-first-section" style="margin: auto;">
-        <div class="content-section" style="height: 60%; background-color: white; padding: 5%;">
-            <form id="register-box" method="POST" style="width: auto; display:grid; grid-template-columns: 1fr 2fr;">
+<div id="register-wrapper">
+    <div class="register-first-section">
+        <div class="content-section">
+            <form id="register-box" method="POST">
                 {% csrf_token %}
-                <fieldset class="form-group" style="background-color: #90c1e74f; width: 300px; margin-left: 10%;">
-                    <legend class="border-bottom mb-4" style="font-size: 3rem;font-family: 'Staatliches', cursive;">Join <strong style="color:#5490B1">Novel</strong></legend>
+                <fieldset class="form-group register-fieldset">
+                    <legend class="border-bottom mb-4 register-legend">Join <strong>Novel</strong></legend>
                     {{ form|crispy }}
-                    <div class="form-group" style="margin-top: 20px;">
-                        <button class="btn btn-outline-info" type="submit" style="margin-left: 5px; background-color: white; padding: 5px; border-width: 1px; border-radius: 2px;">Sign Up</button>
+                    <div class="form-group register-signup-btn-ctr">
+                        <button class="btn btn-outline-info register-signup-btn" type="submit">Sign Up</button>
                     </div>
                 </fieldset>
                 <div style="width: 100%;">
                     <div>
-                        <h1 style="color: #5490B1; font-size: 4rem; margin-top: 0; margin-left: 50px; margin-bottom: 0;  font-family: 'Staatliches', cursive;">Novel Public Health</h1>
-                        <h2 style="color: #305061; margin-left: 50px; margin-top: 20;">Changing the world of public health through film</h2>
+                        <h1 class="register-title">
+                            Novel Public Health</h1>
+                        <h2 class="register-subtitle">Changing the world of public
+                            health through film</h2>
 
                         <!-- INSERT INFORMATION FOR RIGHT SIDE HERE -->
 
-                        <h2 style="margin-left: 50px; color: black; font-size: 50px;">  </h2>
+                        <h2 class="register-info" style="margin-left: 50px; color: black; font-size: 50px;"> </h2>
                     </div>
                 </div>
             </form>
-            <div class="border-top pt-3" style="margin-top: 10px; margin-left: 5%;">
-                <small class="text-muted" style="font-size: 20px;">Already Have An Account? <a class="ml-2" href="{% url 'login' %}" style="color: #5490b1; font-size: 20px;">Sign In</a></small>
+            <div class="border-top pt-3 register-login-ctr">
+                <p class="text-muted">Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a></p>
             </div>
         </div>
-        <div id="thirdPage" style="height: 40%; width: auto; padding:6%;">
+        <div class="register-additional-info-ctr thirdPage">
             <div>
                 <!-- INSERT INFORMATION FOR BOTTOM HERE -->
-                
-                <h2 style="color: rgb(0, 0, 0);">*By creating an account, you will automatically be given access to independent made films. If you would like to view Hollywood A-list films, you can upgrade your subscription after signing up.</h2>
+
+                <h2>*By creating an account, you will automatically be given access to
+                    independent made films. If you would like to view Hollywood A-list films, you can upgrade your
+                    subscription after signing up.</h2>
             </div>
         </div>
     </div>

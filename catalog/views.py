@@ -2,8 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-from .models import Movie, Director, Genre
-
+from .models import Movie, Director, Genre, Profile
 
 def index(request):
     """View function for home page of site."""
@@ -30,7 +29,7 @@ def index(request):
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from catalog.forms import UserRegisterForm
+from catalog.forms import UserRegisterForm, SubscriptionChangeForm
 
 def register(request):
     if request.method == 'POST':
@@ -40,13 +39,23 @@ def register(request):
             username = form.cleaned_data.get('username')
             messages.success(request, f'Your account has been created! You are now able to log in')
             return redirect('login')
-
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
 def profile(request):
-    return render(request, 'users/profile.html')
+    if request.method == 'POST':
+        form = SubscriptionChangeForm(request.POST)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            profile.save()
+            messages.success(request, f'Your account has been created! You are now able to log in')
+            return redirect('profile')
+    else:
+        user_profile = Profile.objects.get(user=request.user)
+        form = SubscriptionChangeForm(initial={'user_type': user_profile.user_type})
+    return render(request, 'users/profile.html', {'form': form, 'user_profile': user_profile})
 
 # About us view
 def aboutUs(request):
@@ -85,36 +94,9 @@ class DirectorListView(generic.ListView):
 class DirectorDetailView(generic.DetailView):
     """Generic class-based detail view for an director."""
     model = Director
-
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-"""
-class LoanedMoviesByUserListView(LoginRequiredMixin, generic.ListView):
-    Generic class-based view listing movies on loan to current user.
-    model = MovieInstance
-    template_name = 'catalog/movieinstance_list_borrowed_user.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return MovieInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
-"""
-
+    
 # Added as part of challenge!
 from django.contrib.auth.mixins import PermissionRequiredMixin
-
-"""
-class LoanedMoviesAllListView(PermissionRequiredMixin, generic.ListView):
-    #Generic class-based view listing all movies on loan. Only visible to users with can_mark_returned permission.
-    model = MovieInstance
-    permission_required = 'catalog.can_mark_returned'
-    template_name = 'catalog/movieinstance_list_borrowed_all.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return MovieInstance.objects.filter(status__exact='o').order_by('due_back')
-"""
-
 
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
@@ -122,55 +104,15 @@ from django.urls import reverse
 import datetime
 from django.contrib.auth.decorators import login_required, permission_required
 
-# from .forms import RenewMovieForm
-from catalog.forms import RenewMovieForm
-
-
-@login_required
-@permission_required('catalog.can_mark_returned', raise_exception=True)
-def renew_movie_librarian(request, pk):
-    """View function for renewing a specific MovieInstance by librarian."""
-    movie_instance = get_object_or_404(MovieInstance, pk=pk)
-
-    # If this is a POST request then process the Form data
-    if request.method == 'POST':
-
-        # Create a form instance and populate it with data from the request (binding):
-        form = RenewMovieForm(request.POST)
-
-        # Check if the form is valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            movie_instance.due_back = form.cleaned_data['renewal_date']
-            movie_instance.save()
-
-            # redirect to a new URL:
-            return HttpResponseRedirect(reverse('all-borrowed'))
-
-    # If this is a GET (or any other method) create the default form
-    else:
-        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewMovieForm(initial={'renewal_date': proposed_renewal_date})
-
-    context = {
-        'form': form,
-        'movie_instance': movie_instance,
-    }
-
-    return render(request, 'catalog/movie_renew_librarian.html', context)
-
-
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Director
-
 
 class DirectorCreate(PermissionRequiredMixin, CreateView):
     model = Director
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
     initial = {'date_of_death': '11/06/2020'}
     permission_required = 'catalog.can_mark_returned'
-
 
 class DirectorUpdate(PermissionRequiredMixin, UpdateView):
     model = Director
@@ -182,7 +124,6 @@ class DirectorDelete(PermissionRequiredMixin, DeleteView):
     model = Director
     success_url = reverse_lazy('directors')
     permission_required = 'catalog.can_mark_returned'
-
 
 # Classes created for the forms challenge
 class MovieCreate(PermissionRequiredMixin, CreateView):

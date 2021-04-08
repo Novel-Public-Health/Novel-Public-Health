@@ -21,19 +21,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
 ] 
 
-"""
-urlpatterns += [
-    path('mymovies/', views.LoanedMoviesByUserListView.as_view(), name='my-borrowed'),
-    path(r'borrowed/', views.LoanedMoviesAllListView.as_view(), name='all-borrowed'),  # Added for challenge
-]
-"""
-
-# Add URLConf for librarian to renew a movie.
-urlpatterns += [
-    path('movie/<uuid:pk>/renew/', views.renew_movie_librarian, name='renew-movie-librarian'),
-]
-
-
 # Add URLConf to create, update, and delete directors
 urlpatterns += [
     path('director/create/', views.DirectorCreate.as_view(), name='director-create'),

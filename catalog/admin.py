@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Director, Genre, Movie, Language
+from .models import Director, Genre, Movie, Language, Profile
 
 """Minimal registration of Models.
 admin.site.register(Movie)
@@ -19,7 +19,6 @@ class MoviesInline(admin.TabularInline):
     """Defines format of inline movie insertion (used in DirectorAdmin)"""
     model = Movie
 
-
 @admin.register(Director)
 class DirectorAdmin(admin.ModelAdmin):
     """Administration object for Director models.
@@ -33,13 +32,6 @@ class DirectorAdmin(admin.ModelAdmin):
     fields = ['name', ('date_of_birth', 'date_of_death')]
     inlines = [MoviesInline]
 
-"""
-class MoviesInstanceInline(admin.TabularInline):
-    #Defines format of inline movie instance insertion (used in MovieAdmin)
-    model = MovieInstance
-"""
-
-
 class MovieAdmin(admin.ModelAdmin):
     """Administration object for Movie models.
     Defines:
@@ -50,27 +42,31 @@ class MovieAdmin(admin.ModelAdmin):
     exclude = ('duration', 'fps', 'dimensions')
     #inlines = [MoviesInstanceInline]
 
-
 admin.site.register(Movie, MovieAdmin)
 
-"""
-@admin.register(MovieInstance)
-class MovieInstanceAdmin(admin.ModelAdmin):
-    #Administration object for MovieInstance models.
-    #Defines:
-    # - fields to be displayed in list view (list_display)
-    # - filters that will be displayed in sidebar (list_filter)
-    # - grouping of fields into sections (fieldsets)
-    
-    list_display = ('movie', 'status', 'borrower', 'due_back', 'id')
-    list_filter = ('status', 'due_back')
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import User
 
-    fieldsets = (
-        (None, {
-            'fields': ('movie', 'imprint', 'id')
-        }),
-        ('Availability', {
-            'fields': ('status', 'due_back', 'borrower')
-        }),
-    )
-"""
+@receiver(post_save, sender=get_user_model())
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance, user_type=int(1))
+    else:
+        instance.profile.save()
+
+# Define an inline admin descriptor for Profile model
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+    verbose_name_plural = 'profile'
+
+# Define a new User admin
+class UserAdmin(BaseUserAdmin):
+    inlines = (ProfileInline,)
+
+# Re-register UserAdmin
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

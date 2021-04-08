@@ -222,3 +222,18 @@ class Director(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return self.name
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    USER_TYPE_CHOICES = (
+        (1, 'free - access independent films and media outlets'),
+        (2, 'low - access to Hollywood films'),
+        (3, 'high - access to A-list movies')
+    )
+    user_type = models.IntegerField('Subscription Tier', choices=USER_TYPE_CHOICES)
+
+    def get_user_type(self):
+        return dict(self.USER_TYPE_CHOICES).get(self.user_type)
+    
+    def get_user_type_short(self):
+        return dict(self.USER_TYPE_CHOICES).get(self.user_type).split()[0]
