@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Director, Genre, Movie, Language, Profile
+from .models import Director, Genre, Movie, Language, Profile, Contact
 
 """Minimal registration of Models.
 admin.site.register(Movie)
@@ -14,6 +14,7 @@ admin.site.register(Language)
 
 admin.site.register(Genre)
 admin.site.register(Language)
+admin.site.register(Contact)
 
 class MoviesInline(admin.TabularInline):
     """Defines format of inline movie insertion (used in DirectorAdmin)"""

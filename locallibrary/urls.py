@@ -31,9 +31,7 @@ urlpatterns = [
 
 urlpatterns += [
     path('catalog/', include('catalog.urls')),
-
 ]
-
 
 # Use static() to add url mapping to serve static files during development (only)
 from django.conf import settings

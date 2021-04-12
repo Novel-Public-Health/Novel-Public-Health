@@ -237,3 +237,12 @@ class Profile(models.Model):
     
     def get_user_type_short(self):
         return dict(self.USER_TYPE_CHOICES).get(self.user_type).split()[0]
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=100)
+    body  = models.TextField()
+    
+    def __str__(self):
+        return self.name

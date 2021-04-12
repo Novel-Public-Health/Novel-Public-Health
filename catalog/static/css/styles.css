@@ -602,3 +602,14 @@ h2 {
         transform: none;
     }
 }
+
+/* contact form */
+
+.contact-btn{
+    margin-left: 5px;
+    background-color: white;
+    padding: 5px;
+    border-width: 1px;
+    border-radius: 2px;
+}
+

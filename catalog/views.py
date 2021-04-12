@@ -1,8 +1,10 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from .forms import ContactForm
 
 # Create your views here.
 
-from .models import Movie, Director, Genre, Profile
+from .models import Movie, Director, Genre, Profile, Contact
 
 def index(request):
     """View function for home page of site."""
@@ -57,6 +59,25 @@ def profile(request):
         form = SubscriptionChangeForm(initial={'user_type': user_profile.user_type})
     return render(request, 'users/profile.html', {'form': form, 'user_profile': user_profile})
 
+# contact form
+def contactUs(request):
+    if request.method== "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # print("Form is saved")
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            body = form.cleaned_data['body']
+
+            messages.success(request, f'Thanks for submitting a message!')
+            return redirect('contactUs')
+            
+    else:
+        form = ContactForm()
+    return render(request, 'contactUs.html', {'form': form})
+
 # About us view
 def aboutUs(request):
     return render(request, 'aboutUs.html')
@@ -67,8 +88,8 @@ def ourPartners(request):
 def leadership(request):
     return render(request, 'leadership.html')
 
-def contactUs(request):
-    return render(request, 'contactUs.html')
+
+
 
 
 from django.views import generic
