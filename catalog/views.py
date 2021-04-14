@@ -164,6 +164,9 @@ class MovieDelete(PermissionRequiredMixin, DeleteView):
 
 def process_payment(request):
     host = request.get_host()
+
+    # delete all transactions
+    Transaction.objects.all().delete()
     transaction = Transaction.objects.create(user=request.user, subscription=request.session['new_type'])
 
     paypal_dict = {
@@ -191,9 +194,6 @@ def payment_done(request):
     profile = Profile.objects.get(user=request.user)
     profile.user_type = transaction.subscription
     profile.save()
-
-    # delete all transactions
-    Transaction.objects.all().delete()
 
     return redirect('profile')
 
