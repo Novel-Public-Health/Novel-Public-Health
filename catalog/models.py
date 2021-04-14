@@ -42,7 +42,7 @@ class Movie(models.Model):
     """Model representing a movie (but not a specific copy of a movie)."""
     title = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
 
-    imdb_link = models.CharField('IMDB Link', max_length=100, blank=True, help_text='For example, here is <a target="_blank" '
+    imdb_link = models.CharField('IMDB Link', max_length=100, blank=True, null=True, help_text='For example, here is <a target="_blank" '
                                                                 'href="https://www.imdb.com/title/tt3322364/">Concussion\'s link</a>.')
 
     # Foreign Key used because movie can only have one director, but directors can have multiple movies
@@ -58,7 +58,7 @@ class Movie(models.Model):
                                                                                                         a valid IMDB id and left blank.')
     year = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
 
-    file = S3DirectField(dest='videos', blank=True)
+    file = S3DirectField(dest='videos', blank=True, null=True)
     #image = S3DirectField(dest='images', blank=True)
     
     duration = models.CharField(max_length=200)
@@ -132,7 +132,8 @@ class Movie(models.Model):
 
                 output += f"</li>\n"
         except Exception as e:
-            print(sys.stderr, e)
+            pass
+            #print(sys.stderr, e)
         return output
 
     def save(self, *args, **kwargs):
@@ -149,7 +150,8 @@ class Movie(models.Model):
             orig.dimensions = specs[2]
             fields_to_update.extend(['duration', 'fps', 'dimensions'])
         except Exception as e:
-            print(sys.stderr, e)
+            pass
+            #print(sys.stderr, e)
 
         try:
             imdb_stats = self.get_imdb_stats()
@@ -193,7 +195,8 @@ class Movie(models.Model):
                 orig.summary = imdb_stats[4]
                 fields_to_update.append('summary')
         except Exception as e:
-            print(sys.stderr, e)
+            pass
+            #print(sys.stderr, e)
 
         if not self.found_articles:
             orig.found_articles = orig.get_research_articles(self.max_num_find_articles)
