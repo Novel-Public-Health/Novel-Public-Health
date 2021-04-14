@@ -198,3 +198,4 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'index'
 
 PAYPAL_RECEIVER_EMAIL = 'haleau@live.unc.edu'
+PAYPAL_TEST = False
