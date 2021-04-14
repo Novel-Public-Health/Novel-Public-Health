@@ -241,6 +241,12 @@ class Profile(models.Model):
     def get_user_type_short(self):
         return dict(self.USER_TYPE_CHOICES).get(self.user_type).split()[0]
 
+    def get_subscription_prices(self):
+        output = ""
+        for value in dict(Transaction.USER_PAYMENT_CHOICES).values():
+            output += str(value)+","
+        return output
+
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -256,9 +262,21 @@ class Transaction(models.Model):
     # set the price of each tier in USER_TYPE_CHOICES
     USER_PAYMENT_CHOICES = (
         (1, 0.00),
-        (2, 0.01),
-        (3, 0.02)
+        (2, 0.01),#4.00),
+        (3, 0.02)##7.00)
+    )
+    SUBSCRIPTION_OPTIONS = (
+        ('1-month', '1-Month subscription'),
+        ('6-month', '6-Month subscription'),
+        ('1-year', '1-Year subscription')
     )
 
     def get_amount(self):
         return dict(self.USER_PAYMENT_CHOICES).get(self.subscription)
+
+    def increment_invoice_number(self):
+        last_invoice = Invoice.objects.all().order_by('id').last()
+        return last_invoice.invoice_no + 1 if last_invoice else 0
+
+class Invoice(models.Model):
+    invoice_no = models.IntegerField(default=0, null=True, blank=True)

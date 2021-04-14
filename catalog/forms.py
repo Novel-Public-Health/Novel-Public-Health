@@ -28,7 +28,7 @@ class RenewMovieForm(forms.Form):
 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile, Contact
+from .models import Profile, Contact, Transaction
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -47,6 +47,7 @@ class UserRegisterForm(UserCreationForm):
             self.fields[fieldname].help_text = None
 
 class SubscriptionChangeForm(forms.ModelForm):
+    plans = forms.ChoiceField(choices=Transaction.SUBSCRIPTION_OPTIONS)
     class Meta:
         model = Profile
         exclude = ['user']

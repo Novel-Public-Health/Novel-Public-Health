@@ -4,7 +4,7 @@ from .forms import ContactForm
 
 # Create your views here.
 
-from .models import Movie, Director, Genre, Profile, Contact, Transaction
+from .models import Movie, Director, Genre, Profile, Contact, Transaction, Invoice
 
 from django.views import generic
 
@@ -70,8 +70,9 @@ def profile(request, transaction=None):
             profile = form.save(commit=False)
             profile.user = request.user
             request.session['new_type'] = profile.user_type
+            request.session['subscription_plan'] = request.POST.get('plans')
             # redirect to paypal page after clicking change subscription button
-            return redirect('process_payment')
+            return redirect('process_subscription')
     else:
         user_profile = Profile.objects.get(user=request.user)
         form = SubscriptionChangeForm(initial={'user_type': user_profile.user_type})
@@ -156,25 +157,50 @@ class MovieUpdate(PermissionRequiredMixin, UpdateView):
     fields = ['title', 'director', 'summary', 'isbn', 'genre', 'language']
     permission_required = 'catalog.can_mark_returned'
 
-
 class MovieDelete(PermissionRequiredMixin, DeleteView):
     model = Movie
     success_url = reverse_lazy('movies')
     permission_required = 'catalog.can_mark_returned'
 
-def process_payment(request):
+def process_subscription(request):
+    new_type = request.session['new_type']
+    """if new_type == 1: # free account so no need to go through PayPal
+        profile = Profile.objects.get(user=request.user)
+        profile.user_type = new_type
+        profile.save()
+        return redirect('profile')"""
+    
+    # Purchasing a subscription through PayPal
     host = request.get_host()
 
-    # delete all transactions
-    Transaction.objects.all().delete()
-    transaction = Transaction.objects.create(user=request.user, subscription=request.session['new_type'])
+    transaction, created = Transaction.objects.get_or_create(user=request.user, subscription=new_type)
+    invoice = Invoice.objects.create(invoice_no=transaction.increment_invoice_number())
+
+    subscription_plan = request.session.get('subscription_plan')
+    host = request.get_host()
+
+    price = transaction.get_amount()
+    if subscription_plan == '1-month':
+        billing_cycle = 1
+        billing_cycle_unit = "M"
+    elif subscription_plan == '6-month':
+        billing_cycle = 6
+        billing_cycle_unit = "M"
+    else:
+        billing_cycle = 1
+        billing_cycle_unit = "Y"
 
     paypal_dict = {
+        "cmd": "_xclick-subscriptions",
         "business": settings.PAYPAL_RECEIVER_EMAIL,
-        "amount": '%.2f' % transaction.get_amount(),
+        "a3": price,  # monthly price
+        "p3": billing_cycle,  # duration of each unit (depends on unit)
+        "t3": billing_cycle_unit,  # duration unit ("M for Month")
+        "src": "1",  # make payments recur
+        "sra": "1",  # reattempt payment on payment error
         "currency_code": "USD",
         "item_name": 'Example item',
-        "invoice": 1234,
+        "invoice": invoice.invoice_no,
         'notify_url': 'http://{}{}'.format(host,
                                            reverse('paypal-ipn')),
         'return_url': 'http://{}{}'.format(host,
@@ -183,7 +209,7 @@ def process_payment(request):
                                               reverse('payment_cancelled')),
     }
 
-    form = PayPalPaymentsForm(initial=paypal_dict)
+    form = PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
     return render(request, 'paypal_form.html', {'transaction': transaction, 'form': form})
 
 @csrf_exempt

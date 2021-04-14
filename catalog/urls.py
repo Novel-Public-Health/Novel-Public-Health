@@ -25,7 +25,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     # Paypal urls #
     path('paypal/', include('paypal.standard.ipn.urls')),
-    path('process-payment/', views.process_payment, name='process_payment'),
+    path('process_subscription/', views.process_subscription, name='process_subscription'),
     path('payment-done/', views.payment_done, name='payment_done'),
     path('payment-cancelled/', views.payment_canceled, name='payment_cancelled'),
 ] 

@@ -197,5 +197,13 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'index'
 
-PAYPAL_RECEIVER_EMAIL = 'haleau@live.unc.edu'
+PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER')
 PAYPAL_TEST = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'novelpublichealthunc@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('NOVEL_GMAIL_PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

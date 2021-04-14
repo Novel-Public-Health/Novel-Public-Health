@@ -9,8 +9,34 @@
     <fieldset class="form-group">
         {{ form|crispy }}
         <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Change Subscription</button>
+            <button id="sub-btn" class="btn btn-outline-info" type="submit">Change Subscription</button>
         </div>
     </fieldset>
 </form>
 {% endblock content %}
+
+{% block javascript %}
+<script>
+    user_type = document.getElementById("id_user_type");
+    user_type.addEventListener("change", changePlansPrice);
+    window.addEventListener('load', changePlansPrice);
+
+    var subscription_prices = "{{user_profile.get_subscription_prices}}".split(",");
+    var non_null_subscription_prices = subscription_prices.filter(function (el) {
+        return el != null && el != "";
+    });
+
+    subscription_plans = document.getElementById("id_plans");
+
+    function changePlansPrice() {
+        options = subscription_plans.getElementsByTagName('option');
+        current_price = non_null_subscription_prices[user_type.value-1];
+
+        for (let i = 0; i < options.length; i++) {
+            original_text = options[i].text.split('(')[0];
+            options[i].text = original_text + "\t($" + current_price + " / month)";
+        }
+    }
+
+</script>
+{% endblock %}
