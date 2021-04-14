@@ -10,3 +10,4 @@ django-s3direct==1.1.8
 django-storages==1.11.1
 scholarly==1.1.0
 django-crispy-forms==1.11.1
+django-paypal==1.1.1

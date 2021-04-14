@@ -4,7 +4,30 @@ from .forms import ContactForm
 
 # Create your views here.
 
-from .models import Movie, Director, Genre, Profile, Contact
+from .models import Movie, Director, Genre, Profile, Contact, Transaction
+
+from django.views import generic
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from catalog.forms import UserRegisterForm, SubscriptionChangeForm
+
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+import datetime
+from django.contrib.auth.decorators import login_required, permission_required
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Director
+
+from paypal.standard.forms import PayPalPaymentsForm
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
     """View function for home page of site."""
@@ -28,11 +51,6 @@ def index(request):
                  'num_visits': num_visits},
     )
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages
-from catalog.forms import UserRegisterForm, SubscriptionChangeForm
-
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -45,15 +63,15 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
-def profile(request):
+def profile(request, transaction=None):
     if request.method == 'POST':
         form = SubscriptionChangeForm(request.POST)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
-            profile.save()
-            messages.success(request, f'Your account has been created! You are now able to log in')
-            return redirect('profile')
+            request.session['new_type'] = profile.user_type
+            # redirect to paypal page after clicking change subscription button
+            return redirect('process_payment')
     else:
         user_profile = Profile.objects.get(user=request.user)
         form = SubscriptionChangeForm(initial={'user_type': user_profile.user_type})
@@ -88,13 +106,6 @@ def ourPartners(request):
 def leadership(request):
     return render(request, 'leadership.html')
 
-
-
-
-
-from django.views import generic
-
-
 class MovieListView(generic.ListView):
     """Generic class-based view for a list of movies."""
     model = Movie
@@ -115,19 +126,6 @@ class DirectorListView(generic.ListView):
 class DirectorDetailView(generic.DetailView):
     """Generic class-based detail view for an director."""
     model = Director
-    
-# Added as part of challenge!
-from django.contrib.auth.mixins import PermissionRequiredMixin
-
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-import datetime
-from django.contrib.auth.decorators import login_required, permission_required
-
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Director
 
 class DirectorCreate(PermissionRequiredMixin, CreateView):
     model = Director
@@ -163,3 +161,43 @@ class MovieDelete(PermissionRequiredMixin, DeleteView):
     model = Movie
     success_url = reverse_lazy('movies')
     permission_required = 'catalog.can_mark_returned'
+
+def process_payment(request):
+    host = request.get_host()
+    transaction = Transaction.objects.create(user=request.user, subscription=request.session['new_type'])
+
+    paypal_dict = {
+        "business": settings.PAYPAL_RECEIVER_EMAIL,
+        "amount": '%.2f' % transaction.get_amount(),
+        "currency_code": "USD",
+        "item_name": 'Example item',
+        "invoice": 1234,
+        'notify_url': 'http://{}{}'.format(host,
+                                           reverse('paypal-ipn')),
+        'return_url': 'http://{}{}'.format(host,
+                                           reverse('payment_done')),
+        'cancel_return': 'http://{}{}'.format(host,
+                                              reverse('payment_cancelled')),
+    }
+
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    return render(request, 'paypal_form.html', {'transaction': transaction, 'form': form})
+
+@csrf_exempt
+def payment_done(request):
+    messages.success(request, f'Thank you for your order.')
+    transaction = Transaction.objects.get(user=request.user)
+    
+    profile = Profile.objects.get(user=request.user)
+    profile.user_type = transaction.subscription
+    profile.save()
+
+    # delete all transactions
+    Transaction.objects.all().delete()
+
+    return redirect('profile')
+
+@csrf_exempt
+def payment_canceled(request):
+    messages.success(request, f'Payment cancelled.')
+    return redirect('profile')

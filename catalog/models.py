@@ -249,3 +249,16 @@ class Contact(models.Model):
     
     def __str__(self):
         return self.name
+
+class Transaction(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    subscription = models.IntegerField(default=0, blank=True)
+    # set the price of each tier in USER_TYPE_CHOICES
+    USER_PAYMENT_CHOICES = (
+        (1, 0.00),
+        (2, 0.01),
+        (3, 0.02)
+    )
+
+    def get_amount(self):
+        return dict(self.USER_PAYMENT_CHOICES).get(self.subscription)

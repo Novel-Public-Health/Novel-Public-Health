@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig', #This object was created for us in /catalog/apps.py
     'storages',
     's3direct',
+    'paypal.standard.ipn',
 ]
 
 MIDDLEWARE = [
@@ -195,3 +196,5 @@ S3DIRECT_DESTINATIONS = {
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'index'
+
+PAYPAL_RECEIVER_EMAIL = 'haleau@live.unc.edu'

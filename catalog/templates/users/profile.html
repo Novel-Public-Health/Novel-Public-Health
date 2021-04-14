@@ -1,6 +1,7 @@
 {% extends "base_generic.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+
 <h1>Hi {{ user.first_name }} {{ user.last_name }}!</h1>
 <h1>Current subscription tier: {{ user_profile.get_user_type_short }}</h1>
 <form method="POST">
