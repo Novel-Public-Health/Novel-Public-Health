@@ -33,6 +33,7 @@ import stripe
 import djstripe
 import json
 from djstripe.models import Product
+import os
 
 def index(request):
     """View function for home page of site."""
@@ -176,7 +177,8 @@ class MovieDelete(PermissionRequiredMixin, DeleteView):
 @login_required
 def process_subscription(request):
     products = Product.objects.all()
-    return render(request, 'subscription_form.html', {"products": products})
+    stripe_pub_key = os.environ.get('STRIPE_TEST_PUBLIC_KEY')
+    return render(request, 'subscription_form.html', {"products": products, "stripe_pub_key": stripe_pub_key})
 
 @login_required
 def create_sub(request):
@@ -204,11 +206,6 @@ def create_sub(request):
 
             profile = Profile.objects.get(user=request.user)
             profile.customer = djstripe_customer
-                
-
-            # At this point, associate the ID of the Customer object with your
-            # own internal representation of a customer, if you have one.
-            # print(customer)
 
             # Subscribe the user to the subscription created
             subscription = stripe.Subscription.create(
@@ -220,34 +217,40 @@ def create_sub(request):
                 ],
                 expand=["latest_invoice.payment_intent"]
             )
-
-            djstripe_subscription = djstripe.models.Subscription.sync_from_stripe_data(subscription)
             
+            djstripe_subscription = djstripe.models.Subscription.sync_from_stripe_data(subscription)
             profile.subscription = djstripe_subscription
-            profile.user_type = profile.subscription.plan
-            profile.save()
 
+            ### IMPORTANT: Change Strings based on the name of the subscription product on STRIPE ###
+            if data["plan_id"] == 'Premium Subscription':
+                profile.user_type = 3
+            elif data["plan_id"] == 'Low Subscription':
+                profile.user_type = 2
+
+            profile.save()
             return JsonResponse(subscription)
         except Exception as e:
             return JsonResponse({'error': (e.args[0])}, status =403)
     else:
         return HttpResponse("request method not allowed")
 
+@login_required
 def complete(request):
   return render(request, "subscription_success.html")
 
+@login_required
 def cancel(request):
-  if request.user.is_authenticated:
-    profile = Profile.objects.get(user=request.user)
-    sub_id = profile.subscription.id
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user=request.user)
+        sub_id = profile.subscription.id
 
-    profile.user_type = 0 # free subscription
-    stripe.api_key = djstripe.settings.STRIPE_SECRET_KEY
-
-    try:
-      stripe.Subscription.delete(sub_id)
-    except Exception as e:
-      return JsonResponse({'error': (e.args[0])}, status =403)
-
-    profile.save()
-  return redirect("profile")
+        profile.user_type = 1 # free subscription
+        stripe.api_key = djstripe.settings.STRIPE_SECRET_KEY
+        
+        try:
+            stripe.Subscription.delete(sub_id)
+        except Exception as e:
+            return JsonResponse({'error': (e.args[0])}, status =403)
+        
+        profile.save()
+        return redirect("profile")

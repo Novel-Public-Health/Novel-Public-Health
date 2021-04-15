@@ -107,7 +107,7 @@
       stripeElements();
 
       function stripeElements() {
-            stripe = Stripe('pk_test_51IgJISLTF5lDg6OomxJ6O9xeztdzfrRQbU2fjMjVnECuzuuSluuLQS9wVZiJYBMqsgHsUxygx4mLaLJR5tItL6kJ00XI8ZFyyz');
+            stripe = Stripe('{{ stripe_pub_key }}');
 
             if (document.getElementById('card-element')) {
                   let elements = stripe.elements();
@@ -215,6 +215,7 @@
                               const paymentParams = {
                                     price_id: document.getElementById("priceId").innerHTML,
                                     payment_method: result.paymentMethod.id,
+                                    plan_id: document.getElementById("plan").innerHTML,
                               };
                               fetch("../create-sub", {
                                     method: 'POST',
