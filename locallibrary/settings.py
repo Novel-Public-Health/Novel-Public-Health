@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig', #This object was created for us in /catalog/apps.py
     'storages',
     's3direct',
-    'paypal.standard.ipn',
     'djstripe',
 ]
 
@@ -198,8 +197,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'index'
 
-PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER')
-PAYPAL_TEST = False
+# PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER')
+# PAYPAL_TEST = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
