@@ -6,7 +6,7 @@ html {
 }
 
 body {
-    background-color: #90C2E7;
+    background-color: white;
     font-family: 'Abel', sans-serif;
     margin: 0px;
     padding: 0px;
@@ -295,6 +295,10 @@ h2 {
 /* Registration Styles */
 .content-section {
     background-color: black;
+}
+
+.blog-wrapper {
+    background-color: white;
 }
 /* Extra small devices (phones, 600px and down) */
 
