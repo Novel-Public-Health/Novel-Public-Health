@@ -23,11 +23,11 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-    # Paypal urls #
-    path('paypal/', include('paypal.standard.ipn.urls')),
+    # Stripe urls #
     path('process_subscription/', views.process_subscription, name='process_subscription'),
-    path('payment-done/', views.payment_done, name='payment_done'),
-    path('payment-cancelled/', views.payment_canceled, name='payment_cancelled'),
+    path("create-sub", views.create_sub, name="create sub"),
+    path("complete", views.complete, name="complete"),
+    path("cancel", views.cancel, name="cancel"),
 ] 
 
 # Add URLConf to create, update, and delete directors

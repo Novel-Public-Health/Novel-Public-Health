@@ -12,7 +12,7 @@ def ipn_receiver(sender, **kwargs):
     ipn_obj = sender
 
     # check for subscription signup IPN
-    elif ipn_obj.txn_type == "subscr_signup":
+    if ipn_obj.txn_type == "subscr_signup":
 
         # get user id and activate the account
         id = ipn_obj.custom

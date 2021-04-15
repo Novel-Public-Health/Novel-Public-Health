@@ -4,15 +4,15 @@
 
 <h1>Hi {{ user.first_name }} {{ user.last_name }}!</h1>
 <h1>Current subscription tier: {{ user_profile.get_user_type_short }}</h1>
-<form method="POST">
-    {% csrf_token %}
-    <fieldset class="form-group">
-        {{ form|crispy }}
-        <div class="form-group">
-            <button id="sub-btn" class="btn btn-outline-info" type="submit">Change Subscription</button>
-        </div>
-    </fieldset>
+{% if user_profile.user_type == 1 %}
+<form action="../process_subscription">
+    <input type="submit" value="Buy Subscription" />
 </form>
+{% else %}
+<form action="../cancel">
+    <input type="submit" value="Cancel Current Subscription"/>
+</form>
+{% endif %}
 {% endblock content %}
 
 {% block javascript %}

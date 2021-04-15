@@ -4,19 +4,19 @@ from .forms import ContactForm
 
 # Create your views here.
 
-from .models import Movie, Director, Genre, Profile, Contact, Transaction, Invoice
+from .models import Movie, Director, Genre, Profile, Contact
 
 from django.views import generic
 
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from catalog.forms import UserRegisterForm, SubscriptionChangeForm
+from catalog.forms import UserRegisterForm
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 import datetime
 from django.contrib.auth.decorators import login_required, permission_required
@@ -25,9 +25,14 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import Director
 
-from paypal.standard.forms import PayPalPaymentsForm
 from django.conf import settings
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, requires_csrf_token
+
+# Stripe imports
+import stripe
+import djstripe
+import json
+from djstripe.models import Product
 
 def index(request):
     """View function for home page of site."""
@@ -63,20 +68,26 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
-def profile(request, transaction=None):
+@login_required
+def profile(request):
+    """
     if request.method == 'POST':
         form = SubscriptionChangeForm(request.POST)
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
-            request.session['new_type'] = profile.user_type
-            request.session['subscription_plan'] = request.POST.get('plans')
+            #request.session['new_type'] = profile.user_type
+            #request.session['subscription_plan'] = request.POST.get('plans')
             # redirect to paypal page after clicking change subscription button
+            import sys
+            print(sys.stderr, profile.subscription)
             return redirect('process_subscription')
     else:
         user_profile = Profile.objects.get(user=request.user)
         form = SubscriptionChangeForm(initial={'user_type': user_profile.user_type})
-    return render(request, 'users/profile.html', {'form': form, 'user_profile': user_profile})
+    """
+    user_profile = Profile.objects.get(user=request.user)
+    return render(request, 'users/profile.html', {'user_profile': user_profile})
 
 # contact form
 def contactUs(request):
@@ -162,68 +173,81 @@ class MovieDelete(PermissionRequiredMixin, DeleteView):
     success_url = reverse_lazy('movies')
     permission_required = 'catalog.can_mark_returned'
 
+@login_required
 def process_subscription(request):
-    new_type = request.session['new_type']
-    """if new_type == 1: # free account so no need to go through PayPal
-        profile = Profile.objects.get(user=request.user)
-        profile.user_type = new_type
-        profile.save()
-        return redirect('profile')"""
-    
-    # Purchasing a subscription through PayPal
-    host = request.get_host()
+    products = Product.objects.all()
+    return render(request, 'subscription_form.html', {"products": products})
 
-    transaction, created = Transaction.objects.get_or_create(user=request.user, subscription=new_type)
-    invoice = Invoice.objects.create(invoice_no=transaction.increment_invoice_number())
+@login_required
+def create_sub(request):
+    if request.method == 'POST':
+        # Reads application/json and returns a response
+        data = json.loads(request.body)
+        payment_method = data['payment_method']
+        stripe.api_key = djstripe.settings.STRIPE_SECRET_KEY
 
-    subscription_plan = request.session.get('subscription_plan')
-    host = request.get_host()
+        payment_method_obj = stripe.PaymentMethod.retrieve(payment_method)
+        djstripe.models.PaymentMethod.sync_from_stripe_data(payment_method_obj)
 
-    price = transaction.get_amount()
-    if subscription_plan == '1-month':
-        billing_cycle = 1
-        billing_cycle_unit = "M"
-    elif subscription_plan == '6-month':
-        billing_cycle = 6
-        billing_cycle_unit = "M"
+
+        try:
+            # This creates a new Customer and attaches the PaymentMethod in one API call.
+            customer = stripe.Customer.create(
+                payment_method=payment_method,
+                email=request.user.email,
+                invoice_settings={
+                    'default_payment_method': payment_method
+                }
+            )
+
+            djstripe_customer = djstripe.models.Customer.sync_from_stripe_data(customer)
+
+            profile = Profile.objects.get(user=request.user)
+            profile.customer = djstripe_customer
+                
+
+            # At this point, associate the ID of the Customer object with your
+            # own internal representation of a customer, if you have one.
+            # print(customer)
+
+            # Subscribe the user to the subscription created
+            subscription = stripe.Subscription.create(
+                customer=customer.id,
+                items=[
+                    {
+                        "price": data["price_id"],
+                    },
+                ],
+                expand=["latest_invoice.payment_intent"]
+            )
+
+            djstripe_subscription = djstripe.models.Subscription.sync_from_stripe_data(subscription)
+            
+            profile.subscription = djstripe_subscription
+            profile.user_type = profile.subscription.plan
+            profile.save()
+
+            return JsonResponse(subscription)
+        except Exception as e:
+            return JsonResponse({'error': (e.args[0])}, status =403)
     else:
-        billing_cycle = 1
-        billing_cycle_unit = "Y"
+        return HttpResponse("request method not allowed")
 
-    paypal_dict = {
-        "cmd": "_xclick-subscriptions",
-        "business": settings.PAYPAL_RECEIVER_EMAIL,
-        "a3": price,  # monthly price
-        "p3": billing_cycle,  # duration of each unit (depends on unit)
-        "t3": billing_cycle_unit,  # duration unit ("M for Month")
-        "src": "1",  # make payments recur
-        "sra": "1",  # reattempt payment on payment error
-        "currency_code": "USD",
-        "item_name": 'Example item',
-        "invoice": invoice.invoice_no,
-        'notify_url': 'http://{}{}'.format(host,
-                                           reverse('paypal-ipn')),
-        'return_url': 'http://{}{}'.format(host,
-                                           reverse('payment_done')),
-        'cancel_return': 'http://{}{}'.format(host,
-                                              reverse('payment_cancelled')),
-    }
+def complete(request):
+  return render(request, "subscription_success.html")
 
-    form = PayPalPaymentsForm(initial=paypal_dict, button_type="subscribe")
-    return render(request, 'paypal_form.html', {'transaction': transaction, 'form': form})
-
-@csrf_exempt
-def payment_done(request):
-    messages.success(request, f'Thank you for your order.')
-    transaction = Transaction.objects.get(user=request.user)
-    
+def cancel(request):
+  if request.user.is_authenticated:
     profile = Profile.objects.get(user=request.user)
-    profile.user_type = transaction.subscription
+    sub_id = profile.subscription.id
+
+    profile.user_type = 0 # free subscription
+    stripe.api_key = djstripe.settings.STRIPE_SECRET_KEY
+
+    try:
+      stripe.Subscription.delete(sub_id)
+    except Exception as e:
+      return JsonResponse({'error': (e.args[0])}, status =403)
+
     profile.save()
-
-    return redirect('profile')
-
-@csrf_exempt
-def payment_canceled(request):
-    messages.success(request, f'Payment cancelled.')
-    return redirect('profile')
+  return redirect("profile")
