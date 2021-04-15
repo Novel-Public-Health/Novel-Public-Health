@@ -3,13 +3,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
-<<<<<<< HEAD
 from NovelBlog.views import frontpage
 
-=======
 from django.conf.urls import include
 from . import views
->>>>>>> f43d723484cf243848e54674e37b507e29bc48c8
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -28,15 +25,12 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
-<<<<<<< HEAD
     path('blog', include('NovelBlog.urls')),
-=======
     # Stripe urls #
     path('process_subscription/', views.process_subscription, name='process_subscription'),
     path("create-sub", views.create_sub, name="create sub"),
     path("complete", views.complete, name="complete"),
     path("cancel", views.cancel, name="cancel"),
->>>>>>> f43d723484cf243848e54674e37b507e29bc48c8
 ] 
 
 # Add URLConf to create, update, and delete directors

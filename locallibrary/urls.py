@@ -28,7 +28,7 @@ from NovelBlog.views import frontpage
 from django.views.generic.base import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', frontpage, name='frontpage')
+    #path('', frontpage, name='frontpage')
 ]
 
 
