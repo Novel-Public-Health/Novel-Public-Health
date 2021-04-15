@@ -26,6 +26,8 @@
       <li><a href="{% url 'index' %}">About Us</a></li><br>
       <li><a href="{% url 'leadership' %}">Leadership</a></li><br>
       <li><a href="{% url 'directors' %}">Media</a></li><br>
+      <li><a href="{% url 'home' %}">Blog</a></li><br>
+      
       <li><a href="{% url 'contactUs' %}">Contact</a></li><br>
       {% if user.is_authenticated %}
       <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li><br>
@@ -45,6 +47,7 @@
             <li><a href="{% url 'index' %}">About</a></li>
             <li><a href="{% url 'leadership' %}">Leadership</a></li>
             <li><a href="{% url 'directors' %}">Media</a></li>
+            <li><a href="{% url 'home' %}">Blog</a></li>
             <li><a href="{% url 'contactUs' %}">Contact Us</a></li><br>
           </div>
 

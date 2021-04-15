@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import ContactForm
 
+
 # Create your views here.
 
 from .models import Movie, Director, Genre, Profile, Contact

@@ -51,7 +51,11 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig', #This object was created for us in /catalog/apps.py
     'storages',
     's3direct',
+<<<<<<< HEAD
+    'NovelBlog'
+=======
     'djstripe',
+>>>>>>> f43d723484cf243848e54674e37b507e29bc48c8
 ]
 
 MIDDLEWARE = [
@@ -115,7 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
