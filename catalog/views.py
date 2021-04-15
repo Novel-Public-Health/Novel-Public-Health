@@ -1,10 +1,39 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from .forms import ContactForm
 
 
 # Create your views here.
 
-from .models import Movie, Director, Genre
+from .models import Movie, Director, Genre, Profile, Contact
 
+from django.views import generic
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+from catalog.forms import UserRegisterForm
+
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect, JsonResponse
+from django.urls import reverse
+import datetime
+from django.contrib.auth.decorators import login_required, permission_required
+
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import Director
+
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt, requires_csrf_token
+
+# Stripe imports
+import stripe
+import djstripe
+import json
+from djstripe.models import Product
 
 def index(request):
     """View function for home page of site."""
@@ -28,11 +57,6 @@ def index(request):
                  'num_visits': num_visits},
     )
 
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages
-from catalog.forms import UserRegisterForm
-
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -41,13 +65,49 @@ def register(request):
             username = form.cleaned_data.get('username')
             messages.success(request, f'Your account has been created! You are now able to log in')
             return redirect('login')
-
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
+@login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    """
+    if request.method == 'POST':
+        form = SubscriptionChangeForm(request.POST)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = request.user
+            #request.session['new_type'] = profile.user_type
+            #request.session['subscription_plan'] = request.POST.get('plans')
+            # redirect to paypal page after clicking change subscription button
+            import sys
+            print(sys.stderr, profile.subscription)
+            return redirect('process_subscription')
+    else:
+        user_profile = Profile.objects.get(user=request.user)
+        form = SubscriptionChangeForm(initial={'user_type': user_profile.user_type})
+    """
+    user_profile = Profile.objects.get(user=request.user)
+    return render(request, 'users/profile.html', {'user_profile': user_profile})
+
+# contact form
+def contactUs(request):
+    if request.method== "POST":
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # print("Form is saved")
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            body = form.cleaned_data['body']
+
+            messages.success(request, f'Thanks for submitting a message!')
+            return redirect('contactUs')
+            
+    else:
+        form = ContactForm()
+    return render(request, 'contactUs.html', {'form': form})
 
 # About us view
 def aboutUs(request):
@@ -58,10 +118,6 @@ def ourPartners(request):
 
 def leadership(request):
     return render(request, 'leadership.html')
-
-
-from django.views import generic
-
 
 class MovieListView(generic.ListView):
     """Generic class-based view for a list of movies."""
@@ -84,91 +140,11 @@ class DirectorDetailView(generic.DetailView):
     """Generic class-based detail view for an director."""
     model = Director
 
-
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-"""
-class LoanedMoviesByUserListView(LoginRequiredMixin, generic.ListView):
-    Generic class-based view listing movies on loan to current user.
-    model = MovieInstance
-    template_name = 'catalog/movieinstance_list_borrowed_user.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return MovieInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
-"""
-
-# Added as part of challenge!
-from django.contrib.auth.mixins import PermissionRequiredMixin
-
-"""
-class LoanedMoviesAllListView(PermissionRequiredMixin, generic.ListView):
-    #Generic class-based view listing all movies on loan. Only visible to users with can_mark_returned permission.
-    model = MovieInstance
-    permission_required = 'catalog.can_mark_returned'
-    template_name = 'catalog/movieinstance_list_borrowed_all.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        return MovieInstance.objects.filter(status__exact='o').order_by('due_back')
-"""
-
-
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
-from django.urls import reverse
-import datetime
-from django.contrib.auth.decorators import login_required, permission_required
-
-# from .forms import RenewMovieForm
-from catalog.forms import RenewMovieForm
-
-
-@login_required
-@permission_required('catalog.can_mark_returned', raise_exception=True)
-def renew_movie_librarian(request, pk):
-    """View function for renewing a specific MovieInstance by librarian."""
-    movie_instance = get_object_or_404(MovieInstance, pk=pk)
-
-    # If this is a POST request then process the Form data
-    if request.method == 'POST':
-
-        # Create a form instance and populate it with data from the request (binding):
-        form = RenewMovieForm(request.POST)
-
-        # Check if the form is valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
-            movie_instance.due_back = form.cleaned_data['renewal_date']
-            movie_instance.save()
-
-            # redirect to a new URL:
-            return HttpResponseRedirect(reverse('all-borrowed'))
-
-    # If this is a GET (or any other method) create the default form
-    else:
-        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = RenewMovieForm(initial={'renewal_date': proposed_renewal_date})
-
-    context = {
-        'form': form,
-        'movie_instance': movie_instance,
-    }
-
-    return render(request, 'catalog/movie_renew_librarian.html', context)
-
-
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
-from .models import Director
-
-
 class DirectorCreate(PermissionRequiredMixin, CreateView):
     model = Director
     fields = ['first_name', 'last_name', 'date_of_birth', 'date_of_death']
     initial = {'date_of_death': '11/06/2020'}
     permission_required = 'catalog.can_mark_returned'
-
 
 class DirectorUpdate(PermissionRequiredMixin, UpdateView):
     model = Director
@@ -180,7 +156,6 @@ class DirectorDelete(PermissionRequiredMixin, DeleteView):
     model = Director
     success_url = reverse_lazy('directors')
     permission_required = 'catalog.can_mark_returned'
-
 
 # Classes created for the forms challenge
 class MovieCreate(PermissionRequiredMixin, CreateView):
@@ -194,8 +169,86 @@ class MovieUpdate(PermissionRequiredMixin, UpdateView):
     fields = ['title', 'director', 'summary', 'isbn', 'genre', 'language']
     permission_required = 'catalog.can_mark_returned'
 
-
 class MovieDelete(PermissionRequiredMixin, DeleteView):
     model = Movie
     success_url = reverse_lazy('movies')
     permission_required = 'catalog.can_mark_returned'
+
+@login_required
+def process_subscription(request):
+    products = Product.objects.all()
+    return render(request, 'subscription_form.html', {"products": products})
+
+@login_required
+def create_sub(request):
+    if request.method == 'POST':
+        # Reads application/json and returns a response
+        data = json.loads(request.body)
+        payment_method = data['payment_method']
+        stripe.api_key = djstripe.settings.STRIPE_SECRET_KEY
+
+        payment_method_obj = stripe.PaymentMethod.retrieve(payment_method)
+        djstripe.models.PaymentMethod.sync_from_stripe_data(payment_method_obj)
+
+
+        try:
+            # This creates a new Customer and attaches the PaymentMethod in one API call.
+            customer = stripe.Customer.create(
+                payment_method=payment_method,
+                email=request.user.email,
+                invoice_settings={
+                    'default_payment_method': payment_method
+                }
+            )
+
+            djstripe_customer = djstripe.models.Customer.sync_from_stripe_data(customer)
+
+            profile = Profile.objects.get(user=request.user)
+            profile.customer = djstripe_customer
+                
+
+            # At this point, associate the ID of the Customer object with your
+            # own internal representation of a customer, if you have one.
+            # print(customer)
+
+            # Subscribe the user to the subscription created
+            subscription = stripe.Subscription.create(
+                customer=customer.id,
+                items=[
+                    {
+                        "price": data["price_id"],
+                    },
+                ],
+                expand=["latest_invoice.payment_intent"]
+            )
+
+            djstripe_subscription = djstripe.models.Subscription.sync_from_stripe_data(subscription)
+            
+            profile.subscription = djstripe_subscription
+            profile.user_type = profile.subscription.plan
+            profile.save()
+
+            return JsonResponse(subscription)
+        except Exception as e:
+            return JsonResponse({'error': (e.args[0])}, status =403)
+    else:
+        return HttpResponse("request method not allowed")
+
+def complete(request):
+  return render(request, "subscription_success.html")
+
+def cancel(request):
+  if request.user.is_authenticated:
+    profile = Profile.objects.get(user=request.user)
+    sub_id = profile.subscription.id
+
+    profile.user_type = 0 # free subscription
+    stripe.api_key = djstripe.settings.STRIPE_SECRET_KEY
+
+    try:
+      stripe.Subscription.delete(sub_id)
+    except Exception as e:
+      return JsonResponse({'error': (e.args[0])}, status =403)
+
+    profile.save()
+  return redirect("profile")

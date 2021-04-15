@@ -26,3 +26,4 @@ mobileMenuList.addEventListener('transitionstart', () => {
 mobileMenuList.addEventListener('transitionend', () => {
     mobileMenuTransition = false;
 });
+

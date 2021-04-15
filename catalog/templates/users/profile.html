@@ -1,5 +1,42 @@
 {% extends "base_generic.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<h1>{{ user.first_name }} {{ user.last_name }}</h1>
+
+<h1>Hi {{ user.first_name }} {{ user.last_name }}!</h1>
+<h1>Current subscription tier: {{ user_profile.get_user_type_short }}</h1>
+{% if user_profile.user_type == 1 %}
+<form action="../process_subscription">
+    <input type="submit" value="Buy Subscription" />
+</form>
+{% else %}
+<form action="../cancel">
+    <input type="submit" value="Cancel Current Subscription"/>
+</form>
+{% endif %}
 {% endblock content %}
+
+{% block javascript %}
+<script>
+    user_type = document.getElementById("id_user_type");
+    user_type.addEventListener("change", changePlansPrice);
+    window.addEventListener('load', changePlansPrice);
+
+    var subscription_prices = "{{user_profile.get_subscription_prices}}".split(",");
+    var non_null_subscription_prices = subscription_prices.filter(function (el) {
+        return el != null && el != "";
+    });
+
+    subscription_plans = document.getElementById("id_plans");
+
+    function changePlansPrice() {
+        options = subscription_plans.getElementsByTagName('option');
+        current_price = non_null_subscription_prices[user_type.value-1];
+
+        for (let i = 0; i < options.length; i++) {
+            original_text = options[i].text.split('(')[0];
+            options[i].text = original_text + "\t($" + current_price + " / month)";
+        }
+    }
+
+</script>
+{% endblock %}

@@ -51,7 +51,11 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig', #This object was created for us in /catalog/apps.py
     'storages',
     's3direct',
+<<<<<<< HEAD
     'NovelBlog'
+=======
+    'djstripe',
+>>>>>>> f43d723484cf243848e54674e37b507e29bc48c8
 ]
 
 MIDDLEWARE = [
@@ -195,3 +199,24 @@ S3DIRECT_DESTINATIONS = {
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'index'
+
+# PAYPAL_RECEIVER_EMAIL = os.environ.get('PAYPAL_RECEIVER')
+# PAYPAL_TEST = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'novelpublichealthunc@gmail.com'
+EMAIL_HOST_PASSWORD = os.environ.get('NOVEL_GMAIL_PASSWORD')
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+STRIPE_TEST_PUBLIC_KEY ='pk_test_51IgJISLTF5lDg6OomxJ6O9xeztdzfrRQbU2fjMjVnECuzuuSluuLQS9wVZiJYBMqsgHsUxygx4mLaLJR5tItL6kJ00XI8ZFyyz'
+STRIPE_TEST_SECRET_KEY = 'sk_test_51IgJISLTF5lDg6Ooh5OUF2dqZq6KDHMjlHAHhJwxpDdGgqqaX1767krbRdXbqa3tAMXg6haeaPxiHlxbCU4QOPTf00XSXluXoC'
+STRIPE_LIVE_MODE = True  # Change to True in production
+DJSTRIPE_WEBHOOK_SECRET = "whsec_7PdcaUNOxl49pN8MlSrl5iEAPMtDBjty"
+DJSTRIPE_USE_NATIVE_JSONFIELD = True
+DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
+# CSRF_USE_SESSIONS = False
+# CSRF_COOKIE_HTTPONLY = False

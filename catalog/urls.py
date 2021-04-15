@@ -1,41 +1,43 @@
 from django.urls import path, include
 
-from . import views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+<<<<<<< HEAD
 from NovelBlog.views import frontpage
 
+=======
+from django.conf.urls import include
+from . import views
+>>>>>>> f43d723484cf243848e54674e37b507e29bc48c8
 
 urlpatterns = [
     path('', views.index, name='index'),
     path('aboutUs', views.aboutUs, name='aboutUs'),
-    path('ourPartners', views.ourPartners, name='ourPartners'),
     path('leadership', views.leadership, name='leadership'),
+    path('contactUs', views.contactUs, name='contactUs'),
+    # Movies #
     path('movies/', views.MovieListView.as_view(), name='movies'),
     path('movie/<int:pk>', views.MovieDetailView.as_view(), name='movie-detail'),
+    # Directors #
     path('directors/', views.DirectorListView.as_view(), name='directors'),
     path('directors/<int:pk>',
          views.DirectorDetailView.as_view(), name='director-detail'),
+    # User profile #
     path('register/', views.register, name='register'),
     path('profile/', views.profile, name='profile'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
+<<<<<<< HEAD
     path('blog', include('NovelBlog.urls')),
+=======
+    # Stripe urls #
+    path('process_subscription/', views.process_subscription, name='process_subscription'),
+    path("create-sub", views.create_sub, name="create sub"),
+    path("complete", views.complete, name="complete"),
+    path("cancel", views.cancel, name="cancel"),
+>>>>>>> f43d723484cf243848e54674e37b507e29bc48c8
 ] 
-
-"""
-urlpatterns += [
-    path('mymovies/', views.LoanedMoviesByUserListView.as_view(), name='my-borrowed'),
-    path(r'borrowed/', views.LoanedMoviesAllListView.as_view(), name='all-borrowed'),  # Added for challenge
-]
-"""
-
-# Add URLConf for librarian to renew a movie.
-urlpatterns += [
-    path('movie/<uuid:pk>/renew/', views.renew_movie_librarian, name='renew-movie-librarian'),
-]
-
 
 # Add URLConf to create, update, and delete directors
 urlpatterns += [
