@@ -2,14 +2,16 @@
 
 {% block content %}
 
-<h1 id="novel-title" class="movie-title" style="text-align: center;">{{ movie.title }}</h1>
+<h1 id="novel-title" class="movie-title">{{ movie.title }}</h1>
 
 {% if movie.file != None %}
-<div class="movie-video-ctr" style="width: 100%; text-align: center;">
-  <video class="movie-video" style="width: 90%; max-height: 100%; padding: 0; " controls controlsList="nodownload">
+<div class="movie-video-ctr" id="video-element-ctr" data-poster="/path/to/poster.jpg">
+  <video class="movie-video" id="player" playsinline controls>
     <source src="{{movie.get_movie_url}}" type="video/mp4">
-    Your browser does not support the video tag.
+    <!-- Captions are optional -->
+    <!-- <track kind="captions" label="English captions" src="/path/to/captions.vtt" srclang="en" default /> -->
   </video>
+  <div class="movie-video" id="ad-container"></div>
 </div>
 {% endif %}
 
@@ -30,4 +32,27 @@
 </ul>
 
 </div>
+{% endblock %}
+
+{% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/plyr.css' %}">
+{% endblock %}
+
+{% block javascript %}
+{% load static %}
+<script src="{% static 'js/plyr.js' %}"></script>
+<script>
+  var player = new Plyr('#player', {
+    title: '{{ movie.title }}',
+    ads: {
+      enabled: true,
+      publisherId: '', // with https://www.vi.ai/
+      tagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator='
+    },
+    // captions: {
+    //   active: true,
+    // },
+  });
+</script>
 {% endblock %}

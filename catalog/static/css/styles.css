@@ -17,6 +17,20 @@ body {
     /* overflow-y: visible; */
 }
 
+/* Movie Styles */
+
+.movie-video-ctr {
+    width: 100%;
+    /* height: 500px; */
+    position: relative;
+    margin: 0 auto;
+}
+
+.plyr {
+    width: 75%;
+    margin: 0 auto;
+}
+
 #contentBody {
     position: relative;
     top: 10%;
@@ -89,7 +103,7 @@ nav a {
 }
 
 #mobileMenuList li {
-    float: left; 
+    float: left;
     clear: both;
 }
 
@@ -664,7 +678,6 @@ h2 {
         top: 35px;
         left: 16px;
     }
-
     #mobileMenu span {
         display: flex;
         width: 40px;
@@ -679,7 +692,6 @@ h2 {
         transform-origin: 5px 0px;
         transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), background 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0), opacity 0.55s ease;
     }
-
     #mobileMenu span:first-child {
         transform-origin: 0% 0%;
     }
