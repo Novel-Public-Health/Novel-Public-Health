@@ -11,3 +11,6 @@ python manage.py collectstatic --no-input
 :: Sync any subscription changes from stripe
 python .\manage.py djstripe_sync_plans_from_stripe
 python manage.py runserver 127.0.0.1:8000
+
+:: to see the app's env vars
+:: heroku config --app novel-public-health
