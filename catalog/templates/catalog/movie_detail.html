@@ -2,24 +2,27 @@
 
 {% block content %}
 
-<h1>Title: {{ movie.title }}</h1>
+<h1 id="novel-title" class="movie-title" style="text-align: center;">{{ movie.title }}</h1>
+
+{% if movie.file != None %}
+<div class="movie-video-ctr" style="width: 100%; text-align: center;">
+  <video class="movie-video" style="width: 90%; max-height: 100%; padding: 0; " controls controlsList="nodownload">
+    <source src="{{movie.get_movie_url}}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+{% endif %}
 
 <p><strong>Director:</strong> <a href="{% url 'director-detail' movie.director.pk %}">{{ movie.director }}</a></p>
 <p><strong>Summary:</strong> {{ movie.summary }}</p>
 <p><strong>Genre:</strong> {{ movie.genre }}</p>
 <p><strong>Release Date:</strong> {{ movie.year }}</p>
 <p><strong>Runtime:</strong> {{ movie.duration }}</p>
-<p><strong>FPS:</strong> {{ movie.fps }}</p> 
-<p><strong>Video Dimensions:</strong> {{ movie.dimensions }}</p> 
-<p><strong>Language:</strong> {{ movie.language }}</p> 
+<p><strong>FPS:</strong> {{ movie.fps }}</p>
+<p><strong>Video Dimensions:</strong> {{ movie.dimensions }}</p>
+<p><strong>Language:</strong> {{ movie.language }}</p>
 
-{% if movie.file != None %}
-<video width="320" height="240" controls>
-    <source src="{{movie.get_movie_url}}" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-{% endif %}
-
+<h3>Relevant Public Health Research Articles</h3>
 <ul>
   {% autoescape off %}
   {{movie.found_articles}}
@@ -28,4 +31,3 @@
 
 </div>
 {% endblock %}
-

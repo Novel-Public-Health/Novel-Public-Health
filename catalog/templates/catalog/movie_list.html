@@ -1,17 +1,20 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Movie List</h1>
+    <h1 id="novel-title">Movie List</h1>
 
     {% if movie_list %}
     <ul>
 
       {% for movie in movie_list %}
       <li>
-        <a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a> ({{movie.director}})
-      </li>
-      {% endfor %}
+        <a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a> 
+        (directed by <a href="{{ movie.director.get_absolute_url }}">{{ movie.director }}</a>)
+        <p><strong>Summary:</strong> {{ movie.summary }}</p>
 
+      </li>
+      <br>
+      {% endfor %}
     </ul>
 
     {% else %}
