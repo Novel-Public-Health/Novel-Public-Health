@@ -43,11 +43,16 @@
 {% load static %}
 <script src="{% static 'js/plyr.js' %}"></script>
 <script>
+  var enableAds = '{{profile.user_type}}' != '3';
+  console.log((enableAds) ? 'ads enabled' : 'ads disabled');
+  
   var player = new Plyr('#player', {
     title: '{{ movie.title }}',
     ads: {
-      enabled: true,
-      publisherId: '', // with https://www.vi.ai/
+      enabled: enableAds,
+      // ad integration with https://www.vi.ai/
+      publisherId: '',
+      // Insert custom VAST tag here if not using vi for ads
       tagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator='
     },
     // captions: {

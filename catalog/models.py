@@ -207,7 +207,7 @@ class Movie(models.Model):
 import uuid  # Required for unique movie instances
 from datetime import date
 
-from django.contrib.auth.models import User  # Required to assign User as a borrower
+from django.contrib.auth.models import User
 
 class Director(models.Model):
     """Model representing a director."""

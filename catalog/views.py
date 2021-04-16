@@ -130,6 +130,10 @@ class MovieDetailView(generic.DetailView):
     """Generic class-based detail view for a movie."""
     model = Movie
 
+    def get_context_data(self, **kwargs):
+        context = super(MovieDetailView, self).get_context_data(**kwargs)
+        context['profile'] = Profile.objects.get(user=self.request.user)
+        return context
 
 class DirectorListView(generic.ListView):
     """Generic class-based list view for a list of directors."""
