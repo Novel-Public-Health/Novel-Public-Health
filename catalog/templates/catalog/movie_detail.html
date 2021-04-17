@@ -4,7 +4,7 @@
 
 <h1 id="novel-title" class="movie-title">{{ movie.title }}</h1>
 
-{% if movie.file != None %}
+{% if movie.file != None and is_user is True %}
 <div class="movie-video-ctr" id="video-element-ctr" data-poster="/path/to/poster.jpg">
   <video class="movie-video" id="player" playsinline controls>
     <source src="{{movie.get_movie_url}}" type="video/mp4">
@@ -13,6 +13,11 @@
   </video>
   <div class="movie-video" id="ad-container"></div>
 </div>
+{% else %}
+<p>
+  You're not logged in!
+  <a href="{% url 'login' %}?next={{request.path}}">Log In</a> or <a href="{% url 'register' %}?next={{request.path}}">Register</a> to watch this film!
+</p>
 {% endif %}
 
 <p><strong>Director:</strong> <a href="{% url 'director-detail' movie.director.pk %}">{{ movie.director }}</a></p>
@@ -45,7 +50,7 @@
 <script>
   var enableAds = '{{profile.user_type}}' != '3';
   console.log((enableAds) ? 'ads enabled' : 'ads disabled');
-  
+
   var player = new Plyr('#player', {
     title: '{{ movie.title }}',
     ads: {

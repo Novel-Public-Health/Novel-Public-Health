@@ -20,14 +20,9 @@ body {
 /* Movie Styles */
 
 .movie-video-ctr {
-    width: 100%;
+    width: 75%;
     /* height: 500px; */
     position: relative;
-    margin: 0 auto;
-}
-
-.plyr {
-    width: 75%;
     margin: 0 auto;
 }
 
