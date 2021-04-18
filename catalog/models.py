@@ -56,7 +56,11 @@ class Movie(models.Model):
     # Genre class has already been defined so we can specify the object above.
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given \
                                                                                                         a valid IMDB id and left blank.')
+
     year = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
+
+    thumbnail = models.CharField('Thumbnail', max_length=500, blank=True, null=True, help_text='This field will be overwritten \
+                                                                                                if given a valid IMDB id and left blank.')
 
     file = S3DirectField(dest='videos', blank=True, null=True)
     #image = S3DirectField(dest='images', blank=True)
@@ -103,7 +107,7 @@ class Movie(models.Model):
         id_found = reg.match(self.imdb_link)
         if id_found:
             movie = ia.get_movie(id_found.group(2))   
-            return [movie['year'], movie['directors'][0], movie['genres'][0], movie['title'], movie.get('plot')[0]]
+            return [movie['year'], movie['directors'][0], movie['genres'][0], movie['title'], movie.get('plot')[0], movie['cover url']]
         else:
             raise Exception(f"No imdb match found for imdb link: {self.imdb_link}")
 
@@ -157,6 +161,7 @@ class Movie(models.Model):
             imdb_stats = self.get_imdb_stats()
             orig.title = imdb_stats[3]
             orig.year = imdb_stats[0]
+            orig.thumbnail = imdb_stats[5]
 
             # check if director name already exists. if not, create and assign to the movie
             director = None
@@ -194,6 +199,10 @@ class Movie(models.Model):
             if not self.summary:
                 orig.summary = imdb_stats[4]
                 fields_to_update.append('summary')
+            if not self.thumbnail:
+                fields_to_update.append('thumbnail')
+
+
         except Exception as e:
             pass
             #print(sys.stderr, e)

@@ -749,3 +749,49 @@ h2 {
     border-width: 1px;
     border-radius: 2px;
 }
+
+.movieBlock {
+    background-color:#90C2E7;
+    border-bottom: 1px solid #ccc;
+    display: table;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    width: 80%;
+    border-radius: 10px;
+
+    }
+    /* ul#movieBlock li {
+    display: inline;
+    } */
+
+
+.moviePoster {
+    float: left;
+}
+
+.movieInfo {
+    padding: 20px;
+}
+
+.movieTitle {
+    font-family: 'Staatliches', cursive;
+    font-size: 200%;
+    padding: 20px;
+}
+
+.movieDescription {
+    text-align: left;
+    padding-left: 120px;
+}
+
+.movieDirector {
+   padding-top: 0px;
+   padding-left: 120px;
+   font-style: italic;
+
+}

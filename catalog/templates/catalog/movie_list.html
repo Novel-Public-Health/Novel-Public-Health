@@ -4,13 +4,15 @@
     <h1 id="novel-title">Movie List</h1>
 
     {% if movie_list %}
-    <ul>
+    <ul >
 
       {% for movie in movie_list %}
-      <li>
-        <a href="{{ movie.get_absolute_url }}">{{ movie.title }}</a> 
-        (directed by <a href="{{ movie.director.get_absolute_url }}">{{ movie.director }}</a>)
-        <p><strong>Summary:</strong> {{ movie.summary }}</p>
+      <li class="movieBlock">
+        <img class="moviePoster" src="{{ movie.thumbnail }}" alt= "{{ movie.title }}">
+        <a class= "movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a> 
+      
+        <p class= "movieDirector"> Directed by <a href="{{ movie.director.get_absolute_url }}">{{ movie.director }}</a> </p>
+        <p class= "movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
 
       </li>
       <br>
