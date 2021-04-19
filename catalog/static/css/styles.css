@@ -24,6 +24,7 @@ body {
     /* height: 500px; */
     position: relative;
     margin: 0 auto;
+    padding: 100px;
 }
 
 #contentBody {
@@ -417,6 +418,24 @@ h2 {
     color: white;
 }
 
+h3 {
+    font-family: 'Staatliches', cursive;
+    font-size: 30px;
+}
+
+
+h4 {
+    font-family: 'Staatliches', cursive;
+    font-size: 50px;
+}
+
+h5 {
+    color: #5490b1;
+    font-family: 'Staatliches', cursive;
+    font-size: 30px;
+}
+
+
 .main-display {
     background-color: black;
 }
@@ -754,8 +773,8 @@ h2 {
     background-color:#90C2E7;
     border-bottom: 1px solid #ccc;
     display: table;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     padding-top: 10px;
     padding-bottom: 10px;
     margin-left: auto;
@@ -772,10 +791,9 @@ h2 {
 
 .moviePoster {
     float: left;
-}
+    width: 100px;
+    height: auto;
 
-.movieInfo {
-    padding: 20px;
 }
 
 .movieTitle {
@@ -793,5 +811,118 @@ h2 {
    padding-top: 0px;
    padding-left: 120px;
    font-style: italic;
+}
+
+.researchArticles {
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    display: table;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.profileBlock {
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    display: table;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.profileInfo {
+    background-color:  #e4f2fc;;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
 
 }
+
+.blogContent {
+    font-family: 'Ubuntu';
+    font-size: 20px;
+}
+
+#commentHeaders {
+    font-family: 'Staatliches', cursive;
+    color: black; 
+}
+
+#blogTitle {
+    font-family: 'Staatliches', cursive;
+    color: black;
+}
+
+#blogPost {
+    background-color: #a1d8f55d;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+
+}
+
+.commentBox {
+    background-color: #a1d8f55d;
+    border-radius: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+#startDiscussion {
+    background-color: #E8E8E8;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+
+.myButton {
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+	background-color:#ffffff;
+	border-radius:6px;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	cursor:pointer;
+	color:#666666;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #ffffff;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+	background-color:#f6f6f6;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+

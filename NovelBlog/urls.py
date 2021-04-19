@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from .views import frontpage, ArticleDetailView, AddPostView, AddCommentView
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', frontpage.as_view(), name="home"),

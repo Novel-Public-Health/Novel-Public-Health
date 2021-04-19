@@ -5,7 +5,7 @@
 <h1 id="novel-title" class="movie-title">{{ movie.title }}</h1>
 
 {% if movie.file != None and is_user is True %}
-<div class="movie-video-ctr" id="video-element-ctr" data-poster="/path/to/poster.jpg">
+<div class="movie-video-ctr" id="video-element-ctr" data-poster="/path/to/poster.jpg" style="padding:100px">
   <video class="movie-video" id="player" playsinline controls>
     <source src="{{movie.get_movie_url}}" type="video/mp4">
     <!-- Captions are optional -->
@@ -20,21 +20,33 @@
 </p>
 {% endif %}
 
-<p><strong>Director:</strong> <a href="{% url 'director-detail' movie.director.pk %}">{{ movie.director }}</a></p>
-<p><strong>Summary:</strong> {{ movie.summary }}</p>
-<p><strong>Genre:</strong> {{ movie.genre }}</p>
-<p><strong>Release Date:</strong> {{ movie.year }}</p>
-<p><strong>Runtime:</strong> {{ movie.duration }}</p>
-<p><strong>FPS:</strong> {{ movie.fps }}</p>
-<p><strong>Video Dimensions:</strong> {{ movie.dimensions }}</p>
-<p><strong>Language:</strong> {{ movie.language }}</p>
+<div class="movieBlock">
+  <h3 >About The Movie</h3>
+  <p><strong>Director:</strong> <a href="{% url 'director-detail' movie.director.pk %}">{{ movie.director }}</a></p>
+  <p><strong>Summary:</strong> {{ movie.summary }}</p>
+  <p><strong>Genre:</strong> {{ movie.genre }}</p>
+  <p><strong>Release Date:</strong> {{ movie.year }}</p>
+  <p><strong>Runtime:</strong> {{ movie.duration }}</p>
+  <p><strong>FPS:</strong> {{ movie.fps }}</p>
+  <p><strong>Video Dimensions:</strong> {{ movie.dimensions }}</p>
+  <p><strong>Language:</strong> {{ movie.language }}</p>
 
-<h3>Relevant Public Health Research Articles</h3>
-<ul>
+
+</div>
+
+<div class = "researchArticles"> 
+  <h3 >Relevant Public Health Research Articles</h3>
+  <ul>
   {% autoescape off %}
   {{movie.found_articles}}
   {% endautoescape %}
-</ul>
+  </ul>
+
+</div>
+
+
+
+
 
 </div>
 {% endblock %}

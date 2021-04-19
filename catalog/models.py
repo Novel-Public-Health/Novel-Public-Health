@@ -239,7 +239,7 @@ from djstripe.models import Customer, Subscription
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     USER_TYPE_CHOICES = (
-        (1, 'free - access independent films and media outlets'),
+        (1, 'Free - access independent films and media outlets'),
         (2, 'Low Subscription - access to Hollywood films'),
         (3, 'Premium Subscription - access to A-list movies')
     )

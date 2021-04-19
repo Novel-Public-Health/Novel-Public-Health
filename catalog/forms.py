@@ -99,6 +99,6 @@ class ContactForm(forms.ModelForm):
             'email',
             'subject',
             'body',
-            Submit('submit', 'Submit', css_class='contact-btn')
+            Submit('submit', 'Submit', css_class='myButton')
 
         )
