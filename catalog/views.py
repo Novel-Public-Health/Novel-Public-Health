@@ -125,6 +125,12 @@ class MovieListView(generic.ListView):
     model = Movie
     paginate_by = 10
 
+    # sort in alphabetical order
+    def get_ordering(self):
+        ordering = self.request.GET.get('ordering', 'title')
+        # validate ordering here
+        return ordering
+    
 
 class MovieDetailView(generic.DetailView):
     """Generic class-based detail view for a movie."""

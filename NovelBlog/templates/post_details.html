@@ -45,7 +45,7 @@
                                     <small style="float:right"> {{ comment.date_added }}</small>
                                     <br/> 
                                 </div>
-                                
+                            <br/> 
                             {% endfor %}
                     {% else %}
                         <a id="startDiscussion"  style="text-decoration: none; color: rgb(37, 169, 202);" href="{% url 'add_comment' post.pk %}">Add a comment</a>
@@ -61,6 +61,7 @@
                                     <small style="float:right"> {{ comment.date_added }}</small>
                                     <br/> 
                                 </div>
+                                <br/> 
                             {% endfor %}
                     {% endif %}
                 {% endif %}
