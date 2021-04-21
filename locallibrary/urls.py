@@ -63,4 +63,5 @@ urlpatterns += static(settings.MEDIA_URL_LOCAL, document_root=settings.MEDIA_ROO
 
 urlpatterns += [
     url(r'^s3direct/', include('s3direct.urls')),
+    url(r'^ratings/', include('star_ratings.urls', namespace='ratings')),
 ]

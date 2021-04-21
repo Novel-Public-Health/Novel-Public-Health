@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     's3direct',
     'NovelBlog',
     'djstripe',
+    'star_ratings',
 ]
 
 MIDDLEWARE = [
@@ -215,3 +216,10 @@ STRIPE_LIVE_MODE = False  # Change to True in production
 DJSTRIPE_WEBHOOK_SECRET = "whsec_7PdcaUNOxl49pN8MlSrl5iEAPMtDBjty"
 DJSTRIPE_USE_NATIVE_JSONFIELD = True
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
+
+# Rating star system
+STAR_RATINGS_STAR_WIDTH = 24
+STAR_RATINGS_STAR_HEIGHT = 24
+STAR_RATINGS_RANGE = 5
+STAR_RATINGS_ANONYMOUS = False
+# STAR_RATINGS_STAR_SPRITE 

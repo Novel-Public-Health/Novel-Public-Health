@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% load ratings %}
+
 {% block content %}
     <h1 id="novel-title">Movie List</h1>
 
@@ -11,7 +13,7 @@
         <img class="moviePoster" src="{{ movie.thumbnail }}" alt= "{{ movie.title }}">
         <a class= "movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a> 
         <p class="movieTags">  {{ movie.genre }} </p>
-      
+        <div style="float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
         <p class= "movieDirector"> Directed by <a href="{{ movie.director.get_absolute_url }}">{{ movie.director }}</a> </p>
         <p class= "movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
 
@@ -24,4 +26,3 @@
       <p>There are no movies in the library.</p>
     {% endif %}       
 {% endblock %}
-

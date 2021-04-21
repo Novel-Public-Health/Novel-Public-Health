@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% load ratings %}
+
 {% block content %}
 
 <h1 id="novel-title" class="movie-title">{{ movie.title }}</h1>
@@ -14,14 +16,16 @@
   <div class="movie-video" id="ad-container"></div>
 </div>
 {% else %}
-<p  class="movieBlock" style="background-color: #e4f2fc;">
+<p class="movieBlock" style="background-color: #e4f2fc;">
   You're not logged in!
-  <a href="{% url 'login' %}?next={{request.path}}">Log In</a> or <a href="{% url 'register' %}?next={{request.path}}">Register</a> to watch this film!
+  <a href="{% url 'login' %}?next={{request.path}}">Log In</a> or <a
+    href="{% url 'register' %}?next={{request.path}}">Register</a> to watch this film!
 </p>
 {% endif %}
 
 <div class="movieBlock">
-  <h3 >About The Movie</h3>
+  <p>{% ratings movie 32 32 %} ({{movie.ratings.get.count}})</p>
+  <h3>About The Movie</h3>
   <p><strong>Director:</strong> <a href="{% url 'director-detail' movie.director.pk %}">{{ movie.director }}</a></p>
   <p><strong>Summary:</strong> {{ movie.summary }}</p>
   <p><strong>Genre:</strong> {{ movie.genre }}</p>
@@ -34,20 +38,13 @@
 
 </div>
 
-<div class = "researchArticles"> 
-  <h3 >Relevant Public Health Research Articles</h3>
+<div class="researchArticles">
+  <h3>Relevant Public Health Research Articles</h3>
   <ul>
-  {% autoescape off %}
-  {{movie.found_articles}}
-  {% endautoescape %}
+    {% autoescape off %}
+    {{movie.found_articles}}
+    {% endautoescape %}
   </ul>
-
-</div>
-
-
-
-
-
 </div>
 {% endblock %}
 

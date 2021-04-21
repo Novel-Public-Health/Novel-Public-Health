@@ -6,6 +6,10 @@ from django.urls import reverse  # To generate URLS by reversing URL patterns
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator 
 
+# Movie rating imports
+from django.contrib.contenttypes.fields import GenericRelation
+from star_ratings.models import Rating
+
 from s3direct.fields import S3DirectField
 
 import imdb
@@ -72,6 +76,8 @@ class Movie(models.Model):
     max_num_find_articles = models.IntegerField('Max number of research articles', default=5, validators=[MinValueValidator(0), MaxValueValidator(100)], help_text="Default number is 5.")
     found_articles = models.TextField('Found Research Articles', max_length=5000, null=True, blank=True, help_text="HTML list output of found research \
                                                                                     articles on Google Scholar. Clear the text to find new articles.")
+    
+    ratings = GenericRelation(Rating, related_query_name='movie-rating')
     
     class Meta:
         ordering = ['title', 'director']
