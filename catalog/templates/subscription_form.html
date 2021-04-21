@@ -1,14 +1,13 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-
 <br><br>
 <br><br>
 <div class="container ">
       <div class="row ">
             {% for p in products %}
             <div class="col-6 col-s-12">
-                  <div class="card mx-auto shadow" style="border-radius: 10px; border:none; ">
+                  <div class="card mx-auto shadow">
                         <div class="card-body">
                               <h5 class="card-title font-weight-bold">{{p.name}}</h5>
                               <p class="card-text text-muted">
@@ -39,7 +38,7 @@
       <div>
             <div class="row">
                   <div class="col-12">
-                        <div class="card mx-5 shadow rounded" style="border-radius:50px;border:none">
+                        <div class="card mx-5 shadow rounded">
                               <div class="card-body">
                                     <h5 class="card-title font-weight-bold">Checkout</h5>
                                     <p class="text-muted ">Enter card details. Your subscription will start immediately
@@ -79,34 +78,52 @@
       </div>
       <br><br>
 </div>
-
 {% endblock %}
 
 {% block style %}
-<!-- Add bootstrap for this page only -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <style>
-      nav {
-            width: 100%;
-            padding: 40px !important;
-            padding-left: 10% !important;
-            padding-right: 10% !important;
-            list-style-type: none;
+      .container {
+            width: 80%;
+            margin: 0 auto;
       }
 
-      nav ul {
-            width: 100%;
-            list-style-type: none !important;
+      .row {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-gap: 20px;
       }
 
-      nav a {
-            color: white !important;
-            text-decoration: none !important;
+      .col-6 {
+            grid-column: span 6;
       }
 
-      .nav-item ul {
-            width: auto !important;
+      .col-12 {
+            grid-column: span 12;
+      }
+
+      .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            border-radius: 5px;
+            padding: 20px;
+            /* 5px rounded corners */
+      }
+
+      .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      hr {
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border: 0;
+            border-top: 1px solid rgba(0, 0, 0, .1);
+      }
+
+      @media (max-width: 992px) {
+            .col-s-12 {
+                  grid-column: span 12;
+            }
       }
 </style>
 {% endblock %}

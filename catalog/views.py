@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import ContactForm
+from .forms import ContactForm, UserUpdateForm
 
 
 # Create your views here.
@@ -72,24 +72,17 @@ def register(request):
 
 @login_required
 def profile(request):
-    """
     if request.method == 'POST':
-        form = SubscriptionChangeForm(request.POST)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = request.user
-            #request.session['new_type'] = profile.user_type
-            #request.session['subscription_plan'] = request.POST.get('plans')
-            # redirect to paypal page after clicking change subscription button
-            import sys
-            print(sys.stderr, profile.subscription)
-            return redirect('process_subscription')
+        u_form = UserUpdateForm(request.POST,instance=request.user,initial={'email': request.user.email, 'username': request.user.username})
+        if u_form.is_valid():
+            u_form.save()
+            messages.success(request,'Your Profile has been updated!')
+            return redirect('profile')
     else:
-        user_profile = Profile.objects.get(user=request.user)
-        form = SubscriptionChangeForm(initial={'user_type': user_profile.user_type})
-    """
+        u_form = UserUpdateForm(instance=request.user.profile, initial={'email': request.user.email, 'username': request.user.username})
+
     user_profile = Profile.objects.get(user=request.user)
-    return render(request, 'users/profile.html', {'user_profile': user_profile})
+    return render(request, 'users/profile.html', {'user_profile': user_profile, 'u_form': u_form})
 
 # contact form
 def contactUs(request):

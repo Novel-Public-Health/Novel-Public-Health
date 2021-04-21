@@ -4,22 +4,28 @@
 
 <div class="profileBlock">
 
-<h4>Welcome, {{ user.first_name }} {{ user.last_name }}!</h4>
-<h5>Current subscription tier: </h5>
-<div class="profileInfo">
-<p> {{ user_profile.get_user_type }} </p>
+    <h4>Welcome, {{ user.first_name }} {{ user.last_name }}!</h4>
+    <h5>Current subscription: </h5>
+    <div class="profileInfo">
+        <p> {{ user_profile.get_user_type }} </p>
 
-{% if user_profile.user_type == 1 %}
-<form action="/process_subscription">
-    <input class = "myButton" type="submit" value="Buy Subscription" />
-</form>
-{% else %}
-<form action="/cancel">
-    <input class= "myButton" type="submit" value="Cancel Current Subscription"/>
-</form>
-
-</div>
-
-{% endif %}
-{% endblock content %}
+        {% if user_profile.user_type == 1 %}
+        <form action="/process_subscription">
+            <input class="myButton" type="submit" value="Buy Subscription" />
+        </form>
+        {% else %}
+        <form action="/cancel">
+            <input class="myButton" type="submit" value="Cancel Current Subscription" />
+        </form>
+        {% endif %}
+    </div>
+    <h5>Change Profile Info: </h5>
+    <div class="profileInfo">
+        <form class="profileForm" method='POST' enctype="multipart/form-data">
+            {%csrf_token%}
+            {{u_form|crispy}}
+            <input class="myButton" type="submit" value="Submit" />
+        </form>
+    </div>
+    {% endblock content %}
 </div>

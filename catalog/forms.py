@@ -102,3 +102,8 @@ class ContactForm(forms.ModelForm):
             Submit('submit', 'Submit', css_class='myButton')
 
         )
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model=User
+        fields=['username','email']       
