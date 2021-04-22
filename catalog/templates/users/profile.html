@@ -20,7 +20,8 @@
         {% endif %}
     </div>
     <h5>Change Profile Info: </h5>
-    <div class="profileInfo">
+    <div style="padding-left: 20px;" class="profileInfo">
+        <br/>
         <form class="profileForm" method='POST' enctype="multipart/form-data">
             {%csrf_token%}
             {{u_form|crispy}}

@@ -15,6 +15,9 @@ urlpatterns = [
     path('contactUs', views.contactUs, name='contactUs'),
     # Movies #
     path('movies/', views.MovieListView.as_view(), name='movies'),
+    path('movies/title_reverse', views.MovieListViewReverse.as_view(), name='movies-reverse'),
+    path('movies/by_director', views.MovieListDirectorView.as_view(), name='movies-director'),
+    path('movies/by_rating', views.MovieListRatingView.as_view(), name='movies-rating'),
     path('movie/<int:pk>', views.MovieDetailView.as_view(), name='movie-detail'),
     # Directors #
     path('directors/', views.DirectorListView.as_view(), name='directors'),

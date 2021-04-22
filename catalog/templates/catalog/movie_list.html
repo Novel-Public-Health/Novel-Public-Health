@@ -4,6 +4,17 @@
 
 {% block content %}
     <h1 id="novel-title">Movie List</h1>
+    <div class="dropdown">
+      <span> Sort By </span>
+      <div class="dropdown-content">
+        <a href="/movies">Title (A-Z)</a>
+        <a href="/movies/title_reverse">Title (Z-A)</a>
+        <a href="/movies/by_director">Director (First Name) </a>
+        <a href="/movies/by_rating">Rating</a>
+      </div>
+    </div>
+
+    <br/> <br/> <br/>
 
     {% if movie_list %}
     <ul >

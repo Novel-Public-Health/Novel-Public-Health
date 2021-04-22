@@ -124,6 +124,32 @@ class MovieListView(generic.ListView):
         # validate ordering here
         return ordering
     
+class MovieListViewReverse(generic.ListView):
+    model = Movie
+    paginate_by = 10
+
+    def get_ordering(self):
+        ordering = self.request.GET.get('ordering', '-title')
+        # validate ordering here
+        return ordering
+
+class MovieListDirectorView(generic.ListView):
+    model = Movie
+    paginate_by = 10
+
+    def get_ordering(self):
+        ordering = self.request.GET.get('ordering', 'director')
+        # validate ordering here
+        return ordering
+
+
+class MovieListRatingView(generic.ListView):
+    model = Movie
+    paginate_by = 10
+    def get_ordering(self):
+        ordering = self.request.GET.get('ordering', 'ratings')
+        # validate ordering here
+        return ordering
 
 class MovieDetailView(generic.DetailView):
     """Generic class-based detail view for a movie."""
