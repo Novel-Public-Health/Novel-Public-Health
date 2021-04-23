@@ -27,15 +27,16 @@
     <ul id="mobileMenuList">
       <li><a href="{% url 'index' %}">About Us</a></li>
       <li><a href="{% url 'leadership' %}">Leadership</a></li>
-      <li class="mobile-nav-item"><a>Media</a>
-        <ul>
-          <li><a href="{% url 'movies' %}">Movies</a></li>
-          <li><a href="{% url 'directors' %}">Directors</a></li>
-        </ul>
-      </li>
+      <!-- Commented as an example of how to make a dropdown list -->
+      <!-- <li class="mobile-nav-item"><a>Media</a> -->
+      <!-- <ul> -->
+      <li><a href="{% url 'movies' %}">Media</a></li>
+      <!-- </ul> -->
+      <!-- </li> -->
       <li><a href="{% url 'home' %}">Blog</a></li>
 
       <li><a href="{% url 'contactUs' %}">Contact</a></li>
+      <li style="visibility: hidden;"><a></a></li>
       {% if user.is_authenticated %}
       <li><a href="{% url 'profile' %}">Hi, {{ request.user.first_name }}</a></li>
       <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</p></a></li>
@@ -53,12 +54,12 @@
           <div class="nav-left">
             <li><a href="{% url 'index' %}">About</a></li>
             <li><a href="{% url 'leadership' %}">Leadership</a></li>
-            <li class="nav-item"><a>Media</a>
-              <ul>
-                <li><a href="{% url 'movies' %}">Movies</a></li>
-                <li><a href="{% url 'directors' %}">Directors</a></li>
-              </ul>
-            </li>
+            <!-- Commented as an example of how to make a dropdown list -->
+            <!-- <li class="nav-item"><a>Media</a> -->
+            <!-- <ul> -->
+            <li><a href="{% url 'movies' %}">Media</a></li>
+            <!-- </ul> -->
+            <!-- </li> -->
             <li><a href="{% url 'home' %}">Blog</a></li>
             <li><a href="{% url 'contactUs' %}">Contact Us</a></li><br>
           </div>
@@ -83,4 +84,5 @@
 </body>
 <script src="{% static 'js/index.js' %}"></script>
 {% block javascript %}{% endblock %}
+
 </html>
