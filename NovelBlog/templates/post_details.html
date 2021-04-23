@@ -19,75 +19,9 @@
             <br>
             <br/>
             <hr>
-
-        </div>
-        <div class="comments" style="margin-top: 5px; padding-left: 0;">
-            <h2 id="commentHeader" style="color: rgb(0, 0, 0); font-family: 'Staatliches', cursive; font-size: 30px;">Comments</h2>
-            <div>
-                {% if not post.comments.all %}
-                    {% if user.is_authenticated %}
-                    <p>No Comments Yet...</p><a id="startDiscussion"  style="text-decoration: none; color: rgb(37, 169, 202);" href="{% url 'add_comment' post.pk %}">Add a comment</a>
-                    {% else %}
-                    <p>No Comments Yet...</p><a href="{% url 'login' %}">Log in to comment</a>
-                    {% endif %}
-                {% else %}
-                    {% if user.is_authenticated %}
-                        <a id="startDiscussion"  style="text-decoration: none; color: rgb(37, 169, 202);" href="{% url 'add_comment' post.pk %}">Add Comment</a>
-                        <br/><br/>    
-                            {% for comment in post.comments.all %}
-                                <div class= "commentBox">
-                                    <strong style="font-weight: bold">
-                                        {{ comment.name }}  
-                                    </strong>
-                                    <br/>
-                                    {{ comment.body }}
-                                    <br/>  <br/> 
-                                    <small style="float:right"> {{ comment.date_added }}</small>
-                                    <br/> 
-                                </div>
-                            <br/> 
-                            {% endfor %}
-                    {% else %}
-                        <a id="startDiscussion"  style="text-decoration: none; color: rgb(37, 169, 202);" href="{% url 'add_comment' post.pk %}">Add a comment</a>
-                        <br/><br/>    
-                            {% for comment in post.comments.all %}
-                                <div class= "commentBox">
-                                    <strong style="font-weight: bold">
-                                        {{ comment.name }}  
-                                    </strong>
-                                    <br/>
-                                    {{ comment.body }}
-                                    <br/>  <br/> 
-                                    <small style="float:right"> {{ comment.date_added }}</small>
-                                    <br/> 
-                                </div>
-                                <br/> 
-                            {% endfor %}
-                    {% endif %}
-                {% endif %}
-            </div>
         </div>
     </div>
 </div>
 <br/><br/>
-<!-- <div class="comments" style="margin-top: 5px; padding-left: 7%;">
-    <h2 style="color: white;">Comments...</h2>
-    <div style="background-color: rgb(219, 245, 255); width: 80%;">
-        {% if not post.comments.all %}
-            <p>No Comments Yet...</p><a href="#">Add a comment</a>
-        
-        {% else %}
-            {% for comment in post.comments.all %}
-                <strong>
-                    {{ comment.name }}
-                    {{ comment.date_added }}
-                </strong>
-                <br/>
-                {{ comment.body }}
-                <br/><br/>
-            {% endfor %}
-        {% endif %}
-    </div>
-</div> -->
 
 {% endblock %}
