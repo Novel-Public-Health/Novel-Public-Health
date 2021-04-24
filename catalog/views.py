@@ -118,41 +118,43 @@ class MovieListView(generic.ListView):
     model = Movie
     paginate_by = 10
 
-    # sort in alphabetical order
-    def get_ordering(self):
-        ordering = self.request.GET.get('ordering', 'title')
-        # validate ordering here
-        return ordering
+
+    def get_context_data(self, **kwargs):
+        context = super(MovieListView, self).get_context_data(**kwargs)
+        context['sort'] = self.request.GET.get("sort", "title")
+        user_genre = self.request.GET.get("genre")
+        try:
+            Genre.objects.get(name=user_genre)
+        except:
+            user_genre = None
+        context['genre'] = user_genre
+        context['genres'] = Genre.objects.all()
+        return context
     
-class MovieListViewReverse(generic.ListView):
-    model = Movie
-    paginate_by = 10
+    def get_queryset(self):
+        qs = super().get_queryset()
+        
+        selected_genre = self.request.GET.get("genre")
+        selected_sort = self.request.GET.get("sort")
 
-    def get_ordering(self):
-        ordering = self.request.GET.get('ordering', '-title')
-        # validate ordering here
-        return ordering
+        try:
+            qs = qs.order_by(selected_sort)
+        except:
+            selected_sort = "title"
+            qs = qs.order_by(selected_sort)
 
-class MovieListDirectorView(generic.ListView):
-    model = Movie
-    paginate_by = 10
-
-    def get_ordering(self):
-        ordering = self.request.GET.get('ordering', 'director')
-        # validate ordering here
-        return ordering
-
-
-class MovieListRatingView(generic.ListView):
-    model = Movie
-    paginate_by = 10
-    def get_ordering(self):
-        ordering = self.request.GET.get('ordering', 'ratings')
-        # validate ordering here
-        return ordering
+        try:
+            # Filter if the genre exists in the user query
+            genre_obj = Genre.objects.get(name=selected_genre)
+            qs = Movie.objects.filter(
+                genre=genre_obj
+            ).order_by(selected_sort)
+        except:
+            pass
+        return qs
 
 class MovieDetailView(generic.DetailView):
-    """Generic class-based detail view for a movie."""
+    # Generic class-based detail view for a movie.
     model = Movie
 
     def get_context_data(self, **kwargs):

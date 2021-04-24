@@ -172,9 +172,9 @@ class Movie(models.Model):
             # check if director name already exists. if not, create and assign to the movie
             director = None
             try:
-                directors = orig.director.__class__.objects.all()
+                directors = Director.objects.all()
                 for d in directors:
-                    if (str(d.name) == str(imdb_stats[1])):
+                    if (str(d) == str(imdb_stats[1])):
                         director = d
                         break
                 orig.director = director if director is not None else Director.objects.create(name=imdb_stats[1])
@@ -184,9 +184,9 @@ class Movie(models.Model):
             # check if genre name already exists. if not, create and assign to the movie
             genre = None
             try:
-                genres = orig.genre.__class__.objects.all()
+                genres = Genre.objects.all()
                 for g in genres:
-                    if (str(g.name) == str(imdb_stats[2])):
+                    if (str(g) == str(imdb_stats[2])):
                         genre = g
                         break
                 genre = genre if genre is not None else Genre.objects.create(name=imdb_stats[2])

@@ -3,37 +3,51 @@
 {% load ratings %}
 
 {% block content %}
-    <h1 id="novel-title">Movie List</h1>
-    <div class="dropdown">
-      <span> Sort By </span>
-      <div class="dropdown-content">
-        <a href="/movies">Title (A-Z)</a>
-        <a href="/movies/title_reverse">Title (Z-A)</a>
-        <a href="/movies/by_director">Director (First Name) </a>
-        <a href="/movies/by_rating">Rating</a>
-      </div>
-    </div>
+{% if genre %}
+<h1 id="novel-title">{{genre}}</h1>
+{% else %}
+<h1 id="novel-title">Movie List</h1>
+{% endif %}
+<div class="dropdown">
+  <span> Genres </span>
+  <div class="dropdown-content">
+    <a href="/movies/?genre=all&sort={{sort}}">All</a>
+    {% for g in genres %}
+    <a href="/movies/?genre={{g}}&sort={{sort}}">{{g.name}}</a>
+    {% endfor %}
+  </div>
+</div>
 
-    <br/> <br/> <br/>
+<div class="dropdown">
+  <span> Sort By </span>
+  <div class="dropdown-content">
+    <a href="/movies/?genre={{genre}}&sort=title">Title (A-Z)</a>
+    <a href="/movies/?genre={{genre}}&sort=-title">Title (Z-A)</a>
+    <a href="/movies/?genre={{genre}}&sort=director">Director (First Name) </a>
+    <a href="/movies/?genre={{genre}}&sort=-ratings__average">Rating</a>
+  </div>
+</div>
 
-    {% if movie_list %}
-    <ul >
+<br /> <br /> <br />
 
-      {% for movie in movie_list %}
-      <li class="movieBlock">
-        <img class="moviePoster" src="{{ movie.thumbnail }}" alt= "{{ movie.title }}">
-        <a class= "movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a> 
-        <p class="movieTags">  {{ movie.genre }} </p>
-        <div style="float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
-        <p class= "movieDirector"> Directed by <a href="{{ movie.director.get_absolute_url }}">{{ movie.director }}</a> </p>
-        <p class= "movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
+{% if movie_list %}
+<ul>
 
-      </li>
-      <br>
-      {% endfor %}
-    </ul>
+  {% for movie in movie_list %}
+  <li class="movieBlock">
+    <img class="moviePoster" src="{{ movie.thumbnail }}" alt="{{ movie.title }}">
+    <a class="movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
+    <p class="movieTags"> {{ movie.genre }} </p>
+    <div style="float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
+    <p class="movieDirector"> Directed by <a href="{{ movie.director.get_absolute_url }}">{{ movie.director }}</a> </p>
+    <p class="movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
 
-    {% else %}
-      <p>There are no movies in the library.</p>
-    {% endif %}       
+  </li>
+  <br>
+  {% endfor %}
+</ul>
+
+{% else %}
+<p>There are no movies in the library.</p>
+{% endif %}
 {% endblock %}
