@@ -11,7 +11,7 @@
 <div class="dropdown">
   <span> Genres </span>
   <div class="dropdown-content">
-    <a href="/movies/?genre=all&sort={{sort}}">All</a>
+    <a href="/movies/?genre=None&sort={{sort}}">All</a>
     {% for g in genres %}
     <a href="/movies/?genre={{g}}&sort={{sort}}">{{g.name}}</a>
     {% endfor %}
