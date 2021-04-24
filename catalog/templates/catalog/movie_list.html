@@ -3,11 +3,38 @@
 {% load ratings %}
 
 {% block content %}
+
+<div> 
 {% if genre %}
 <h1 id="novel-title">{{genre}}</h1>
 {% else %}
 <h1 id="novel-title">Movie List</h1>
 {% endif %}
+
+<div style="text-align: center; color: rgb(155, 155, 155);" class="pagination">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+    <a href="?page=1">&laquo; first</a>
+    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    {% endif %}
+
+    <span id = "pagesTracker" class="current" style="text-align: center;">
+      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+    </span>
+
+
+    {% if page_obj.has_next %}
+    <div style="text-align: center;">
+      <a href="?page={{ page_obj.next_page_number }}">next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+    </div>
+   
+    {% endif %}
+  </span>
+</div>
+
+</div>
+
 <div class="dropdown">
   <span> Genres </span>
   <div class="dropdown-content">
@@ -18,7 +45,7 @@
   </div>
 </div>
 
-<div class="dropdown">
+<div style="margin-right: 20px;" class="dropdown">
   <span> Sort By </span>
   <div class="dropdown-content">
     <a href="/movies/?genre={{genre}}&sort=title">Title (A-Z)</a>
@@ -33,31 +60,15 @@
 {% if movie_list %}
 <ul>
 
-  <div class="pagination">
-    <span class="step-links">
-      {% if page_obj.has_previous %}
-      <a href="?page=1">&laquo; first</a>
-      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-      {% endif %}
 
-      <span class="current">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-      </span>
-
-      {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}">next</a>
-      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-      {% endif %}
-    </span>
-  </div>
 
   {% for movie in movie_list %}
   <li class="movieBlock">
     <img class="moviePoster" src="{{ movie.thumbnail }}" alt="{{ movie.title }}">
     <a class="movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
-    <p class="movieTags"><a href="/movies/?genre={{movie.genre}}&sort={{sort}}">{{ movie.genre }}</a></p>
+    <p class="movieTags"><a style= "color: white; text-decoration: none;" href="/movies/?genre={{movie.genre}}&sort={{sort}}">{{ movie.genre }}</a></p>
     <div style="float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
-    <p class="movieDirector"> Directed by <a href="{{ movie.director.get_absolute_url }}">{{ movie.director }}</a> </p>
+    <p class="movieDirector"> Directed by <a>{{ movie.director }}</a> </p>
     <p class="movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
 
   </li>

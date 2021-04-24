@@ -1001,3 +1001,18 @@ h5 {
   .dropdown:hover .dropbtn {
     background-color: #a1d8f55d;
   }
+
+  #pagesTracker {
+    position: relative;
+    display: inline;
+    float: left;
+    margin-right: 400px;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'Staatliches', cursive;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-size: 20px;
+
+  }
+
