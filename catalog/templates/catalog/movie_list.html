@@ -13,18 +13,21 @@
 
 <div style="text-align: center; color: rgb(155, 155, 155);" class="pagination">
   <span class="step-links">
-    {% if page_obj.has_previous %}
-    <a href="?page=1">&laquo; first</a>
-    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-    {% endif %}
 
     <span id = "pagesTracker" class="current" style="text-align: center;">
       Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
     </span>
 
+    {% if page_obj.has_previous %}
+    <div>
+      <a href="?page=1">&laquo; first</a>
+      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+    </div>
+    {% endif %}
+
 
     {% if page_obj.has_next %}
-    <div style="text-align: center;">
+    <div>
       <a href="?page={{ page_obj.next_page_number }}">next</a>
       <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
     </div>

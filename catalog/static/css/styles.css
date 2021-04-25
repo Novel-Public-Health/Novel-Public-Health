@@ -1005,14 +1005,13 @@ h5 {
   #pagesTracker {
     position: relative;
     display: inline;
-    float: left;
-    margin-right: 400px;
     padding: 15px;
     border-radius: 10px;
     font-family: 'Staatliches', cursive;
     padding-left: 50px;
     padding-right: 50px;
     font-size: 20px;
+    text-align: center;
 
   }
 

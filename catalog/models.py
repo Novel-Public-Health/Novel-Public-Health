@@ -6,6 +6,9 @@ from django.urls import reverse  # To generate URLS by reversing URL patterns
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator 
 
+# user imports
+from django.contrib.auth.models import User
+
 # Movie rating imports
 from django.contrib.contenttypes.fields import GenericRelation
 from star_ratings.models import Rating
@@ -221,8 +224,6 @@ class Movie(models.Model):
 
 import uuid  # Required for unique movie instances
 from datetime import date
-
-from django.contrib.auth.models import User
 
 class Director(models.Model):
     """Model representing a director."""
