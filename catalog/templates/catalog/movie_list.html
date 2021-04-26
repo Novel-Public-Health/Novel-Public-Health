@@ -23,16 +23,16 @@
 
     {% if page_obj.has_previous %}
     <div>
-      <a href="?page=1">&laquo; first</a>
-      <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      <a href="?genre={{genre}}&sort={{sort}}&page=1">&laquo; first</a>
+      <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.previous_page_number }}">previous</a>
     </div>
     {% endif %}
 
 
     {% if page_obj.has_next %}
     <div>
-      <a href="?page={{ page_obj.next_page_number }}">next</a>
-      <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.next_page_number }}">next</a>
+      <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
     </div>
    
     {% endif %}
