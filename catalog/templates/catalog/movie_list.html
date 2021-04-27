@@ -128,10 +128,10 @@
     applyTagsForm.addEventListener('submit', function (e) {
       let checkedElements = document.querySelectorAll('.tags-form input:checked');
       let checkedSlugs = Array.prototype.map.call(checkedElements, function (el, i) {
-        return ',' + el.value;
+        return el.value;
       });
 
-      applyTagsForm.action = "/movies/?genre={{movie.genre}}&sort={{sort}}&tags=" + checkedSlugs.join();
+      applyTagsForm.action = "/movies/?genre={{movie.genre}}&sort={{sort}}&tags=" + checkedSlugs.join(',');
     });
   }
 </script>

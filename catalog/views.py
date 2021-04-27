@@ -153,7 +153,7 @@ class MovieListView(generic.ListView):
             genre_obj = Genre.objects.get(name=selected_genre)
             movie_qs = Movie.objects.filter(
                 genre=genre_obj
-            ).order_by(selected_sort).distinct()
+            ).distinct()
         except:
             pass
         
