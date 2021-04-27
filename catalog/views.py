@@ -29,6 +29,8 @@ from .models import Director
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt, requires_csrf_token
 
+from taggit.models import Tag
+
 # Stripe imports
 import stripe
 import djstripe
@@ -40,9 +42,6 @@ def index(request):
     """View function for home page of site."""
     # Generate counts of some of the main objects
     num_movies = Movie.objects.all().count()
-    #num_instances = MovieInstance.objects.all().count()
-    # Available copies of movies
-    #num_instances_available = MovieInstance.objects.filter(status__exact='a').count()
     num_directors = Director.objects.count()  # The 'all()' is implied by default.
 
     # Number of visits to this view, as counted in the session variable.
@@ -118,6 +117,8 @@ class MovieListView(generic.ListView):
     model = Movie
     paginate_by = 10
 
+    def post(self, request, *args, **kwargs):
+        return self.get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(MovieListView, self).get_context_data(**kwargs)
@@ -129,6 +130,13 @@ class MovieListView(generic.ListView):
             user_genre = None
         context['genre'] = user_genre
         context['genres'] = Genre.objects.all()
+
+        selected_tags = self.request.GET.get("tags")
+        if selected_tags:
+            context['tags'] = ",".join(selected_tags.split(","))
+        context['allTags'] = Tag.objects.all()
+
+        context['tagForm'] = MovieTagsForm()
         return context
     
     def get_queryset(self):
@@ -136,21 +144,50 @@ class MovieListView(generic.ListView):
         
         selected_genre = self.request.GET.get("genre")
         selected_sort = self.request.GET.get("sort")
+        selected_tags = self.request.GET.get("tags")
+        if selected_tags:
+            selected_tags = selected_tags.split(",")
+
+        movie_qs = None
+        try:
+            # Filter if the genre exists in the user query
+            genre_obj = Genre.objects.get(name=selected_genre)
+            movie_qs = Movie.objects.filter(
+                genre=genre_obj
+            ).order_by(selected_sort).distinct()
+        except:
+            pass
+        
+        tag_qs = None
+        try:
+            # Filter if using any tags
+            tag_names_exists = []
+            for tag_name in selected_tags:
+                try:
+                    t = Tag.objects.get(slug=tag_name)
+                    tag_names_exists.append(t.name)
+                except:
+                    pass
+            
+            if len(tag_names_exists) > 0:
+                tag_qs = Movie.objects.filter( tags__name__in=tag_names_exists ).distinct()
+
+        except:
+            pass
+
+        if movie_qs and tag_qs:
+            qs = movie_qs & tag_qs
+        elif movie_qs:
+            qs = movie_qs
+        elif tag_qs:
+            qs = tag_qs
 
         try:
             qs = qs.order_by(selected_sort)
         except:
             selected_sort = "title"
             qs = qs.order_by(selected_sort)
-
-        try:
-            # Filter if the genre exists in the user query
-            genre_obj = Genre.objects.get(name=selected_genre)
-            qs = Movie.objects.filter(
-                genre=genre_obj
-            ).order_by(selected_sort)
-        except:
-            pass
+        
         return qs
 
 class MovieDetailView(generic.DetailView):

@@ -23,16 +23,16 @@
 
       {% if page_obj.has_previous %}
       <div>
-        <a href="?genre={{genre}}&sort={{sort}}&page=1">&laquo; first</a>
-        <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.previous_page_number }}">previous</a>
+        <a href="?genre={{genre}}&sort={{sort}}&tags={{tags}}&page=1">&laquo; first</a>
+        <a href="?genre={{genre}}&sort={{sort}}&tags={{tags}}&page={{ page_obj.previous_page_number }}">previous</a>
       </div>
       {% endif %}
 
 
       {% if page_obj.has_next %}
       <div>
-        <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.next_page_number }}">next</a>
-        <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        <a href="?genre={{genre}}&sort={{sort}}&tags={{tags}}&page={{ page_obj.next_page_number }}">next</a>
+        <a href="?genre={{genre}}&sort={{sort}}&tags={{tags}}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
       </div>
 
       {% endif %}
@@ -44,9 +44,9 @@
 <div class="dropdown">
   <span> Genres </span>
   <div class="dropdown-content">
-    <a href="/movies/?genre=None&sort={{sort}}">All</a>
+    <a href="/movies/?genre=None&sort={{sort}}&tags={{tags}}">All</a>
     {% for g in genres %}
-    <a href="/movies/?genre={{g}}&sort={{sort}}">{{g.name}}</a>
+    <a href="/movies/?genre={{g}}&sort={{sort}}&tags={{tags}}">{{g.name}}</a>
     {% endfor %}
   </div>
 </div>
@@ -54,10 +54,35 @@
 <div style="margin-right: 20px;" class="dropdown">
   <span> Sort By </span>
   <div class="dropdown-content">
-    <a href="/movies/?genre={{genre}}&sort=title">Title (A-Z)</a>
-    <a href="/movies/?genre={{genre}}&sort=-title">Title (Z-A)</a>
-    <a href="/movies/?genre={{genre}}&sort=director">Director (First Name) </a>
-    <a href="/movies/?genre={{genre}}&sort=-ratings__average">Rating</a>
+    <a href="/movies/?genre={{genre}}&sort=title&tags={{tags}}">Title (A-Z)</a>
+    <a href="/movies/?genre={{genre}}&sort=-title&tags={{tags}}">Title (Z-A)</a>
+    <a href="/movies/?genre={{genre}}&sort=director&tags={{tags}}">Director (First Name) </a>
+    <a href="/movies/?genre={{genre}}&sort=-ratings__average&tags={{tags}}">Rating</a>
+  </div>
+</div>
+
+<div class="dropdown">
+  <span> Tags </span>
+  <div class="dropdown-content">
+    <form id="applyTags" method="post" class="tags-form">
+      {% csrf_token %}
+
+      {% for t in allTags %}
+      <input type="checkbox" class="check-movie-tags" name="tags-checkmarks" value="{{ t.slug }}">
+      <label for="tags-checkmarks">{{t.name}}</label>
+      <br>
+      {% endfor %}
+
+      <input type="submit" value="Submit">
+    </form>
+
+
+    <!-- {% for t in allTags %}
+    <input type="checkbox" class="check-movie-tags" name="tags-checkmarks" value="{{ t.slug }}">
+    <label for="tags-checkmarks">{{t.name}}</label>
+    <br>
+    {% endfor %}
+    <button id="applyTags">Apply Tags</button> -->
   </div>
 </div>
 
@@ -65,15 +90,12 @@
 
 {% if movie_list %}
 <ul>
-
-
-
   {% for movie in movie_list %}
   <li class="movieBlock">
     <img class="moviePoster" src="{{ movie.thumbnail }}" alt="{{ movie.title }}">
     <a class="movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
     <p class="movieTags"><a style="color: white; text-decoration: none;"
-        href="/movies/?genre={{movie.genre}}&sort={{sort}}">{{ movie.genre }}</a></p>
+        href="/movies/?genre={{movie.genre}}&sort={{sort}}&tags={{tags}}">{{ movie.genre }}</a></p>
     <div style="float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
     <p class="movieDirector"> Directed by <a>{{ movie.director }}</a> </p>
     <p class="movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
@@ -81,7 +103,7 @@
       {% if movie.tags.all %}
       <strong>Tags:</strong>
       {% for tag in movie.tags.all %}
-        {{ tag.name }}{% if not forloop.last %},{% endif %}
+      {{ tag.name }}{% if not forloop.last %},{% endif %}
       {% endfor %}
       {% endif %}
     </p>
@@ -93,4 +115,34 @@
 {% else %}
 <p>There are no movies in the library.</p>
 {% endif %}
+{% endblock %}
+
+{% block javascript %}
+<script>
+  window.onload = function () {
+    // get current tags from the url on load
+    var currentTags = '{{tags}}'.split(',');
+    var elements = document.querySelectorAll('.tags-form input');
+    var slugs = Array.prototype.map.call(elements, function (el, i) {
+      for (let i = 0; i < currentTags.length; i++) {
+        if (currentTags[i] == el.value) {
+          el.checked = true;
+          break;
+        }
+      }
+      return el.value;
+    });
+
+    // update tags on form submission
+    var applyTagsForm = document.getElementById('applyTags');
+    applyTagsForm.addEventListener('submit', function (e) {
+      let checkedElements = document.querySelectorAll('.tags-form input:checked');
+      let checkedSlugs = Array.prototype.map.call(checkedElements, function (el, i) {
+        return ',' + el.value;
+      });
+
+      applyTagsForm.action = "/movies/?genre={{movie.genre}}&sort={{sort}}&tags=" + checkedSlugs.join();
+    });
+  }
+</script>
 {% endblock %}
