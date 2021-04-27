@@ -800,6 +800,7 @@ h5 {
     font-family: 'Staatliches', cursive;
     font-size: 200%;
     padding: 20px;
+
 }
 
 .movieDescription {
@@ -952,13 +953,13 @@ h5 {
     position: relative;
     display: inline;
     float: right;
-    margin-right: 100px;
+    margin-right: 10%;
     background-color: #a1d8f55d;
-    padding: 15px;
+    padding: 10px;
     border-radius: 10px;
     font-family: 'Staatliches', cursive;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
     font-size: 20px;
     /* margin-left: auto;
     margin-right: auto; */

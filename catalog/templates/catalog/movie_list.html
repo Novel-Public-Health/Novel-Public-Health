@@ -41,6 +41,8 @@
 
 </div>
 
+<br/> 
+
 <div class="dropdown">
   <span> Genres </span>
   <div class="dropdown-content">
@@ -51,7 +53,7 @@
   </div>
 </div>
 
-<div style="margin-right: 20px;" class="dropdown">
+<div style="margin-right: 2%;" class="dropdown">
   <span> Sort By </span>
   <div class="dropdown-content">
     <a href="/movies/?genre={{genre}}&sort=title&tags={{tags}}">Title (A-Z)</a>
@@ -61,7 +63,7 @@
   </div>
 </div>
 
-<div class="dropdown">
+<div style="margin-right: 2%;" class="dropdown">
   <span> Tags </span>
   <div class="dropdown-content">
     <form id="applyTags" method="post" class="tags-form">
@@ -71,10 +73,11 @@
       <label for="tags-checkmarks">{{t.name}}</label>
       <br>
       {% endfor %}
-      <input type="submit" value="Submit">
+      <input class= "myButton" type="submit" value="Submit">
     </form>
   </div>
 </div>
+
 
 <br /> <br /> <br />
 
@@ -86,12 +89,12 @@
     <a class="movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
     <p class="movieTags"><a style="color: white; text-decoration: none;"
         href="/movies/?genre={{movie.genre}}&sort={{sort}}&tags={{tags}}">{{ movie.genre }}</a></p>
-    <div style="float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
+    <div style="padding: 3%; float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
     <p class="movieDirector"> Directed by <a>{{ movie.director }}</a> </p>
     <p class="movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
     <p class="movieDescription">
       {% if movie.tags.all %}
-      <strong>Tags:</strong>
+      <strong>Topics Covered:</strong>
       {% for tag in movie.tags.all %}
       {{ tag.name }}{% if not forloop.last %},{% endif %}
       {% endfor %}
