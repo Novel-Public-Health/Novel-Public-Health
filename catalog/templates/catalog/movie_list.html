@@ -4,40 +4,40 @@
 
 {% block content %}
 
-<div> 
-{% if genre %}
-<h1 id="novel-title">{{genre}}</h1>
-{% else %}
-<h1 id="novel-title">Movie List</h1>
-{% endif %}
+<div>
+  {% if genre %}
+  <h1 id="novel-title">{{genre}}</h1>
+  {% else %}
+  <h1 id="novel-title">Movie List</h1>
+  {% endif %}
 
-<div style="text-align: center; color: rgb(155, 155, 155);" class="pagination">
-  <span class="step-links">
+  <div style="text-align: center; color: rgb(155, 155, 155);" class="pagination">
+    <span class="step-links">
 
-    <span id = "pagesTracker" class="current" style="text-align: center;">
-      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+      <span id="pagesTracker" class="current" style="text-align: center;">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+      </span>
+
+      <br>
+      <br />
+
+      {% if page_obj.has_previous %}
+      <div>
+        <a href="?genre={{genre}}&sort={{sort}}&page=1">&laquo; first</a>
+        <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.previous_page_number }}">previous</a>
+      </div>
+      {% endif %}
+
+
+      {% if page_obj.has_next %}
+      <div>
+        <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.next_page_number }}">next</a>
+        <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      </div>
+
+      {% endif %}
     </span>
-
-    <br>
-    <br/>
-
-    {% if page_obj.has_previous %}
-    <div>
-      <a href="?genre={{genre}}&sort={{sort}}&page=1">&laquo; first</a>
-      <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.previous_page_number }}">previous</a>
-    </div>
-    {% endif %}
-
-
-    {% if page_obj.has_next %}
-    <div>
-      <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.next_page_number }}">next</a>
-      <a href="?genre={{genre}}&sort={{sort}}&page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-    </div>
-   
-    {% endif %}
-  </span>
-</div>
+  </div>
 
 </div>
 
@@ -72,15 +72,18 @@
   <li class="movieBlock">
     <img class="moviePoster" src="{{ movie.thumbnail }}" alt="{{ movie.title }}">
     <a class="movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
-    <p class="movieTags"><a style= "color: white; text-decoration: none;" href="/movies/?genre={{movie.genre}}&sort={{sort}}">{{ movie.genre }}</a></p>
+    <p class="movieTags"><a style="color: white; text-decoration: none;"
+        href="/movies/?genre={{movie.genre}}&sort={{sort}}">{{ movie.genre }}</a></p>
     <div style="float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
     <p class="movieDirector"> Directed by <a>{{ movie.director }}</a> </p>
     <p class="movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
-    <p>
-      Tags:
+    <p class="movieDescription">
+      {% if movie.tags.all %}
+      <strong>Tags:</strong>
       {% for tag in movie.tags.all %}
-      {{ tag.name }},
+        {{ tag.name }}{% if not forloop.last %},{% endif %}
       {% endfor %}
+      {% endif %}
     </p>
   </li>
   <br>
