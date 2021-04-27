@@ -66,23 +66,13 @@
   <div class="dropdown-content">
     <form id="applyTags" method="post" class="tags-form">
       {% csrf_token %}
-
       {% for t in allTags %}
       <input type="checkbox" class="check-movie-tags" name="tags-checkmarks" value="{{ t.slug }}">
       <label for="tags-checkmarks">{{t.name}}</label>
       <br>
       {% endfor %}
-
       <input type="submit" value="Submit">
     </form>
-
-
-    <!-- {% for t in allTags %}
-    <input type="checkbox" class="check-movie-tags" name="tags-checkmarks" value="{{ t.slug }}">
-    <label for="tags-checkmarks">{{t.name}}</label>
-    <br>
-    {% endfor %}
-    <button id="applyTags">Apply Tags</button> -->
   </div>
 </div>
 
