@@ -13,3 +13,4 @@ django-crispy-forms==1.11.1
 stripe==2.56.0
 dj-stripe==2.4.3
 django-star-ratings==0.9.1
+django-taggit==1.4.0

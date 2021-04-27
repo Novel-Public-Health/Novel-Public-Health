@@ -3,25 +3,31 @@
 <link rel="stylesheet" type="text/css" href="/staticfiles/css/styles.css" />
 
 <div style="display: flex; align-items: center; justify-content: center;">
-    <div class="post-detail" style="margin-top: 0px; margin-bottom: 5px; margin-right: 5%; margin-left: 5%; padding: 5%; width: 100%; border-radius: 20px;">
+    <div class="post-detail"
+        style="margin-top: 0px; margin-bottom: 5px; margin-right: 5%; margin-left: 5%; padding: 5%; width: 100%; border-radius: 20px;">
         <div id="blogPost">
             <h1 id="blogTitle" style="color: black;">{{ post.title }}</h1>
             <h2 style="color: black;">{{ post.intro }}</h2>
-            <h2 style="color: black; font-size: 15px; font-style: italic">By: {{ post.author.first_name}} {{ post.author.last_name }}</h2><br>
+            {% if post.image %}
+            <img style="object-fit: cover; width: 100%; height: 500px;" src="{{post.get_image_url}}" />
+            {% endif %}
+            <h2 style="color: black; font-size: 15px; font-style: italic">
+                By: {{ post.author.first_name}} {{ post.author.last_name }}
+            </h2><br>
             <small style="float: right;">Posted on {{ post.date_added }}</small>
             <hr>
-            <br/>
+            <br />
             {{ post.body|safe }}
             <br>
-            <br/>
+            <br />
             <a href="{% url 'home' %}">
-            <button class="myButton">Back to blogs</button></a>
+                <button class="myButton">Back to blogs</button></a>
             <br>
-            <br/>
+            <br />
             <hr>
         </div>
     </div>
 </div>
-<br/><br/>
+<br /><br />
 
 {% endblock %}

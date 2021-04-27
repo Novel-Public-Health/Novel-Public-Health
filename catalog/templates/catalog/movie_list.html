@@ -59,7 +59,12 @@
     <div style="float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
     <p class="movieDirector"> Directed by <a href="{{ movie.director.get_absolute_url }}">{{ movie.director }}</a> </p>
     <p class="movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
-
+    <p>
+      Tags:
+      {% for tag in movie.tags.all %}
+      {{ tag.name }},
+      {% endfor %}
+    </p>
   </li>
   <br>
   {% endfor %}

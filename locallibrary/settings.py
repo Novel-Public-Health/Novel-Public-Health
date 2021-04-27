@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'NovelBlog',
     'djstripe',
     'star_ratings',
+    'taggit'
 ]
 
 MIDDLEWARE = [

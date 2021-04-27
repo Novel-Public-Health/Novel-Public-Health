@@ -18,6 +18,8 @@ import datetime
 
 from scholarly import scholarly, ProxyGenerator
 
+from taggit.managers import TaggableManager
+
 import sys, re, os
 
 class Genre(models.Model):
@@ -60,6 +62,8 @@ class Movie(models.Model):
     # Genre class has already been defined so we can specify the object above.
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given \
                                                                                                         a valid IMDB id and left blank.')
+                                                                                                
+    tags = TaggableManager()
 
     year = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
 
@@ -67,8 +71,11 @@ class Movie(models.Model):
                                                                                                 if given a valid IMDB id and left blank.')
 
     file = S3DirectField(dest='videos', blank=True, null=True)
-    #image = S3DirectField(dest='images', blank=True)
     
+    ads = models.CharField('Google VAMP Ads Link', max_length=1000, blank=True, null=True, help_text="""For example, here is a <a target="_blank"
+        href="https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/124319096/external/ad_rule_samples&ciu_szs=300x250&ad_rule=1&impl=s&gdfp_req=1&env=vp&output=vmap&unviewed_position_start=1&cust_params=deployment%3Ddevsite%26sample_ar%3Dpremidpost&cmsid=496&vid=short_onecue&correlator=">
+        Google VAMP example link</a>.""")
+
     duration = models.CharField(max_length=200)
     fps = models.CharField(max_length=200)
     dimensions = models.CharField(max_length=200)
