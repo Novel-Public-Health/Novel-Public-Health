@@ -136,7 +136,6 @@ class MovieListView(generic.ListView):
             context['tags'] = ",".join(selected_tags.split(","))
         context['allTags'] = Tag.objects.all()
 
-        context['tagForm'] = MovieTagsForm()
         return context
     
     def get_queryset(self):
