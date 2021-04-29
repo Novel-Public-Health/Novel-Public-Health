@@ -66,7 +66,7 @@ class Movie(models.Model):
     genre = models.ForeignKey('Genre', on_delete=models.SET_NULL, null=True, blank=True, help_text='This field will be overwritten if given \
                                                                                                         a valid IMDB id and left blank.')
                                                                                                 
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     year = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
 
