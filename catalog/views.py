@@ -224,7 +224,7 @@ class MovieDelete(PermissionRequiredMixin, DeleteView):
 @login_required
 def process_subscription(request):
     products = Product.objects.all()
-    stripe_pub_key = os.environ.get('STRIPE_TEST_PUBLIC_KEY')
+    stripe_pub_key = settings.STRIPE_LIVE_PUBLIC_KEY if settings.STRIPE_LIVE_MODE else settings.STRIPE_TEST_PUBLIC_KEY
     return render(request, 'subscription_form.html', {"products": products, "stripe_pub_key": stripe_pub_key})
 
 @login_required

@@ -193,14 +193,13 @@ EMAIL_HOST_PASSWORD = os.environ.get('NOVEL_GMAIL_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-# os.environ.get('DJSTRIPE_WEBHOOK_SECRET')
 STRIPE_LIVE_MODE = False  # Change to True in production
-STRIPE_TEST_PUBLIC_KEY = os.environ.get('STRIPE_TEST_PUBLIC_KEY')
-STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')
-# STRIPE_LIVE_PUBLIC_KEY = '' #todo - activate account
-# STRIPE_LIVE_SECRET_KEY = '' #todo
+STRIPE_TEST_PUBLIC_KEY = os.environ.get('STRIPE_TEST_PUBLIC_KEY', 'pk_test_51IgJISLTF5lDg6OomxJ6O9xeztdzfrRQbU2fjMjVnECuzuuSluuLQS9wVZiJYBMqsgHsUxygx4mLaLJR5tItL6kJ00XI8ZFyyz')
+STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY', 'sk_test_51IgJISLTF5lDg6Ooh5OUF2dqZq6KDHMjlHAHhJwxpDdGgqqaX1767krbRdXbqa3tAMXg6haeaPxiHlxbCU4QOPTf00XSXluXoC')
+STRIPE_LIVE_PUBLIC_KEY = '' #todo - activate account. Should look similar to the above. Place these new variables in the .env file as well.
+STRIPE_LIVE_SECRET_KEY = '' #todo
 
-DJSTRIPE_WEBHOOK_SECRET = os.environ.get('DJSTRIPE_WEBHOOK_SECRET')
+DJSTRIPE_WEBHOOK_SECRET = os.environ.get('DJSTRIPE_WEBHOOK_SECRET', 'whsec_7PdcaUNOxl49pN8MlSrl5iEAPMtDBjty')
 DJSTRIPE_USE_NATIVE_JSONFIELD = True
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 
