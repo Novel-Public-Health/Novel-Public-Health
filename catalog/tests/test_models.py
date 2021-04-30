@@ -30,7 +30,7 @@ class DirectorModelTest(TestCase):
     def test_get_absolute_url(self):
         director = Director.objects.get(id=1)
         # This will also fail if the urlconf is not defined.
-        self.assertEquals(director.get_absolute_url(), '/catalog/directors/1')
+        self.assertEquals(director.get_absolute_url(), '/directors/1')
 
 class GenreModelTest(TestCase):
     @classmethod
@@ -63,33 +63,6 @@ class LanguageModelTest(TestCase):
             self.assertEquals(field_label, 'name')
             # test the name of the language
             self.assertEquals(language.name, name)
-
-from django.contrib.auth.models import User  # Required to assign User as a borrower
-
-class ProfileModelTest(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        test_user1 = User.objects.create_user(username='testuser1', password='1X<ISRUkw+tuK')
-        test_user2 = User.objects.create_user(username='testuser2', password='2HJ1vRV0Z&3iD')
-
-        test_user1.save()
-        test_user2.save()
-
-        Profile.objects.create(user=test_user1, user_type=1)
-        Profile.objects.create(user=test_user2, user_type=3)
-
-        # set as a class field so we can access in our test methods
-        cls.test_profile1 = Profile.objects.get(user=test_user1)
-        cls.test_profile2 = Profile.objects.get(user=test_user2)
-
-    def test_get_user_type(self):
-        self.assertEquals(self.test_profile1.get_user_type(), 'free - access independent films and media outlets')
-        self.assertEquals(self.test_profile2.get_user_type(), 'high - access to A-list movies')
-    
-    def test_get_user_type_short(self):
-        self.assertEquals(self.test_profile1.get_user_type_short(), 'free')
-        self.assertEquals(self.test_profile2.get_user_type_short(), 'high')
 
 import re
 

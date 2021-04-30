@@ -12,24 +12,26 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 
+import environ
+# reading .env file
+environ.Env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag'
 import os
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-#DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 # Set hosts to allow any app on Heroku and the local testing URL
-#ALLOWED_HOSTS = ['.herokuapp.com','127.0.0.1']
 ALLOWED_HOSTS = ['*']
 
 # Media files, uploaded by user
@@ -47,8 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Add our new application 
-    'catalog.apps.CatalogConfig', #This object was created for us in /catalog/apps.py
+    'catalog.apps.CatalogConfig', # This object was created for us in /catalog/apps.py
     'storages',
     's3direct',
     'NovelBlog',
@@ -132,22 +133,16 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 
 # Add to test email:
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-
 # Heroku: Update database configuration from $DATABASE_URL.
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
-
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -157,23 +152,13 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'  #. os.path.join(BASE_DIR, 'staticfiles')
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = '/static/'
 
-
-# Static file serving.
-# http://whitenoise.evans.io/en/stable/django.html#django-middleware
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+# Static file serving with AWS.
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
 AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL', '')
 AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', '')
 
-"""
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-"""
 S3DIRECT_DESTINATIONS = {
     # Allow anybody to upload jpeg's and png's. Limit sizes to 5kb - 20mb
     'images': {
@@ -205,16 +190,14 @@ EMAIL_HOST_PASSWORD = os.environ.get('NOVEL_GMAIL_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
-# os.environ.get('STRIPE_TEST_PUBLIC_KEY')
-# os.environ.get('STRIPE_TEST_SECRET_KEY')
-STRIPE_TEST_PUBLIC_KEY = 'pk_test_51IgJISLTF5lDg6OomxJ6O9xeztdzfrRQbU2fjMjVnECuzuuSluuLQS9wVZiJYBMqsgHsUxygx4mLaLJR5tItL6kJ00XI8ZFyyz'
-STRIPE_TEST_SECRET_KEY = 'sk_test_51IgJISLTF5lDg6Ooh5OUF2dqZq6KDHMjlHAHhJwxpDdGgqqaX1767krbRdXbqa3tAMXg6haeaPxiHlxbCU4QOPTf00XSXluXoC'
+# os.environ.get('DJSTRIPE_WEBHOOK_SECRET')
+STRIPE_LIVE_MODE = False  # Change to True in production
+STRIPE_TEST_PUBLIC_KEY = os.environ.get('STRIPE_TEST_PUBLIC_KEY')
+STRIPE_TEST_SECRET_KEY = os.environ.get('STRIPE_TEST_SECRET_KEY')
 # STRIPE_LIVE_PUBLIC_KEY = '' #todo - activate account
 # STRIPE_LIVE_SECRET_KEY = '' #todo
 
-# os.environ.get('DJSTRIPE_WEBHOOK_SECRET')
-STRIPE_LIVE_MODE = False  # Change to True in production
-DJSTRIPE_WEBHOOK_SECRET = "whsec_7PdcaUNOxl49pN8MlSrl5iEAPMtDBjty"
+DJSTRIPE_WEBHOOK_SECRET = os.environ.get('DJSTRIPE_WEBHOOK_SECRET')
 DJSTRIPE_USE_NATIVE_JSONFIELD = True
 DJSTRIPE_FOREIGN_KEY_TO_FIELD = "id"
 

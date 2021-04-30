@@ -1,54 +1,56 @@
 from django.db import models
-
-# Create your models here.
-
 from django.urls import reverse  # To generate URLS by reversing URL patterns
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator 
 
-# user imports
+# Imports Django's default User system.
 from django.contrib.auth.models import User
 
-# Movie rating imports
+# Movie rating imports. Docs: https://django-star-ratings.readthedocs.io/en/latest/?badge=latest/
 from django.contrib.contenttypes.fields import GenericRelation
 from star_ratings.models import Rating
 
+# Amazon AWS S3 import.
 from s3direct.fields import S3DirectField
 
+# IMDbPY import. Docs: https://imdbpy.readthedocs.io/en/latest/
 import imdb
-from moviepy.editor import VideoFileClip
-import datetime
 
+# Video stats with MoviePy. Docs: https://zulko.github.io/moviepy/index.html
+from moviepy.editor import VideoFileClip
+
+# Google Scholar import. Docs: https://scholarly.readthedocs.io/en/latest/?badge=latest
 from scholarly import scholarly, ProxyGenerator
 
+# Django taggit import for managing comma-separated tags. Docs: https://django-taggit.readthedocs.io/en/latest/
 from taggit.managers import TaggableManager
 
-import sys, re, os
+import sys, re, os, datetime
 
 class Genre(models.Model):
-    """Model representing a movie genre (e.g. Science Fiction, Non Fiction)."""
+    # Model representing a movie genre (e.g. Science Fiction, Non Fiction).
     name = models.CharField(
         max_length=200,
         help_text="Enter a movie genre (e.g. Science Fiction, French Poetry etc.)"
         )
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
+        # String for representing the Model object (in Admin site etc.)
         return self.name
 
 
 class Language(models.Model):
-    """Model representing a Language (e.g. English, French, Japanese, etc.)"""
+    # Model representing a Language (e.g. English, French, Japanese, etc.)
     name = models.CharField(max_length=200,
                             help_text="Enter the movie's natural language (e.g. English, French, Japanese etc.)")
 
     def __str__(self):
-        """String for representing the Model object (in Admin site etc.)"""
+        # String for representing the Model object (in Admin site etc.)
         return self.name
 
 
 class Movie(models.Model):
-    """Model representing a movie (but not a specific copy of a movie)."""
+    # Model representing a movie (but not a specific copy of a movie).
     title = models.CharField(max_length=200, null=True, blank=True, help_text='This field will be overwritten if given a valid IMDB id and left blank.')
 
     imdb_link = models.CharField('IMDB Link', max_length=100, blank=True, null=True, help_text='For example, here is <a target="_blank" '
@@ -93,17 +95,17 @@ class Movie(models.Model):
         ordering = ['title', 'director']
 
     def display_genre(self):
-        """Creates a string for the Genre. This is required to display genre in Admin."""
+        # Creates a string for the Genre. This is required to display genre in Admin.
         return ', '.join([genre.name for genre in self.genre.all()[:3]])
 
     display_genre.short_description = 'Genre'
 
     def get_absolute_url(self):
-        """Returns the url to access a particular movie instance."""
+        # Returns the url to access a particular movie instance.
         return reverse('movie-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object."""
+        # String for representing the Model object.
         return self.title if self.title else ''
     
     def get_movie_url(self):
@@ -128,37 +130,62 @@ class Movie(models.Model):
             raise Exception(f"No imdb match found for imdb link: {self.imdb_link}")
 
     def get_research_articles(self, max_num):
+        # Search string for Google Scholar to look for. 
+        # e.g. "{self.title} {self.director.name}" would equate to "Concussion Peter Landesman" for the movie Concussion.
         search_str = f'{self.title} {self.director.name}'
         output = f""
         try:
             pg = ProxyGenerator()
             ip = os.environ['PROXY_IP']
-            #print(sys.stderr, ip) # to make sure your env variable is set
             pg.SingleProxy(http = ip, https = ip)
             o = scholarly.use_proxy(pg)
             search_query = scholarly.search_pubs(search_str)
             for i in range(0, max_num):
                 curr = next(search_query)
-                #scholarly.pprint(curr)
-                title = curr['bib']['title']
-                # check for curr['pub_url'] 
-                if 'pub_url' in curr:
-                    output += f"<li>\n\t<a target='_blank' href=\"{curr['pub_url']}\">{title}</a>\n\t<br>\n"
-                else:
-                    output += f"<li>\n\t{title}\n\t<br>\n"
-                # check for curr['bib']['abstract']
-                if 'bib' in curr and 'abstract' in curr['bib']:
-                    output += f"\t<p>{curr['bib']['abstract']}</p>\n"
 
-                output += f"</li>\n"
+                # For debugging purposes, this is how you pretty print the search query's contents.
+                #scholarly.pprint(curr)
+
+                # Grab the title of the article.
+                title = curr['bib']['title']
+                
+                # Begin our formatted html output for each found research article.
+                output += f"""
+                    <li>
+                """
+                
+                # See if a publication url (i.e. curr['pub_url']) exists. If so, add an external link to it.
+                if 'pub_url' in curr:
+                    output += f"""
+                        <a target='_blank' href=\"{curr['pub_url']}\">{title}</a>
+                    """
+                else:
+                    output += f"""
+                        {title}
+                    """
+                
+                output += f"""
+                    <br>
+                """
+
+                # Writes the abstract (i.e.curr['bib']['abstract']) if it exists.
+                if 'bib' in curr and 'abstract' in curr['bib']:
+                    output += f"""
+                        <p>{curr['bib']['abstract']}</p>
+                    """
+
+                output += f"""
+                </li>
+                """
         except Exception as e:
             pass
+            # Useful for seeing errors in your terminal. Replace pass with the print statement below.
             #print(sys.stderr, e)
         return output
 
     def save(self, *args, **kwargs):
         super(Movie, self).save(*args, **kwargs)
-        """Use a custom save to end date any subCases"""
+        # Uses a custom save to end date any subCases
         
         orig = Movie.objects.get(id=self.id)
         fields_to_update = []
@@ -171,7 +198,6 @@ class Movie(models.Model):
             fields_to_update.extend(['duration', 'fps', 'dimensions'])
         except Exception as e:
             pass
-            #print(sys.stderr, e)
 
         try:
             imdb_stats = self.get_imdb_stats()
@@ -179,7 +205,7 @@ class Movie(models.Model):
             orig.year = imdb_stats[0]
             orig.thumbnail = imdb_stats[5]
 
-            # check if director name already exists. if not, create and assign to the movie
+            # Checks if a director name already exists. If not, create and assign to the movie.
             director = None
             try:
                 directors = Director.objects.all()
@@ -191,7 +217,7 @@ class Movie(models.Model):
             except:
                 orig.director = Director.objects.create(name=imdb_stats[1])
 
-            # check if genre name already exists. if not, create and assign to the movie
+            # Checks if a genre name already exists. If not, create and assign to the movie.
             genre = None
             try:
                 genres = Genre.objects.all()
@@ -203,7 +229,8 @@ class Movie(models.Model):
             except:
                 genre = Genre.objects.create(name=imdb_stats[2])
             orig.genre = genre
-            # update values only if they are left blank
+
+            # Updates values only if their fields are left blank by the admin.
             if not self.year:
                 fields_to_update.append('year')
             if not self.genre:
@@ -217,12 +244,10 @@ class Movie(models.Model):
                 fields_to_update.append('summary')
             if not self.thumbnail:
                 fields_to_update.append('thumbnail')
-
-
         except Exception as e:
             pass
-            #print(sys.stderr, e)
 
+        # Searches for research articles by using a single proxy for a Google Scholar search query.
         if not self.found_articles:
             orig.found_articles = orig.get_research_articles(self.max_num_find_articles)
             fields_to_update.append('found_articles')
@@ -233,7 +258,7 @@ import uuid  # Required for unique movie instances
 from datetime import date
 
 class Director(models.Model):
-    """Model representing a director."""
+    # Model representing a director.
     name = models.CharField(max_length=100)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField('died', null=True, blank=True)
@@ -242,11 +267,11 @@ class Director(models.Model):
         ordering = ['name']
 
     def get_absolute_url(self):
-        """Returns the url to access a particular director instance."""
+        # Returns the url to access a particular director instance.
         return reverse('director-detail', args=[str(self.id)])
 
     def __str__(self):
-        """String for representing the Model object."""
+        # String for representing the Model object.
         return self.name
 
 from djstripe.models import Customer, Subscription
@@ -259,9 +284,9 @@ class Profile(models.Model):
     )
     user_type = models.IntegerField('Subscription Tier', default=1, choices=USER_TYPE_CHOICES)
 
-    # stripe subscription
+    # Assigns a Stripe customer and subscription to a User.
     customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.SET_NULL)
-    subscription = models.ForeignKey(Subscription, null=True, blank=True,on_delete=models.SET_NULL)
+    subscription = models.ForeignKey(Subscription, null=True, blank=True, on_delete=models.SET_NULL)
 
     def get_user_type(self):
         return dict(self.USER_TYPE_CHOICES).get(self.user_type)
