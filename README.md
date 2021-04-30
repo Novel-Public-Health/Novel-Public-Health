@@ -64,7 +64,7 @@ Also, here's a helpful analogy describing the above git add, commit, and push co
    ```
    .\production.bat
    ```
-However, you **only** need to do this whenever you have pushed any new migrations. The production database is different from the local database, so we migrate any new changes on the live site with this script.
+However, you **only** need to do this whenever you have pushed any new migrations. The production database is different from the local database, so we migrate any new changes to the live site with this script.
 
 ## External Services
 - [Heroku Novel Public Health Dashboard](https://dashboard.heroku.com/apps/novel-public-health)
@@ -93,12 +93,12 @@ However, you **only** need to do this whenever you have pushed any new migration
 ~ $7.02 / month
 ```
 Not included above, but also important, is that most domains will cost an average of $10 per year.
- - e.g., setting the domain to novelpublichealth.com instead of [novel-public-health.herokuapp.com](https://novel-public-health.herokuapp.com/).
+ - For example, if you set the domain to novelpublichealth.com instead of [novel-public-health.herokuapp.com](https://novel-public-health.herokuapp.com/).
 
-**IMPORTANT:** Note that these costs are **only** for a running production site. If you're okay with not running the production site just yet, the local development can be free. All you'd have to do is the following:
+**IMPORTANT:** Note that these costs are **only** for a running production site. If you're okay with not running the production site just yet, the local development can be ~almost~ free. All you'd have to do is the following:
 1. Navigate to the Heroku app's [Resources page](https://dashboard.heroku.com/apps/novel-public-health/resources).
 2. Under Hobby Dynos, click the pencil icon, and turn the switch off.
-3. Now, your production site will not be functional, but your total cost per month will be about $0.02.
+3. Now, your production site will not be functional, but your total cost per month could be about $0 - $0.02.
 4. Whenever you'd like to have the production site working again, just flip that same switch!
 
 ## Further Documentation
