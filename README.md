@@ -68,9 +68,12 @@ However, you **only** need to do this whenever you have pushed any new migration
 
 ## External Services
 - [Heroku Novel Public Health Dashboard](https://dashboard.heroku.com/apps/novel-public-health)
-   - See current builds in progress after pushing to Github, set config variables in settings, and see data metrics and cost.
+   - See current builds in progress after pushing to Github.
+   - Set config variables in settings. They must be similar to the local environment variables as seen in [locallibrary/.env](locallibrary/.env).
+   - See data metrics and dynos cost.
 - [AWS Bucket](https://s3.console.aws.amazon.com/s3/buckets/novel-public-health-media?region=us-east-2&tab=objects)
-   - Contains movie and image uploads. Serves all of our static files (HTML/CSS/JS).
+   - Contains movie and image uploads.
+   - Serves all of our static files (HTML/CSS/JS).
 - [Stripe Dashboard](https://dashboard.stripe.com/test/dashboard) 
    - Subscription payment plans and managing customers.
 - [Bright Data Proxy Manager](https://brightdata.com/cp/dashboard) 
