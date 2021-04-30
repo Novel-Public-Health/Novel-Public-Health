@@ -84,8 +84,8 @@ However, you **only** need to do this whenever you have pushed any new migration
 ```
 + $7.00  => HEROKU SERVER. Needed for running the production site at all times.
 + $0.02  => AWS BUCKET. ($0.023 per GB for 50 TB / Month). Right now, we're at about 0.5 GB.
-+           Of course, this cost will be greater when adding larger movie files.
-+ $0.00  => STRIPE. Stripe's fees are on a per-transaction basis (2.9% + $0.30), e.g. when purchasing a subscription.
+            Of course, this cost will be greater when adding larger movie files.
++ $0.00  => STRIPE. Stripe's fees are on a per-transaction basis (2.9% + $0.30) for purchases.
 + $0.00  => BRIGHT DATA. Bright Data offers (0.01 GBs @ 0.6 $/GB), but for our purpose, it's basically free.
             Our team's usage over a few months hadn't reached a penny.
             Also, there's $6.00 in the account, so it should last for a very long time.
