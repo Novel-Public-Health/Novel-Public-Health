@@ -66,6 +66,38 @@ Also, here's a helpful analogy describing the above git add, commit, and push co
    ```
 However, you **only** need to do this whenever you have pushed any new migrations. The production database is different from the local database, so we migrate any new changes on the live site with this script.
 
+## External Services
+- [Heroku Novel Public Health Dashboard](https://dashboard.heroku.com/apps/novel-public-health)
+   - See current builds in progress after pushing to Github, set config variables in settings, and see data metrics and cost.
+- [AWS Bucket](https://s3.console.aws.amazon.com/s3/buckets/novel-public-health-media?region=us-east-2&tab=objects)
+   - Contains movie and image uploads. Serves all of our static files (HTML/CSS/JS).
+- [Stripe Dashboard](https://dashboard.stripe.com/test/dashboard) 
+   - Subscription payment plans and managing customers.
+- [Bright Data Proxy Manager](https://brightdata.com/cp/dashboard) 
+   - Searches Google Scholar for relevant research articles about a movie.
+
+## Average Cost Estimate
+### Live Production Site
+```
++ $7.00  => HEROKU SERVER. Needed for running the production site at all times.
++ $0.02  => AWS BUCKET. ($0.023 per GB for 50 TB / Month). Right now, we're at about 0.5 GB.
++           Of course, this cost will be greater when adding larger movie files.
++ $0.00  => STRIPE. Stripe's fees are on a per-transaction basis (2.9% + $0.30), e.g. when purchasing a subscription.
++ $0.00  => BRIGHT DATA. Bright Data offers (0.01 GBs @ 0.6 $/GB), but for our purpose, it's basically free.
+            Our team's usage over a few months hadn't reached a penny.
+            Also, there's $6.00 in the account, so it should last for a very long time.
+--------
+~ $7.02 / month
+```
+Not included above, but also important, is that most domains will cost an average of $10 per year.
+ - e.g., setting the domain to novelpublichealth.com instead of [novel-public-health.herokuapp.com](https://novel-public-health.herokuapp.com/).
+
+**IMPORTANT:** Note that these costs are **only** for a running production site. If you're okay with not running the production site just yet, the local development can be free. All you'd have to do is the following:
+1. Navigate to the Heroku app's [Resources page](https://dashboard.heroku.com/apps/novel-public-health/resources).
+2. Under Hobby Dynos, click the pencil icon, and turn the switch off.
+3. Now, your production site will not be functional, but your total cost per month will be about $0.02.
+4. Whenever you'd like to have the production site working again, just flip that same switch!
+
 ## Further Documentation
 For more information about using Python on Heroku, see these Dev Center articles:
 - [Python on Heroku](https://devcenter.heroku.com/categories/python)
