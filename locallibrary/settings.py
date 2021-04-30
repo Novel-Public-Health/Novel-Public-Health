@@ -14,7 +14,10 @@ from pathlib import Path
 
 import environ
 # reading .env file
-environ.Env.read_env()
+try:
+    environ.Env.read_env()
+except:
+    print('Ignoring .env file...')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
