@@ -6,7 +6,8 @@ To get this project up and running locally on your computer:
 1. Download [Python 3.9](https://www.python.org/downloads/).
 2. Download [Git](https://git-scm.com/downloads).
 3. Download the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
-4. To run the webpage on your local server, we have added two files to simplify the process:
+4. Install the database: [Postgres](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup).
+5. To run the webpage on your local server, we have added two files to simplify the process:
    - [local-testing.sh](local-testing.sh)    (For Macs)
    - [local-testing.bat](local-testing.bat)  (For Windows)
    
@@ -50,8 +51,7 @@ Also, here's a helpful analogy describing the above git add, commit, and push co
 > When you're ready, put the postcard in the mailbox (git push).
 
 ## Production
-**IMPORTANT**
-After you push your changes to Github AND after the Heroku build has finished (usually takes a few minutes), you must run one of the following scripts:
+**IMPORTANT:** After you push your changes to Github AND after the Heroku build has finished (usually takes a few minutes), you must run one of the following scripts:
    - [production.sh](production.sh)    (For Macs)
    - [production.bat](production.bat)  (For Windows)
       
