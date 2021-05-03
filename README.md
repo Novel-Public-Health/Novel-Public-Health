@@ -7,7 +7,8 @@ To get this project up and running locally on your computer:
 2. Download [Git](https://git-scm.com/downloads).
 3. Download the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
 4. Install the database: [Postgres](https://devcenter.heroku.com/articles/heroku-postgresql#local-setup).
-5. To run the webpage on your local server, we have added two files to simplify the process:
+5. [Clone](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) this Git repository.
+6. To run the webpage on your local server, we have added two files to simplify the process:
    - [local-testing.sh](local-testing.sh)    (For Macs)
    - [local-testing.bat](local-testing.bat)  (For Windows)
    
