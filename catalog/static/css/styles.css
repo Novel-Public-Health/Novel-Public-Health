@@ -265,14 +265,17 @@ li {
     flex: 1;
     display: flex;
     overflow: auto;
+    width: 100%;
+    background-color: #e4f2fc;
 }
 
 .thirdPage {
     display: flex;
+    margin: 0 auto;
     flex-wrap: wrap;
     justify-content: space-between;
     float: none;
-    background-color: #e4f2fc;
+    /* background-color: #e4f2fc; */
     position: relative;
     height: auto;
     margin-bottom: 0;
@@ -423,7 +426,6 @@ h3 {
     font-size: 30px;
 }
 
-
 h4 {
     font-family: 'Staatliches', cursive;
     font-size: 50px;
@@ -435,13 +437,38 @@ h5 {
     font-size: 30px;
 }
 
-
 .main-display {
     background-color: black;
 }
 
 .blog-wrapper {
-    background-color: white;
+    border-radius: 10px;
+    margin: 0 auto;
+    width: 50%;
+    background-color: #a1d8f55d;
+}
+
+.blog-summary {
+    margin: 0 auto;
+    padding: 3%;
+}
+
+.blog-summary h1 {
+    color: black;
+    margin-bottom: 5px;
+    font-family: 'Staatliches', cursive;
+}
+
+.blog-summary p {
+    margin-top: 0;
+    color: black;
+}
+
+.blog-summary small {
+    width: 100%;
+    display: block;
+    text-align: right;
+    color: black;
 }
 
 #register-wrapper {
@@ -600,6 +627,300 @@ h5 {
     background: var(--button-color);
 }
 
+/* contact form */
+
+.contact-btn {
+    margin-left: 5px;
+    background-color: white;
+    padding: 5px;
+    border-width: 1px;
+    border-radius: 2px;
+}
+
+.movieBlock {
+    background-color: #90C2E7;
+    border-bottom: 1px solid #ccc;
+    display: table;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    width: 80%;
+    border-radius: 10px;
+}
+
+/* ul#movieBlock li {
+    display: inline;
+    } */
+
+.moviePoster {
+    float: left;
+    width: 100px;
+    height: auto;
+}
+
+.movieTitle {
+    font-family: 'Staatliches', cursive;
+    font-size: 200%;
+    padding: 20px;
+}
+
+.movieDescription {
+    text-align: left;
+    padding-left: 120px;
+}
+
+.movieDirector {
+    padding-top: 0px;
+    padding-left: 120px;
+    font-style: italic;
+}
+
+.movieRatings {
+    padding: 3%;
+    float: right;
+}
+
+.movieTags {
+    /* #5490B1 */
+    background-color: #5490B1;
+    border-radius: 20px;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+    /* float: right; */
+    display: inline;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.researchArticles {
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    display: table;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.profileBlock {
+    background-color: white;
+    border-bottom: 1px solid #ccc;
+    display: table;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 20px;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.profileInfo {
+    background-color: #e4f2fc;
+    ;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.profileForm input {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.newsletterHeader {
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#novel-title {
+    color: black;
+    margin-bottom: 10px;
+    font-size: 50px;
+}
+
+.blog-page {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.blog-page>div {
+    width: 75%;
+}
+
+.blog-page>div a {
+    text-decoration: none;
+}
+
+.blogContent {
+    font-family: 'Ubuntu';
+    font-size: 20px;
+}
+
+#commentHeaders {
+    font-family: 'Staatliches', cursive;
+    color: black;
+}
+
+#blogTitle {
+    font-family: 'Staatliches', cursive;
+    color: black;
+}
+
+#blogPost {
+    background-color: #a1d8f55d;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.commentBox {
+    background-color: #a1d8f55d;
+    border-radius: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+#startDiscussion {
+    background-color: #E8E8E8;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.myButton {
+    box-shadow: inset 0px 1px 0px 0px #ffffff;
+    background: linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
+    background-color: #ffffff;
+    border-radius: 6px;
+    border: 1px solid #dcdcdc;
+    display: inline-block;
+    cursor: pointer;
+    color: #666666;
+    font-family: Arial;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 6px 24px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #ffffff;
+}
+
+.myButton:hover {
+    background: linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
+    background-color: #f6f6f6;
+}
+
+.myButton:active {
+    position: relative;
+    top: 1px;
+}
+
+.dropdown-right {
+    margin-right: 8%;
+}
+
+.dropdown {
+    position: relative;
+    display: inline;
+    float: right;
+    margin-right: 2%;
+    background-color: #a1d8f55d;
+    padding: 10px;
+    border-radius: 10px;
+    font-family: 'Staatliches', cursive;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 20px;
+    /* margin-left: auto;
+    margin-right: auto; */
+    /* float: right; */
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 12px 16px;
+    z-index: 1;
+    border-radius: 10px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Links inside the dropdown */
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Change color of dropdown links on hover */
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1
+}
+
+/* Show the dropdown menu on hover */
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+
+.dropdown:hover .dropbtn {
+    background-color: #a1d8f55d;
+}
+
+#pagesTracker {
+    position: relative;
+    display: inline;
+    padding: 15px;
+    border-radius: 10px;
+    font-family: 'Staatliches', cursive;
+    padding-left: 50px;
+    padding-right: 50px;
+    font-size: 20px;
+    text-align: center;
+}
+
 /* Extra small devices (phones, 600px and down) */
 
 /* @media only screen and (max-width: 600px) {...} */
@@ -640,15 +961,11 @@ h5 {
     }
     .secondPage {
         flex-direction: column;
-        /* width: 100%; */
+        width: 100%;
     }
     .thirdPage {
         flex-direction: column;
         width: 100%;
-    }
-    .aboutDiv {
-        width: 75%;
-        margin: 0 auto;
     }
     .fourthPage {
         flex-direction: column;
@@ -665,11 +982,12 @@ h5 {
     .nav {
         display: none;
     }
-    .aboutDivLeft, .aboutDivRight {
+    .aboutDivLeft, .aboutDivRight, .aboutDiv {
         padding: 0;
         width: 100%;
         left: 0;
         margin: 0 auto;
+        margin-bottom: 20px;
     }
     #mobileMenu {
         display: flex;
@@ -716,16 +1034,14 @@ h5 {
         background: #36383F;
     }
     #mobileMenu input:checked~span {
-        transform: rotate(45deg)/*translate(0px, -5.5px)*/
-        ;
+        transform: rotate(45deg);
         background: #36383F;
     }
     #mobileMenu input:checked~span:nth-last-child(3) {
         transform: rotate(0deg) scale(0.01, 0.01);
     }
     #mobileMenu input:checked~span:nth-last-child(2) {
-        transform: rotate(-45deg)/*translate(0px, 5.5px)*/
-        ;
+        transform: rotate(-45deg);
     }
     #mobileMenuList {
         position: fixed;
@@ -739,8 +1055,7 @@ h5 {
         -webkit-font-smoothing: antialiased;
         transform-origin: 0% 0%;
         transform: translate(-100%, 0);
-        color: white
-        /* transition: transform 0.5s cubic-bezier(0.77, 0.2, 0.05, 1.0); */
+        color: white;
     }
     #mobileMenuList li {
         transition-delay: 1s;
@@ -757,262 +1072,34 @@ h5 {
     #mobileMenu input:checked~ul {
         transform: none;
     }
-}
-
-/* contact form */
-
-.contact-btn {
-    margin-left: 5px;
-    background-color: white;
-    padding: 5px;
-    border-width: 1px;
-    border-radius: 2px;
-}
-
-.movieBlock {
-    background-color:#90C2E7;
-    border-bottom: 1px solid #ccc;
-    display: table;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 20px;
-    width: 80%;
-    border-radius: 10px;
-
+    #novel {
+        font-size: 1.3rem;
     }
-    /* ul#movieBlock li {
-    display: inline;
-    } */
-
-
-.moviePoster {
-    float: left;
-    width: 100px;
-    height: auto;
-
+    .blog-wrapper {
+        width: 100%;
+    }
+    .post-detail {
+        margin-top: 50px;
+    }
+    .dropdown-right {
+        margin-right: 0%;
+    }
+    .dropdown {
+        float: none;
+        clear: both;
+        margin: 0 auto;
+        display: block;
+        width: 50%;
+        margin-top: 20px;
+    }
+    .movieRatings, .movieTitle, .movieDirector, .movieDescription {
+        width: 100%;
+        padding: 0;
+    }
+    .moviePoster, .movieTags, .movieRatings, .movieTitle, .movieDirector, .movieDescription {
+        display: block;
+        float: none;
+        margin: 0 auto;
+        margin-top: 10px;
+    }
 }
-
-.movieTitle {
-    font-family: 'Staatliches', cursive;
-    font-size: 200%;
-    padding: 20px;
-
-}
-
-.movieDescription {
-    text-align: left;
-    padding-left: 120px;
-}
-
-.movieDirector {
-   padding-top: 0px;
-   padding-left: 120px;
-   font-style: italic;
-}
-
-.movieTags {
-    /* #5490B1 */
-    background-color: #5490B1;
-    border-radius: 20px;
-    padding: 10px;
-    width: 25%;
-    color: white;
-    text-align: center;
-    font-size: 15px;
-    /* float: right; */
-    display: inline;
-    margin-left: auto;
-    margin-right: auto;
-    
-}
-
-.researchArticles {
-    background-color: white;
-    border-bottom: 1px solid #ccc;
-    display: table;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 20px;
-    width: 80%;
-    border-radius: 10px;
-}
-
-.profileBlock {
-    background-color: white;
-    border-bottom: 1px solid #ccc;
-    display: table;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 20px;
-    width: 80%;
-    border-radius: 10px;
-}
-
-.profileInfo {
-    background-color:  #e4f2fc;;
-    border-radius: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 0;
-
-}
-
-.profileForm input {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-.blogContent {
-    font-family: 'Ubuntu';
-    font-size: 20px;
-}
-
-#commentHeaders {
-    font-family: 'Staatliches', cursive;
-    color: black; 
-}
-
-#blogTitle {
-    font-family: 'Staatliches', cursive;
-    color: black;
-}
-
-#blogPost {
-    background-color: #a1d8f55d;
-    border-radius: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 0;
-
-}
-
-.commentBox {
-    background-color: #a1d8f55d;
-    border-radius: 10px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 0;
-}
-
-#startDiscussion {
-    background-color: #E8E8E8;
-    border-radius: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top: 0;
-}
-
-
-.myButton {
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:linear-gradient(to bottom, #ffffff 5%, #f6f6f6 100%);
-	background-color:#ffffff;
-	border-radius:6px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	cursor:pointer;
-	color:#666666;
-	font-family:Arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #ffffff;
-}
-.myButton:hover {
-	background:linear-gradient(to bottom, #f6f6f6 5%, #ffffff 100%);
-	background-color:#f6f6f6;
-}
-.myButton:active {
-	position:relative;
-	top:1px;
-}
-
-
-.dropdown {
-    position: relative;
-    display: inline;
-    float: right;
-    margin-right: 10%;
-    background-color: #a1d8f55d;
-    padding: 10px;
-    border-radius: 10px;
-    font-family: 'Staatliches', cursive;
-    padding-left: 30px;
-    padding-right: 30px;
-    font-size: 20px;
-    /* margin-left: auto;
-    margin-right: auto; */
-    /* float: right; */
-}
-  
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px 16px;
-    z-index: 1;
-    border-radius: 10px;
-  }
-  
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-
-
-/* Links inside the dropdown */
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-  }
-  
-  /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #f1f1f1}
-  
-  /* Show the dropdown menu on hover */
-  .dropdown:hover .dropdown-content {
-    display: block;
-  }
-  
-  /* Change the background color of the dropdown button when the dropdown content is shown */
-  .dropdown:hover .dropbtn {
-    background-color: #a1d8f55d;
-  }
-
-  #pagesTracker {
-    position: relative;
-    display: inline;
-    padding: 15px;
-    border-radius: 10px;
-    font-family: 'Staatliches', cursive;
-    padding-left: 50px;
-    padding-right: 50px;
-    font-size: 20px;
-    text-align: center;
-
-  }
-

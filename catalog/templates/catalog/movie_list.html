@@ -43,7 +43,7 @@
 
 <br/> 
 
-<div class="dropdown">
+<div class="dropdown dropdown-right">
   <span> Genres </span>
   <div class="dropdown-content">
     <a href="/movies/?genre=None&sort={{sort}}&tags={{tags}}">All</a>
@@ -53,7 +53,7 @@
   </div>
 </div>
 
-<div style="margin-right: 2%;" class="dropdown">
+<div class="dropdown">
   <span> Sort By </span>
   <div class="dropdown-content">
     <a href="/movies/?genre={{genre}}&sort=title&tags={{tags}}">Title (A-Z)</a>
@@ -63,7 +63,7 @@
   </div>
 </div>
 
-<div style="margin-right: 2%;" class="dropdown">
+<div class="dropdown">
   <span> Tags </span>
   <div class="dropdown-content">
     <form id="applyTags" method="post" class="tags-form">
@@ -82,14 +82,14 @@
 <br /> <br /> <br />
 
 {% if movie_list %}
-<ul>
+<div>
   {% for movie in movie_list %}
-  <li class="movieBlock">
+  <div class="movieBlock">
     <img class="moviePoster" src="{{ movie.thumbnail }}" alt="{{ movie.title }}">
     <a class="movieTitle" href="{{ movie.get_absolute_url }}">{{ movie.title }}</a>
     <p class="movieTags"><a style="color: white; text-decoration: none;"
         href="/movies/?genre={{movie.genre}}&sort={{sort}}&tags={{tags}}">{{ movie.genre }}</a></p>
-    <div style="padding: 3%; float: right;">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
+    <div class="movieRatings">{% ratings movie 24 24 True %} ({{movie.ratings.get.count}})</div>
     <p class="movieDirector"> Directed by <a>{{ movie.director }}</a> </p>
     <p class="movieDescription"><strong>Summary:</strong> {{ movie.summary }}</p>
     <p class="movieDescription">
@@ -100,10 +100,10 @@
       {% endfor %}
       {% endif %}
     </p>
-  </li>
+  </div>
   <br>
   {% endfor %}
-</ul>
+</div>
 
 {% else %}
 <p>There are no movies in the library.</p>

@@ -1,26 +1,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
 {% extends "base_generic.html" %}
 {% block content %}
-<div style="background-color: white; display: flex; flex-direction:column; justify-content: center; align-items: center;">
-    <h1 id="novel-title" style="color: black; margin-bottom: 10px; font-size: 50px;">Newsletter</h1>
-    <h2 id= "novel">Keep track of what Novel is doing!</h2>
+<div class="newsletterHeader">
+    <h1 id="novel-title">Newsletter</h1>
+    <h2 id="novel">Keep track of what Novel is doing!</h2>
+    <br>
 </div>
 
-<div class="blog-page" style="background-color: white; display: flex; align-items: center; justify-content: center;">
-    <ul style="width: 50%;">
-    {% for post in object_list %}
-        <a href="{% url 'article-detail' post.pk %}" style="text-decoration: none;">
-            <div class="blog-wrapper" style="border-radius: 10px; padding-top: 2%; padding-bottom: 3%; margin: 20px; width: 100%; background-color: #a1d8f55d;;">
-                <div style="margin-left: 6%;">
-                    <h1 style="color: black; margin-bottom: 5px; font-family: 'Staatliches', cursive;">{{ post.title }}</h1>
-                    <p style="margin-top: 0; color: black;">Posted by {{ post.author }}</p>
-                    <p class= "blogContent" style="color: black;">{{ post.intro }}</p>
-                    <small style="float:right; margin-right: 5%; color: black; padding-bottom:60px;">Posted {{ post.date_added }}</small>
+<div class="blog-page">
+    <div>
+        {% for post in object_list %}
+        <a href="{% url 'article-detail' post.pk %}">
+            <div class="blog-wrapper">
+                <div class="blog-summary">
+                    <h1>{{ post.title }}</h1>
+                    <p>Posted by {{ post.author }}</p>
+                    <p class="blogContent">{{ post.intro }}</p>
+                    <small>Posted {{ post.date_added }}</small>
                 </div>
             </div>
         </a>
-    {% endfor %}
-    </ul>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}
