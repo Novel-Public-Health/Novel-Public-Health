@@ -487,8 +487,11 @@ h5 {
 
 .register-fieldset {
     background-color: #90c1e74f;
-    width: 300px;
-    margin-left: 10%;
+    width: 275px;
+}
+
+.register-mobile {
+    margin: 0 10%;
 }
 
 .register-legend {
@@ -516,35 +519,29 @@ h5 {
     color: #5490B1;
     font-size: 4rem;
     margin-top: 0;
-    margin-left: 50px;
+    /* margin-left: 50px; */
     margin-bottom: 0;
     font-family: 'Staatliches', cursive;
 }
 
 .register-subtitle {
     color: #305061;
-    margin-left: 50px;
+    /* margin-left: 50px; */
     margin-top: 20;
 }
 
 .register-login-ctr {
     margin-top: 10px;
-    margin-left: 5%;
+    /* margin-left: 5%; */
 }
 
 .register-login-ctr>p {
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .register-login-ctr a {
     color: #5490b1;
-    font-size: 20px;
-}
-
-.register-additional-info-ctr {
-    height: 40%;
-    width: auto;
-    padding: 6%;
+    font-size: 16px;
 }
 
 .register-additional-info-ctr h2 {
@@ -651,10 +648,6 @@ h5 {
     width: 80%;
     border-radius: 10px;
 }
-
-/* ul#movieBlock li {
-    display: inline;
-    } */
 
 .moviePoster {
     float: left;
@@ -846,10 +839,6 @@ h5 {
     top: 1px;
 }
 
-.dropdown-right {
-    margin-right: 8%;
-}
-
 .dropdown {
     position: relative;
     display: inline;
@@ -865,6 +854,10 @@ h5 {
     /* margin-left: auto;
     margin-right: auto; */
     /* float: right; */
+}
+
+.dropdown-right {
+    margin-right: 10%;
 }
 
 .dropdown-content {
@@ -921,6 +914,46 @@ h5 {
     text-align: center;
 }
 
+/* Subscription Form Styles */
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: 20px;
+}
+
+.col-6 {
+    grid-column: span 6;
+}
+
+.col-12 {
+    grid-column: span 12;
+}
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 20px;
+    /* 5px rounded corners */
+}
+
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, .1);
+}
+
 /* Extra small devices (phones, 600px and down) */
 
 /* @media only screen and (max-width: 600px) {...} */
@@ -956,7 +989,7 @@ h5 {
     .login-fieldset, .login-signup-ctr {
         text-align: center;
     }
-    .login-form {
+    .login-form, #register-wrapper {
         padding-top: 20%;
     }
     .secondPage {
@@ -1101,5 +1134,11 @@ h5 {
         float: none;
         margin: 0 auto;
         margin-top: 10px;
+    }
+    .col-s-12 {
+        grid-column: span 12;
+    }
+    .register-mobile {
+        margin: 0;
     }
 }

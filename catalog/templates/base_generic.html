@@ -39,7 +39,7 @@
       <li style="visibility: hidden;"><a>hidden</a></li>
       {% if user.is_authenticated %}
       <li><a href="{% url 'profile' %}">Hi, {{ request.user.first_name }}</a></li>
-      <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</p></a></li>
+      <li><a href="{% url 'logout'%}?next={% url 'index' %}">Logout</p></a></li>
       {% else %}
       <li><a href="{% url 'login' %}?next={{request.path}}">Log In</a></li>
       <li><a href="{% url 'register' %}?next={{request.path}}">Register</a></li>

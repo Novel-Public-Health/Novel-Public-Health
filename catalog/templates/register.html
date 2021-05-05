@@ -1,38 +1,42 @@
 {% extends "base_generic.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<!-- <link rel="stylesheet" type="text/css" href="/catalog/static/css/styles.css" /> -->
 <div id="register-wrapper">
-    <div class="register-first-section">
-        <div class="content-section">
-            <form id="register-box" method="POST">
-                {% csrf_token %}
-                <fieldset class="form-group register-fieldset">
-                    <legend class="border-bottom mb-4 register-legend">Join <strong>Novel</strong></legend>
-                    {{ form|crispy }}
-                    <div class="form-group register-signup-btn-ctr">
-                        <button class="btn btn-outline-info register-signup-btn" type="submit">Sign Up</button>
-                    </div>
-                </fieldset>
-                <div style="width: 100%;">
-                    <div>
-                        <h1 class="register-title">
-                            Novel Public Health</h1>
-                        <h2 class="register-subtitle">Changing the world of public
-                            health through film</h2>
+    <div class="register-first-section container">
+        <div class="content-section row">
+            <div class="col-6 col-s-12 register-mobile">
+                <div>
+                    <h1 class="register-title">
+                        Novel Public Health</h1>
+                    <h2 class="register-subtitle">Changing the world of public
+                        health through film</h2>
 
-                        <!-- INSERT INFORMATION FOR RIGHT SIDE HERE -->
+                    <!-- INSERT INFORMATION FOR RIGHT SIDE HERE -->
 
-                        <h2 class="register-info" style="margin-left: 50px; color: black; font-size: 50px;"> </h2>
-                    </div>
+                    <h2 class="register-info" style="margin-left: 50px; color: black; font-size: 50px;"> </h2>
                 </div>
-            </form>
-            <div class="border-top pt-3 register-login-ctr">
-                <p class="text-muted">Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a></p>
             </div>
+            <div class="col-6 col-s-12 register-mobile">
+                <form id="register-box" method="POST">
+                    {% csrf_token %}
+                    <fieldset class="form-group register-fieldset">
+                        <legend class="border-bottom mb-4 register-legend">Join <strong>Novel</strong></legend>
+                        {{ form|crispy }}
+                        <div class="form-group register-signup-btn-ctr">
+                            <button class="btn btn-outline-info register-signup-btn" type="submit">Sign Up</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+                <div class="border-top pt-3 register-login-ctr">
+                    <p class="text-muted">Already Have An Account? <a class="ml-2" href="{% url 'login' %}">Sign In</a>
+                    </p>
+                </div>
+            </div>
+
         </div>
-        <div class="register-additional-info-ctr thirdPage">
-            <div>
+        <div class="register-additional-info-ctr secondPageCtr">
+            <div class="secondPage">
                 <!-- INSERT INFORMATION FOR BOTTOM HERE -->
 
                 <h2>*By creating an account, you will automatically be given access to

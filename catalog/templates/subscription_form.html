@@ -80,54 +80,6 @@
 </div>
 {% endblock %}
 
-{% block style %}
-<style>
-      .container {
-            width: 80%;
-            margin: 0 auto;
-      }
-
-      .row {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-gap: 20px;
-      }
-
-      .col-6 {
-            grid-column: span 6;
-      }
-
-      .col-12 {
-            grid-column: span 12;
-      }
-
-      .card {
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            transition: 0.3s;
-            border-radius: 5px;
-            padding: 20px;
-            /* 5px rounded corners */
-      }
-
-      .card:hover {
-            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-      }
-
-      hr {
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            border: 0;
-            border-top: 1px solid rgba(0, 0, 0, .1);
-      }
-
-      @media (max-width: 992px) {
-            .col-s-12 {
-                  grid-column: span 12;
-            }
-      }
-</style>
-{% endblock %}
-
 {% block javascript %}
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 <script src="https://js.stripe.com/v3/"></script>
