@@ -7,7 +7,7 @@
 <h1 id="novel-title" class="movie-title">{{ movie.title }}</h1>
 
 {% if movie.file != None and is_user is True %}
-<div class="movie-video-ctr" id="video-element-ctr" data-poster="/path/to/poster.jpg" style="padding:100px">
+<div class="movie-video-ctr" id="video-element-ctr" data-poster="/path/to/poster.jpg">
   <video class="movie-video" id="player" playsinline controls>
     <source src="{{movie.get_movie_url}}" type="video/mp4">
     <!-- Captions are optional -->
